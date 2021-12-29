@@ -1,0 +1,17 @@
+body{
+  background-color: rgb(235, 245, 235);
+}
+mat-card{
+  border-radius: 20px;
+  overflow-y: auto;
+}
+.chartCard{
+  overflow-x: hidden;
+}
+
+thead>tr>:nth-child(2){
+  border-left: 1px solid grey;
+}
+tbody>tr>:nth-child(2){
+  border-left: 1px solid grey;
+}

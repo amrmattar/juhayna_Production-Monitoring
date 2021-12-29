@@ -1,0 +1,45 @@
+<div *ngIf="!data">
+  <form (ngSubmit)="onSubmit()" [formGroup]="factoryForm" class="example-form">
+    <mat-form-field class="example-full-width col-12">
+      <input matInput formControlName="name" placeholder="Name" />
+    </mat-form-field>
+    <mat-form-field class="example-full-width col-12">
+      <input matInput formControlName="location" placeholder="Location" />
+    </mat-form-field>
+    <mat-form-field class="example-full-width col-12">
+      <input matInput formControlName="description" placeholder="Description" />
+    </mat-form-field>
+    <button mat-raised-button color="primary">Add Factory</button>
+  </form>
+</div>
+<div *ngIf="data">
+  <form (ngSubmit)="onSubmit2()" name="factoryForm" class="example-form">
+    <mat-form-field class="example-full-width col-12">
+      <input
+        matInput
+        [(value)]="data.name"
+        name="name"
+        [(ngModel)]="data.name"
+      />
+    </mat-form-field>
+    <mat-form-field class="example-full-width col-12">
+      <input
+        matInput
+        [(value)]="data.location"
+        [(ngModel)]="data.location"
+        name="location"
+        placeholder="Location"
+      />
+    </mat-form-field>
+    <mat-form-field class="example-full-width col-12">
+      <input
+        matInput
+        [(value)]="data.description"
+        [(ngModel)]="data.description"
+        placeholder="Description"
+        name="description"
+      />
+    </mat-form-field>
+    <button mat-raised-button color="primary">Edit Factory</button>
+  </form>
+</div>

@@ -1,0 +1,2449 @@
+<div class="container-fluid">
+  <div class="row justify-content-between mb-2">
+    <div class="col-9 mt-4" id="btnToggle">
+      <button
+      matTooltip="Factory Overview"
+        (click)="
+          functionName = null;
+          loadName = null;
+          areaName=null;
+          functionRender = false;
+          factoryRender = true;
+          allFunctions = false;
+          functionRender = false;
+          areaRender = false;
+          loadRender = false;
+          allAreas = false;
+          sourceName = null;
+          oneLoadRender = false;
+        "
+        mat-flat-button
+        [ngClass]="{ active: tabIndex === 0 }"
+        (click)="onTabClick(0)"
+        class="text-muted bt btn-outline-warning"
+        [matMenuTriggerFor]="menu"
+      >
+        <a style="font-size: 25px">
+          <i class="fa fa-building text-muted" ></i>
+        </a>
+      </button>
+      <mat-menu #menu="matMenu"> </mat-menu>
+      <button
+      matTooltip="Function Analysis"
+        [matMenuTriggerFor]="menu2"
+        mat-flat-button
+        class="text-muted bt btn-outline-warning"
+        [ngClass]="{ active: tabIndex === 1 }"
+        (click)="onTabClick(1)"
+        (click)="
+          allFunctions = true;
+          functionRender = false;
+          factoryRender = false;
+          loadRender = false;
+          oneLoadRender = false;
+          allAreas = false;
+          functionName = null;
+          sourceName = null;
+          loadName = null;
+          getEnergyAllFunctionsDefault();
+        "
+      >
+        <mat-icon
+          *ngIf="functionName == null"
+          class="text-muted"
+          style="font-size: 25px"
+          >settings_input_component</mat-icon
+        >
+        <span
+          *ngIf="functionName != null"
+          class="text-muted"
+          style="font-size: 25px"
+        >
+          {{ functionName }}</span
+        >
+      </button>
+      <mat-menu #menu2="matMenu">
+        <button
+          *ngFor="let func of menuFunctions"
+          (click)="
+            functionName = func.name;
+            functionRender = true;
+            factoryRender = false;
+            loadRender = false;
+            allAreas = false;
+            allFunctions = false;
+            oneLoadRender = false;
+            sourceName = null;
+            funcId = func.id
+          "
+          mat-menu-item
+          (click)="getEnergyFunctionDefault(func.id)"
+        >
+          {{ func.name }}
+        </button>
+      </mat-menu>
+
+      <button
+      matTooltip="Area Analysis"
+        [matMenuTriggerFor]="menu4"
+        mat-flat-button
+        class="text-muted bt btn-outline-warning"
+        [ngClass]="{ active: tabIndex === 3 }"
+        (click)="onTabClick(3)"
+        (click)="
+          allFunctions = false;
+          allAreas = true;
+          functionRender = false;
+          factoryRender = false;
+          loadRender = false;
+          oneLoadRender = false;
+          areaRender = false;
+          functionName = null;
+          sourceName = null;
+          loadName = null;
+          areaName = null;
+          getEnergyAllAreasDefault();
+        "
+      >
+        <mat-icon
+          *ngIf="areaName == null"
+          class="text-muted"
+          style="font-size: 25px"
+          >settings_input_component</mat-icon
+        >
+        <span
+          *ngIf="areaName != null"
+          class="text-muted"
+          style="font-size: 25px"
+        >
+          {{ areaName }}</span
+        >
+      </button>
+      <mat-menu #menu4="matMenu">
+        <button
+          *ngFor="let func of areas"
+          (click)="
+            areaName = func.name;
+            functionRender = false;
+            factoryRender = false;
+            loadRender = false;
+            allFunctions = false;
+            allAreas = false;
+            areaRender = true;
+            oneLoadRender = false;
+            sourceName = null;
+            funcId = func.id;
+
+          "
+          mat-menu-item
+          (click)="getEnergyAreaDefault(func.id)"
+        >
+          {{ func.name }}
+        </button>
+      </mat-menu>
+
+      <button
+      matTooltip="Load Analysis"
+        [matMenuTriggerFor]="menu3"
+        mat-flat-button
+        class="text-muted bt btn-outline-warning"
+        [ngClass]="{ active: tabIndex === 2 }"
+        (click)="onTabClick(2)"
+        (click)="
+          functionName = null;
+          loadName = null;
+          loadRender = true;
+          allAreas = false;
+          factoryRender = false;
+          functionRender = false;
+          sourceName = null;
+          allFunctions = false;
+          getEnergyAllLoadsDefault();
+        "
+      >
+        <a style="font-size: 25px">
+          <i *ngIf="loadName == null" class="fa fa-rocket text-muted"></i>
+          <span *ngIf="loadName != null">{{ loadName }}</span>
+        </a>
+        <!-- <mat-icon >domain</mat-icon> -->
+      </button>
+      <mat-menu #menu3="matMenu">
+        <button
+          *ngFor="let func of loads"
+          (click)="
+            functionRender = false;
+            factoryRender = false;
+            loadRender = false;
+            allFunctions = false;
+            allAreas = false;
+            oneLoadRender = true;
+            sourceName = null;
+            loadCode = func.code;
+            getEnergyLoadDefault(func.code);
+            loadName = func.name
+          "
+          mat-menu-item
+        >
+          {{ func.name }}
+        </button>
+      </mat-menu>
+      <button
+      matTooltip="Sources Analysis"
+        [matMenuTriggerFor]="menu5"
+        mat-flat-button
+        class="text-muted bt btn-outline-warning"
+        [ngClass]="{ active: tabIndex === 4 }"
+        (click)="onTabClick(4)"
+        (click)="
+          functionName = null;
+          loadName = null;
+          loadRender = false;
+          allAreas = false;
+          factoryRender = false;
+          functionRender = false;
+          allFunctions = false;
+          sourceName = null;
+        "
+      >
+        <a style="font-size: 25px">
+          <i *ngIf="sourceName == null" class="fa fa-rocket text-muted"></i>
+          <span *ngIf="sourceName != null">{{ sourceName }}</span>
+        </a>
+        <!-- <mat-icon >domain</mat-icon> -->
+      </button>
+      <mat-menu #menu5="matMenu">
+        <button
+          *ngFor="let func of sources"
+          (click)="
+            functionRender = false;
+            factoryRender = false;
+            loadRender = false;
+            allFunctions = false;
+            allAreas = false;
+            oneLoadRender = true;
+
+            loadCode = func.code;
+            getEnergyLoadDefault(func.code);
+            sourceName = func.name
+          "
+          mat-menu-item
+        >
+          {{ func.name }}
+        </button>
+      </mat-menu>
+    </div>
+    <div class="col-3">
+      <div class="row mt-3">
+
+        <!-- <div class="col-3 mt-2">
+          <button
+          *ngIf="oneLoadRender == false && functionRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+              getEnergyFactoryTime(1);
+              getEnergyAllFunctionsTime(1);
+              getEnergyAllLoadsTime(1);
+
+              lineData = null
+            "
+            checked
+          >
+            Today
+          </button>
+          <button
+          *ngIf="oneLoadRender == true && functionRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+              getEnergyLoadTime(loadCode, 1);
+              "
+            checked
+          >
+            Today
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && functionRender == true"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+            getEnergyFunctionTime(funcId, 1);
+            "
+            checked
+          >
+            Today
+          </button>
+        </div> -->
+        <div class="col-3 mt-2">
+          <button
+          *ngIf="oneLoadRender == false && functionRender == false && allAreas == false && areaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+              getEnergyFactoryTime(1);
+              getEnergyAllFunctionsTime(1);
+              getEnergyAllLoadsTime(1);
+            "
+          >
+          Today
+          </button>
+          <button
+          *ngIf="allAreas == true && oneLoadRender == false && functionRender == false && areaRender == false "
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+            getEnergyAllAreasTime(1);
+            "
+          >
+          Today
+          </button>
+          <button
+          *ngIf="oneLoadRender == true && functionRender == false && areaRender == false && allAreas == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+              getEnergyLoadTime(loadCode, 1);
+            "
+          >
+          Today
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && functionRender == true && areaRender == false && allAreas == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+              getEnergyFunctionTime(funcId, 1);
+            "
+          >
+          Today
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && functionRender == false && areaRender == true && allAreas == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+              getEnergyAreaTime(funcId, 1);
+            "
+          >
+            Today
+          </button>
+        </div>
+         <div class="col-3 mt-2">
+          <button
+          *ngIf="oneLoadRender == false && functionRender == false && allAreas == false && areaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 1 }"
+            (click)="onTabClick2(1)"
+            (click)="
+              getEnergyFactoryTime(2);
+              getEnergyAllFunctionsTime(2);
+              getEnergyAllLoadsTime(2);
+            "
+          >
+            Yesterday
+          </button>
+          <button
+          *ngIf="allAreas == true && oneLoadRender == false && functionRender == false && areaRender == false "
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 1 }"
+            (click)="onTabClick2(1)"
+            (click)="
+            getEnergyAllAreasTime(2);
+            "
+          >
+            Yesterday
+          </button>
+          <button
+          *ngIf="oneLoadRender == true && functionRender == false && areaRender == false && allAreas == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 1 }"
+            (click)="onTabClick2(1)"
+            (click)="
+              getEnergyLoadTime(loadCode, 2);
+            "
+          >
+            Yesterday
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && functionRender == true && areaRender == false && allAreas == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 1 }"
+            (click)="onTabClick2(1)"
+            (click)="
+              getEnergyFunctionTime(funcId, 2);
+            "
+          >
+            Yesterday
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && functionRender == false && areaRender == true && allAreas == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 1 }"
+            (click)="onTabClick2(1)"
+            (click)="
+              getEnergyAreaTime(funcId, 2);
+            "
+          >
+            Yesterday
+          </button>
+        </div>
+        <div class="col-3 mt-2">
+          <button
+          *ngIf="oneLoadRender == false && functionRender == false && allAreas == false&& areaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 2 }"
+            (click)="onTabClick2(2)"
+            (click)="
+              getEnergyFactoryTime(3);
+              getEnergyAllFunctionsTime(3);
+              getEnergyAllLoadsTime(3);
+            "
+          >
+            Last Week
+          </button>
+          <button
+          *ngIf="allAreas == true && oneLoadRender == false && functionRender == false && areaRender == false "
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 2 }"
+            (click)="onTabClick2(2)"
+            (click)="
+            getEnergyAllAreasTime(3);
+            "
+          >
+            Last Week
+          </button>
+          <button
+          *ngIf="oneLoadRender == true && functionRender == false && areaRender == false && allAreas == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 2 }"
+            (click)="onTabClick2(2)"
+            (click)="
+              getEnergyLoadTime(loadCode, 3);
+            "
+          >
+            Last Week
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && functionRender == true && areaRender == false && allAreas == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 2 }"
+            (click)="onTabClick2(2)"
+            (click)="
+              getEnergyFunctionTime(funcId, 3);
+            "
+          >
+            Last Week
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && functionRender == false && areaRender == true && allAreas == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 2 }"
+            (click)="onTabClick2(2)"
+            (click)="
+              getEnergyAreaTime(funcId, 3);
+            "
+          >
+            Last Week
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="container-fluid"
+  style="background-color:#F7F8FA; padding-top: 50px"
+>
+  <!-- factory Data -->
+  <div
+    *ngIf="
+      functionRender == false &&
+      loadRender == false &&
+      allFunctions == false &&
+      oneLoadRender == false && allAreas == false&& areaRender == false
+    "
+    class="row  mt-5"
+
+  >
+    <div class="col-2">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 500px"
+      >
+      <br><br><br>
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted text-center ms-4"
+            >Total Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <br><br><br><br><br>
+
+          <h2 *ngIf="totalEnergyConsumption" class="text-center">
+            {{ totalEnergyConsumption | number: "" }} (Kwh)
+          </h2>
+          <div class="row">
+            <div id="chart">
+              <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [colors]="chartOptions.colors"
+                [xaxis]="chartOptions.xaxis"
+                [stroke]="chartOptions.stroke"
+                [tooltip]="chartOptions.tooltip"
+                [dataLabels]="chartOptions.dataLabels"
+                [fill]="chartOptions.fill"
+                [yaxis]="chartOptions.yaxis"
+              ></apx-chart>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-10">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded chartCard"
+        style="height: 500px"
+      >
+        <mat-card-content>
+          <div class="row justify-content-around ml-3">
+            <!-- <div class="col-2">
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                        <h1 class="font-weight-bold">EGFood</h1>
+                    </div> -->
+            <div *ngIf="lineData != null" class="col-12">
+              <!-- <div  echarts [options]="option"> -->
+
+              <apx-chart
+                [series]="factoriesFunction3.series"
+                [chart]="factoriesFunction3.chart"
+                [dataLabels]="factoriesFunction3.dataLabels"
+                [plotOptions]="factoriesFunction3.plotOptions"
+                [xaxis]="factoriesFunction3.xaxis"
+                [stroke]="factoriesFunction3.stroke"
+                [fill]="factoriesFunction3.fill"
+                [yaxis]="factoriesFunction3.yaxis"
+                [title]="factoriesFunction3.title"
+                [tooltip]="factoriesFunction3.tooltip"
+                [legend]="factoriesFunction3.legend"
+                [colors]="factoriesFunction3.colors"
+              ></apx-chart>
+
+              <!-- </div> -->
+            </div>
+          </div>
+          <div class="row justify-content-around ml-3">
+            <!-- <div class="col-2">
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                        <h1 class="font-weight-bold">EGFood</h1>
+                    </div> -->
+            <div *ngIf="lineData != null" class="col-12">
+              <!-- <div  echarts [options]="option"> -->
+
+              <apx-chart
+                [series]="factoriesFunction.series"
+                [chart]="factoriesFunction.chart"
+                [dataLabels]="factoriesFunction.dataLabels"
+                [plotOptions]="factoriesFunction.plotOptions"
+                [xaxis]="factoriesFunction.xaxis"
+                [stroke]="factoriesFunction.stroke"
+                [fill]="factoriesFunction.fill"
+                [yaxis]="factoriesFunction.yaxis"
+                [title]="factoriesFunction.title"
+                [tooltip]="factoriesFunction.tooltip"
+                [legend]="factoriesFunction.legend"
+                [colors]="factoriesFunction.colors"
+              ></apx-chart>
+
+              <!-- </div> -->
+            </div>
+          </div>
+          <div class="row justify-content-around ml-3">
+            <!-- <div class="col-2">
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                        <h1 class="font-weight-bold">EGFood</h1>
+                    </div> -->
+            <div *ngIf="lineData != null" class="col-12">
+              <!-- <div  echarts [options]="option"> -->
+
+              <apx-chart
+                [series]="factoriesFunction4.series"
+                [chart]="factoriesFunction4.chart"
+                [dataLabels]="factoriesFunction4.dataLabels"
+                [plotOptions]="factoriesFunction4.plotOptions"
+                [xaxis]="factoriesFunction4.xaxis"
+                [stroke]="factoriesFunction4.stroke"
+                [fill]="factoriesFunction4.fill"
+                [yaxis]="factoriesFunction4.yaxis"
+                [title]="factoriesFunction4.title"
+                [tooltip]="factoriesFunction4.tooltip"
+                [legend]="factoriesFunction4.legend"
+                [colors]="factoriesFunction4.colors"
+              ></apx-chart>
+
+              <!-- </div> -->
+            </div>
+          </div>
+          <div class="row justify-content-around ml-3">
+            <!-- <div class="col-2">
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                        <h1 class="font-weight-bold">EGFood</h1>
+                    </div> -->
+            <div *ngIf="lineData != null" class="col-12">
+              <!-- <div  echarts [options]="option"> -->
+
+              <apx-chart
+                [series]="factoriesFunction2.series"
+                [chart]="factoriesFunction2.chart"
+                [dataLabels]="factoriesFunction2.dataLabels"
+                [plotOptions]="factoriesFunction2.plotOptions"
+                [xaxis]="factoriesFunction2.xaxis"
+                [stroke]="factoriesFunction2.stroke"
+                [fill]="factoriesFunction2.fill"
+                [yaxis]="factoriesFunction2.yaxis"
+                [title]="factoriesFunction2.title"
+                [tooltip]="factoriesFunction2.tooltip"
+                [legend]="factoriesFunction2.legend"
+                [colors]="factoriesFunction2.colors"
+              ></apx-chart>
+
+              <!-- </div> -->
+            </div>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div
+    *ngIf="
+      functionRender == false &&
+      loadRender == false &&
+      allFunctions == false &&
+      oneLoadRender == false&& allAreas == false && areaRender == false
+    "
+    class="row justify-content-around mt-5"
+
+  >
+    <div class="col-8">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 500px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Factories Energy Profile</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div id="chart" *ngIf="lineData != null" style="width: 100%">
+              <apx-chart
+                [series]="chartOptions3.series"
+                [chart]="chartOptions3.chart"
+                [colors]="chartOptions3.colors"
+                [xaxis]="chartOptions3.xaxis"
+                [stroke]="chartOptions3.stroke"
+                [tooltip]="chartOptions3.tooltip"
+                [dataLabels]="chartOptions3.dataLabels"
+                [fill]="chartOptions3.fill"
+                [yaxis]="chartOptions3.yaxis"
+              ></apx-chart>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Factories Energy Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content class="mt-5">
+          <hr />
+          <div id="chart" *ngIf="lineData != null" style="width: 100%">
+            <apx-chart
+              [series]="chartOptions4.series"
+              [chart]="chartOptions4.chart"
+              [plotOptions]="chartOptions4.plotOptions"
+              [colors]="chartOptions4.colors"
+              [xaxis]="chartOptions4.xaxis"
+              [stroke]="chartOptions4.stroke"
+              [tooltip]="chartOptions4.tooltip"
+              [dataLabels]="chartOptions4.dataLabels"
+              [fill]="chartOptions4.fill"
+              [yaxis]="chartOptions4.yaxis"
+            ></apx-chart>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <!-- <div class="col-12">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="row">
+          <div class="col-10">
+            <mat-card-subtitle class="text-muted"
+            >Last Day Energy Consumption</mat-card-subtitle
+          >
+          </div>
+          <div class="col-2">
+            <button type="button" class="btn mt-1" style="background: transparent 0% 0% no-repeat padding-box;
+
+        border-radius: 8px;
+        opacity: 1;text-align: left;
+font: normal normal normal 14px/17px Montserrat;
+letter-spacing: 0.28px;
+color: #F39C12;
+opacity: 1;" (click)="download2()">CSV</button>
+          </div>
+        </div>
+        <mat-card-header>
+
+        </mat-card-header>
+        <mat-card-content class="mt-5">
+          <table class="table mt-5" id="myTableElementId" >
+            <thead>
+              <tr>
+                <th scope="col" class="text-muted">Name</th>
+                <th scope="col" class="text-muted">Total Energy</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let func of yesterdayData">
+                <th scope="row" class="text-muted">{{ func.name }}</th>
+                <td class="text-muted" >
+                  {{ func.energy.toFixed(2)}} KWH
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+
+    </div> -->
+  </div>
+
+  <!-- Function Data -->
+  <div
+    *ngIf="
+      functionRender == true &&
+      loadRender == false &&
+      allFunctions == false &&
+      oneLoadRender == false
+    "
+    class="row justify-content-around mt-5"
+  >
+    <div class="col-2">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Total Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <h2 *ngIf="totalConsumption" class="text-center">
+            {{ totalConsumption | number: "" }}(Kwh)
+          </h2>
+          <div class="row">
+            <div id="chart">
+              <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [colors]="chartOptions.colors"
+                [stroke]="chartOptions.stroke"
+                [tooltip]="chartOptions.tooltip"
+                [dataLabels]="chartOptions.dataLabels"
+                [fill]="chartOptions.fill"
+                [yaxis]="chartOptions.yaxis"
+              ></apx-chart>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-3">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Voltage</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-5">
+              <div class="col">
+                <h2 class="font-weight-bold">{{maxV | number: ""}} V</h2>
+                <span>Max Voltage</span>
+              </div>
+              <div class="col mt-2">
+                <h2 class="font-weight-bold">{{avgV| number: ""}} V</h2>
+                <span>Avg Voltage</span>
+              </div>
+            </div>
+            <div class="col-7">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [colors]="chartOptions.colors"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [fill]="chartOptions.fill"
+                  [yaxis]="chartOptions.yaxis"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-3">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Current</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-5">
+              <div class="col">
+                <h2 class="font-weight-bold">{{maxC | number: ""}} A</h2>
+                <span>Max Current</span>
+              </div>
+              <div class="col mt-2">
+                <h2 class="font-weight-bold">{{avgC| number: ""}} A</h2>
+                <span>Avg Current</span>
+              </div>
+            </div>
+            <div class="col-7">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [colors]="chartOptions.colors"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [fill]="chartOptions.fill"
+                  [yaxis]="chartOptions.yaxis"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" style="height: 250px">
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Phase Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+<br><br>
+          <div class="row">
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption1.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 1</span>
+            </div>
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption2.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 2</span>
+            </div>
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption3.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 3</span>
+            </div>
+          </div>
+
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div
+    *ngIf="
+      functionRender == true &&
+      loadRender == false &&
+      allFunctions == false &&
+      oneLoadRender == false
+    "
+    class="row"
+  >
+    <div class="col-8">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="row">
+          <div class="col-8">
+            <mat-card-header class="mt-4">
+              <mat-card-subtitle class="text-muted"
+                > Energy Distribution</mat-card-subtitle
+              >
+            </mat-card-header>
+          </div>
+          <div class="col-4">
+            <mat-tab-group
+              mat-stretch-tabs
+              (selectedTabChange)="changeTab4($event)"
+            >
+              <mat-tab label="LINE CHART"> </mat-tab>
+              <mat-tab label="RECORD LIST"> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+        <mat-card-content>
+          <div
+            id="chart"
+            *ngIf="
+              tableVisisable4 == false &&
+              functionLineDate != null
+            "
+          >
+            <apx-chart
+              [series]="chartOptions2.series"
+              [chart]="chartOptions2.chart"
+              [xaxis]="chartOptions2.xaxis"
+              [colors]="chartOptions2.colors"
+              [dataLabels]="chartOptions2.dataLabels"
+              [grid]="chartOptions2.grid"
+              [stroke]="chartOptions2.stroke"
+              [tooltip]="chartOptions3.tooltip"
+              [title]="chartOptions2.title"
+            ></apx-chart>
+          </div>
+          <div
+            id="chart"
+            *ngIf="lineChartVisiable4 == false && tableVisisable4 == true"
+          >
+            <table class="table mt-5">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-muted">Name</th>
+
+                  <th
+                    *ngFor="let func of functionsTime"
+                    scope="col"
+                    class="text-muted"
+                  >
+                    {{ func }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let val of chartOptions2.series">
+                  <th scope="row" class="text-muted">{{ val.name }}</th>
+
+
+                  <td class="text-muted" *ngFor="let value of val.data">
+                    {{ value | number: "" }} - KWH
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 460px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            > Energy Distribution</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-12">
+              <br />
+              <br />
+              <br />
+              <div id="chart" *ngIf="functionLineDate != null">
+                <apx-chart
+                  [series]="pieFunctionLoads.series"
+                  [chart]="pieFunctionLoads.chart"
+                  [labels]="pieFunctionLoads.labels"
+                  [colors]="pieFunctionLoads.colors"
+                  [responsive]="pieFunctionLoads.responsive"
+                  [tooltip]="pieFunctionLoads.tooltip"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <!-- Area Data -->
+  <div
+    *ngIf="
+      functionRender == false &&
+      loadRender == false &&
+      allFunctions == false &&
+      oneLoadRender == false&& areaRender == true
+    "
+    class="row justify-content-around mt-5"
+  >
+    <div class="col-2">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Total Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <h2 *ngIf="totalConsumption" class="text-center">
+            {{ totalConsumption | number: "" }}(Kwh)
+          </h2>
+          <div class="row">
+            <div id="chart">
+              <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [colors]="chartOptions.colors"
+                [stroke]="chartOptions.stroke"
+                [tooltip]="chartOptions.tooltip"
+                [dataLabels]="chartOptions.dataLabels"
+                [fill]="chartOptions.fill"
+                [yaxis]="chartOptions.yaxis"
+              ></apx-chart>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-3">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Voltage</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-5">
+              <div class="col">
+                <h2 class="font-weight-bold">{{maxV | number: ""}} V</h2>
+                <span>Max Voltage</span>
+              </div>
+              <div class="col mt-2">
+                <h2 class="font-weight-bold">{{avgV| number: ""}} V</h2>
+                <span>Avg Voltage</span>
+              </div>
+            </div>
+            <div class="col-7">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [colors]="chartOptions.colors"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [fill]="chartOptions.fill"
+                  [yaxis]="chartOptions.yaxis"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-3">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Current</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-5">
+              <div class="col">
+                <h2 class="font-weight-bold">{{maxC | number: ""}} A</h2>
+                <span>Max Current</span>
+              </div>
+              <div class="col mt-2">
+                <h2 class="font-weight-bold">{{avgC| number: ""}} A</h2>
+                <span>Avg Current</span>
+              </div>
+            </div>
+            <div class="col-7">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [colors]="chartOptions.colors"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [fill]="chartOptions.fill"
+                  [yaxis]="chartOptions.yaxis"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" style="height: 250px">
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Phase Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+<br><br>
+          <div class="row">
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption1.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 1</span>
+            </div>
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption2.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 2</span>
+            </div>
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption3.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 3</span>
+            </div>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div
+    *ngIf="
+      functionRender == false &&
+      loadRender == false &&
+      allFunctions == false &&
+      oneLoadRender == false&& areaRender == true
+    "
+    class="row"
+  >
+    <div class="col-8">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="row">
+          <div class="col-8">
+            <mat-card-header class="mt-4">
+              <mat-card-subtitle class="text-muted"
+                > Energy Distribution</mat-card-subtitle
+              >
+            </mat-card-header>
+          </div>
+          <div class="col-4">
+            <mat-tab-group
+              mat-stretch-tabs
+              (selectedTabChange)="changeTab4($event)"
+            >
+              <mat-tab label="LINE CHART"> </mat-tab>
+              <mat-tab label="RECORD LIST"> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+        <mat-card-content>
+          <div
+            id="chart"
+            *ngIf="
+              tableVisisable4 == false &&
+              functionLineDate != null
+            "
+          >
+            <apx-chart
+              [series]="chartOptions2.series"
+              [chart]="chartOptions2.chart"
+              [xaxis]="chartOptions2.xaxis"
+              [colors]="chartOptions2.colors"
+              [dataLabels]="chartOptions2.dataLabels"
+              [grid]="chartOptions2.grid"
+              [stroke]="chartOptions2.stroke"
+              [tooltip]="chartOptions3.tooltip"
+              [title]="chartOptions2.title"
+            ></apx-chart>
+          </div>
+          <div
+            id="chart"
+            *ngIf="lineChartVisiable4 == false && tableVisisable4 == true"
+          >
+            <table class="table mt-5">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-muted">Name</th>
+
+                  <th
+                    *ngFor="let func of functionsTime"
+                    scope="col"
+                    class="text-muted"
+                  >
+                    {{ func }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let val of chartOptions2.series">
+                  <th scope="row" class="text-muted">{{ val.name }}</th>
+
+
+                  <td class="text-muted" *ngFor="let value of val.data">
+                    {{ value | number: "" }} - KWH
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 460px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            > Energy Distribution</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-12">
+              <br />
+              <br />
+              <br />
+              <div id="chart" *ngIf="functionLineDate != null">
+                <apx-chart
+                  [series]="pieAreaLoads.series"
+                  [chart]="pieAreaLoads.chart"
+                  [labels]="pieAreaLoads.labels"
+                  [colors]="pieAreaLoads.colors"
+                  [responsive]="pieAreaLoads.responsive"
+                  [tooltip]="pieAreaLoads.tooltip"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <!-- All-Load -->
+  <div
+    *ngIf="loadRender == true"
+    class="row justify-content-around mt-5"
+  >
+    <div class="col-2">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Total Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <h2 class="text-center font-weight-bold" *ngIf="totalConsumption3">
+            {{ (totalConsumption1+totalConsumption2+totalConsumption3).toFixed(2) | number: "" }}(Kwh)
+          </h2>
+          <div class="row">
+            <div id="chart">
+              <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [colors]="chartOptions.colors"
+                [stroke]="chartOptions.stroke"
+                [tooltip]="chartOptions.tooltip"
+                [dataLabels]="chartOptions.dataLabels"
+                [fill]="chartOptions.fill"
+                [yaxis]="chartOptions.yaxis"
+              ></apx-chart>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-3">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Voltage</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-5">
+              <div class="col">
+                <h2 class="font-weight-bold">{{maxV | number: ""}} V</h2>
+                <span>Max Voltage</span>
+              </div>
+              <div class="col mt-2">
+                <h2 class="font-weight-bold">{{avgV| number: ""}} V</h2>
+                <span>Avg Voltage</span>
+              </div>
+            </div>
+            <div class="col-7">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [colors]="chartOptions.colors"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [fill]="chartOptions.fill"
+                  [yaxis]="chartOptions.yaxis"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-3">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Current</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-5">
+              <div class="col">
+                <h2 class="font-weight-bold">{{maxC | number: ""}} A</h2>
+                <span>Max Current</span>
+              </div>
+              <div class="col mt-2">
+                <h2 class="font-weight-bold">{{avgC| number: ""}} A</h2>
+                <span>Avg Current</span>
+              </div>
+            </div>
+            <div class="col-7">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [colors]="chartOptions.colors"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [fill]="chartOptions.fill"
+                  [yaxis]="chartOptions.yaxis"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Phase Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+<br><br><br>
+          <div class="row">
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption1.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 1</span>
+            </div>
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption2.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 2</span>
+            </div>
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption3.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 3</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div *ngIf="loadRender == true" class="row">
+    <div class="col-8">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="row">
+          <div class="col-8">
+            <mat-card-header class="mt-4">
+              <mat-card-subtitle class="text-muted"
+                > Energy Distribution</mat-card-subtitle
+              >
+            </mat-card-header>
+          </div>
+          <div class="col-4">
+            <mat-tab-group
+              mat-stretch-tabs
+              (selectedTabChange)="changefactoryTab($event)"
+            >
+              <mat-tab label="BAR CHART"> </mat-tab>
+              <mat-tab label="RECORD LIST"> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+        <mat-card-content>
+          <div
+            id="chart"
+            *ngIf="lineChartVisiable == true && tableVisisable == false && totalConsumption1"
+          >
+          <apx-chart
+          [series]="allLoadsBar.series"
+          [chart]="allLoadsBar.chart"
+          [xaxis]="allLoadsBar.xaxis"
+          [yaxis]="allLoadsBar.yaxis"
+          [colors]="allLoadsBar.colors"
+          [dataLabels]="allLoadsBar.dataLabels"
+          [plotOptions]="allLoadsBar.plotOptions"
+          [legend]="allLoadsBar.legend"
+          [grid]="allLoadsBar.grid"
+          [stroke]="allLoadsBar.stroke"
+          [title]="allLoadsBar.title"
+          [tooltip]="allLoadsBar.tooltip"
+        ></apx-chart>
+            <!-- <apx-chart
+              [series]="allLoadsBar.series"
+              [chart]="allLoadsBar.chart"
+              [colors]="allLoadsBar.colors"
+              [xaxis]="allLoadsBar.xaxis"
+              [dataLabels]="allLoadsBar.dataLabels"
+              [grid]="allLoadsBar.grid"
+              [stroke]="allLoadsBar.stroke"
+              [title]="allLoadsBar.title"
+              [tooltip]="allLoadsBar.tooltip"
+            ></apx-chart> -->
+          </div>
+          <div
+            class="table-responsive"
+            id="chart"
+            *ngIf="lineChartVisiable == false && tableVisisable == true"
+          >
+            <table class="table mt-5">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-muted">Name</th>
+
+                  <th
+                    *ngFor="let func of LoadsTime"
+                    scope="col"
+                    class="text-muted"
+                  >
+                    {{ func }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let val of tableLoadsData">
+                  <th scope="row" class="text-muted">{{ val.name }}</th>
+
+
+                  <td class="text-muted" *ngFor="let value of val.data">
+                    {{ value | number: "" }} - KWH
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 460px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            > Energy Distribution</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-12">
+              <br />
+              <br />
+              <br />
+              <div id="chart" *ngIf="totalConsumption1">
+                <apx-chart
+                  [series]="pieLoads.series"
+                  [chart]="pieLoads.chart"
+                  [labels]="pieLoads.labels"
+                  [responsive]="pieLoads.responsive"
+                  [tooltip]="pieLoads.tooltip"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- All-Functions -->
+  <div
+    *ngIf="allFunctions == true"
+    class="row justify-content-around mt-5"
+  >
+    <div class="col-2">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Total Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <h2>{{ allFunctionConsumptions | number: "" }}(Kwh)</h2>
+          <div class="row">
+            <div id="chart">
+              <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [colors]="chartOptions.colors"
+                [stroke]="chartOptions.stroke"
+                [tooltip]="chartOptions.tooltip"
+                [dataLabels]="chartOptions.dataLabels"
+                [fill]="chartOptions.fill"
+                [yaxis]="chartOptions.yaxis"
+              ></apx-chart>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-3">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Voltage</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-5">
+              <div class="col">
+                <h2 class="font-weight-bold">{{maxV | number: ""}} V</h2>
+                <span>Max Voltage</span>
+              </div>
+              <div class="col mt-2">
+                <h2 class="font-weight-bold">{{avgV| number: ""}} V</h2>
+                <span>Avg Voltage</span>
+              </div>
+            </div>
+            <div class="col-7">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [colors]="chartOptions.colors"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [fill]="chartOptions.fill"
+                  [yaxis]="chartOptions.yaxis"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-3">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Current</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-5">
+              <div class="col">
+                <h2 class="font-weight-bold">{{maxC | number: ""}} A</h2>
+                <span>Max Current</span>
+              </div>
+              <div class="col mt-2">
+                <h2 class="font-weight-bold">{{avgC| number: ""}} A</h2>
+                <span>Avg Current</span>
+              </div>
+            </div>
+            <div class="col-7">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [colors]="chartOptions.colors"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [fill]="chartOptions.fill"
+                  [yaxis]="chartOptions.yaxis"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Phase Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+<br><br><br>
+          <div class="row">
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption1.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-5" style="color: orange">Phase 1</span>
+            </div>
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption2.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-5" style="color: orange">Phase 2</span>
+            </div>
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption3.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-5" style="color: orange">Phase 3</span>
+            </div>
+          </div>
+          <div class="row justify-content-around">
+            <!-- <div class="col mt-2">
+              <h2 class="font-weight-bold">{{ tableData.length }}</h2>
+              <span class="text-center">Number of Functions</span>
+            </div> -->
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div *ngIf="allFunctions == true" class="row">
+    <div class="col-8">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="row">
+          <div class="col-8">
+            <mat-card-header class="mt-4">
+              <mat-card-subtitle class="text-muted"
+                > Energy Distribution</mat-card-subtitle
+              >
+            </mat-card-header>
+          </div>
+          <div class="col-4">
+            <mat-tab-group
+              mat-stretch-tabs
+              (selectedTabChange)="changeTab2($event)"
+            >
+              <mat-tab label="LINE CHART"> </mat-tab>
+              <mat-tab label="BAR CHART"> </mat-tab>
+              <mat-tab label="RECORD LIST"> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+        <mat-card-content>
+          <div
+            id="chart"
+            *ngIf="
+              tableVisisable2 == false &&
+              barVisisable2 == false && allFunctionChartData !=null
+            "
+          >
+            <apx-chart
+              [series]="allFunctionsChart.series"
+              [chart]="allFunctionsChart.chart"
+              [xaxis]="allFunctionsChart.xaxis"
+              [colors]="allFunctionsChart.colors"
+              [dataLabels]="allFunctionsChart.dataLabels"
+              [grid]="allFunctionsChart.grid"
+              [stroke]="allFunctionsChart.stroke"
+              [tooltip]="chartOptions3.tooltip"
+              [title]="allFunctionsChart.title"
+            ></apx-chart>
+          </div>
+          <div
+            id="chart"
+            *ngIf="
+              lineChartVisiable2 == false &&
+              tableVisisable2 == false &&
+              barVisisable2 == true
+            "
+          >
+            <apx-chart
+              [series]="allFunctionsBar.series"
+              [chart]="allFunctionsBar.chart"
+              [xaxis]="allFunctionsBar.xaxis"
+              [yaxis]="allFunctionsBar.yaxis"
+              [colors]="allFunctionsBar.colors"
+              [dataLabels]="allFunctionsBar.dataLabels"
+              [plotOptions]="allFunctionsBar.plotOptions"
+              [legend]="allFunctionsBar.legend"
+              [grid]="allFunctionsBar.grid"
+              [stroke]="allFunctionsBar.stroke"
+              [title]="allFunctionsBar.title"
+              [tooltip]="allFunctionsBar.tooltip"
+            ></apx-chart>
+          </div>
+          <div
+            id="chart"
+            class="table-responsive"
+            *ngIf="
+              lineChartVisiable2 == false &&
+              tableVisisable2 == true &&
+              barVisisable2 == false
+            "
+          >
+            <table class="table mt-5">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-muted">Name</th>
+
+                  <th
+                    *ngFor="let func of functionsTime"
+                    scope="col"
+                    class="text-muted"
+                  >
+                    {{ func }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let val of tableData">
+                  <th scope="row" class="text-muted">{{ val.name }}</th>
+
+
+                  <td class="text-muted" *ngFor="let value of val.data">
+                    {{ value | number: "" }} - KWH
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 460px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            > Energy Distribution</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-12">
+              <br />
+              <br />
+              <br />
+              <div id="chart" *ngIf="allFunctionPieData != null">
+                <apx-chart
+                  [series]="pieFucntions.series"
+                  [chart]="pieFucntions.chart"
+                  [labels]="pieFucntions.labels"
+                  [colors]="pieFucntions.colors"
+                  [responsive]="pieFucntions.responsive"
+                  [tooltip]="pieFucntions.tooltip"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <!-- All-Functions -->
+  <div
+    *ngIf="allAreas == true"
+    class="row justify-content-around mt-5"
+  >
+    <div class="col-2">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Total Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <h2>{{ allFunctionConsumptions | number: "" }}(Kwh)</h2>
+          <div class="row">
+            <div id="chart">
+              <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [colors]="chartOptions.colors"
+                [stroke]="chartOptions.stroke"
+                [tooltip]="chartOptions.tooltip"
+                [dataLabels]="chartOptions.dataLabels"
+                [fill]="chartOptions.fill"
+                [yaxis]="chartOptions.yaxis"
+              ></apx-chart>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-3">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Voltage</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-5">
+              <div class="col">
+                <h2 class="font-weight-bold">{{maxV | number: ""}} V</h2>
+                <span>Max Voltage</span>
+              </div>
+              <div class="col mt-2">
+                <h2 class="font-weight-bold">{{avgV| number: ""}} V</h2>
+                <span>Avg Voltage</span>
+              </div>
+            </div>
+            <div class="col-7">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [colors]="chartOptions.colors"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [fill]="chartOptions.fill"
+                  [yaxis]="chartOptions.yaxis"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-3">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Current</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-5">
+              <div class="col">
+                <h2 class="font-weight-bold">{{maxC | number: ""}} A</h2>
+                <span>Max Current</span>
+              </div>
+              <div class="col mt-2">
+                <h2 class="font-weight-bold">{{avgC| number: ""}} A</h2>
+                <span>Avg Current</span>
+              </div>
+            </div>
+            <div class="col-7">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [colors]="chartOptions.colors"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [fill]="chartOptions.fill"
+                  [yaxis]="chartOptions.yaxis"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Phase Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+<br><br><br>
+          <div class="row">
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption1.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 1</span>
+            </div>
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption2.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 2</span>
+            </div>
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption3.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 3</span>
+            </div>
+          </div>
+          <div class="row justify-content-around">
+            <div class="col mt-2">
+              <!-- <h2 class="font-weight-bold">{{ tableData.length }}</h2>
+              <span class="text-center">Number of Functions</span> -->
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div *ngIf="allAreas == true" class="row">
+    <div class="col-8">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="row">
+          <div class="col-8">
+            <mat-card-header class="mt-4">
+              <mat-card-subtitle class="text-muted"
+                > Energy Distribution</mat-card-subtitle
+              >
+            </mat-card-header>
+          </div>
+          <div class="col-4">
+            <mat-tab-group
+              mat-stretch-tabs
+              (selectedTabChange)="changeTab2($event)"
+            >
+              <mat-tab label="LINE CHART"> </mat-tab>
+              <mat-tab label="BAR CHART"> </mat-tab>
+              <mat-tab label="RECORD LIST"> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+        <mat-card-content>
+          <div
+            id="chart"
+            *ngIf="
+              tableVisisable2 == false &&
+              barVisisable2 == false && allFunctionChartData !=null
+            "
+          >
+            <apx-chart
+              [series]="allFunctionsChart.series"
+              [chart]="allFunctionsChart.chart"
+              [xaxis]="allFunctionsChart.xaxis"
+              [colors]="allFunctionsChart.colors"
+              [dataLabels]="allFunctionsChart.dataLabels"
+              [grid]="allFunctionsChart.grid"
+              [stroke]="allFunctionsChart.stroke"
+              [tooltip]="chartOptions3.tooltip"
+              [title]="allFunctionsChart.title"
+            ></apx-chart>
+          </div>
+          <div
+            id="chart"
+            *ngIf="
+              lineChartVisiable2 == false &&
+              tableVisisable2 == false &&
+              barVisisable2 == true
+            "
+          >
+          <apx-chart
+          [series]="allFunctionsBar.series"
+          [chart]="allFunctionsBar.chart"
+          [xaxis]="allFunctionsBar.xaxis"
+          [yaxis]="allFunctionsBar.yaxis"
+          [colors]="allFunctionsBar.colors"
+          [dataLabels]="allFunctionsBar.dataLabels"
+          [plotOptions]="allFunctionsBar.plotOptions"
+          [legend]="allFunctionsBar.legend"
+          [grid]="allFunctionsBar.grid"
+          [stroke]="allFunctionsBar.stroke"
+          [title]="allFunctionsBar.title"
+          [tooltip]="allFunctionsBar.tooltip"
+        ></apx-chart>
+          </div>
+          <div
+            id="chart"
+            class="table-responsive"
+            *ngIf="
+              lineChartVisiable2 == false &&
+              tableVisisable2 == true &&
+              barVisisable2 == false
+            "
+          >
+            <table class="table mt-5">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-muted">Name</th>
+
+                  <th
+                    *ngFor="let func of functionsTime"
+                    scope="col"
+                    class="text-muted"
+                  >
+                    {{ func }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let val of tableData">
+                  <th scope="row" class="text-muted">{{ val.name }}</th>
+
+
+                  <td class="text-muted" *ngFor="let value of val.data">
+                    {{ value | number: "" }} - KWH
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 460px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            > Energy Distribution</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-12">
+              <br />
+              <br />
+              <br />
+              <div id="chart" *ngIf="allFunctionPieData != null">
+                <apx-chart
+                  [series]="pieFucntions.series"
+                  [chart]="pieFucntions.chart"
+                  [labels]="pieFucntions.labels"
+                  [responsive]="pieFucntions.responsive"
+                  [colors]="pieFucntions.colors"
+                  [tooltip]="pieFucntions.tooltip"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- one-load -->
+
+  <div
+    *ngIf="
+      oneLoadRender == true &&
+      functionRender == false &&
+      loadRender == false &&
+      allFunctions == false &&
+      factoryRender == false
+    "
+    class="row justify-content-around mt-5"
+  >
+    <div class="col-2">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Total Consumption</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <h2  class="text-center">
+            {{ specificLoadConsumption | number: "" }}(Kwh)
+          </h2>
+          <div class="row">
+            <div id="chart">
+              <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [colors]="chartOptions.colors"
+                [stroke]="chartOptions.stroke"
+                [tooltip]="chartOptions.tooltip"
+                [dataLabels]="chartOptions.dataLabels"
+                [fill]="chartOptions.fill"
+                [yaxis]="chartOptions.yaxis"
+              ></apx-chart>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-3">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Voltage</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-5">
+              <div class="col">
+                <h2 class="font-weight-bold" *ngIf="maxV > 1000">{{maxV/1000 | number: ""}} KV</h2>
+                <h2 class="font-weight-bold" *ngIf="maxV < 1000">{{maxV | number: ""}} V</h2>
+                <span>Max Voltage</span>
+              </div>
+              <div class="col mt-2">
+                <h2 class="font-weight-bold" *ngIf="avgV > 1000">{{avgV/1000| number: ""}} KV</h2>
+                <h2 class="font-weight-bold" *ngIf="avgV < 1000">{{avgV| number: ""}} V</h2>
+                <span>Avg Voltage</span>
+              </div>
+            </div>
+            <div class="col-7">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [colors]="chartOptions.colors"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [fill]="chartOptions.fill"
+                  [yaxis]="chartOptions.yaxis"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-3">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 250px"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Current</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-5">
+              <div class="col">
+                <h2 class="font-weight-bold">{{maxC | number: ""}} A</h2>
+                <span>Max Current</span>
+              </div>
+              <div class="col mt-2">
+                <h2 class="font-weight-bold">{{avgC| number: ""}} A</h2>
+                <span>Avg Current</span>
+              </div>
+            </div>
+            <div class="col-7">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [colors]="chartOptions.colors"
+                  [stroke]="chartOptions.stroke"
+                  [tooltip]="chartOptions.tooltip"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [fill]="chartOptions.fill"
+                  [yaxis]="chartOptions.yaxis"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" style="height: 250px;">
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Statistics</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <br><br>
+          <br>
+          <div class="row">
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption1.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 1</span>
+            </div>
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption2.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 2</span>
+            </div>
+            <div class="col">
+              <h2 class=" font-weight-bold" *ngIf="totalConsumption1">
+                {{ totalConsumption3.toFixed(2) | number:"" }} (Kwh)
+              </h2>
+              <span class="text-center ms-4" style="color: orange">Phase 3</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div
+    *ngIf="
+      oneLoadRender == true &&
+      functionRender == false &&
+      loadRender == false &&
+      allFunctions == false &&
+      factoryRender == false
+    "
+    class="row"
+  >
+  <div class="col-6">
+    <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+      <div class="row">
+        <div class="col-8">
+          <mat-card-header class="mt-4">
+            <mat-card-subtitle class="text-muted"
+              >Live Energy Counsumption (Last 15 Reads)</mat-card-subtitle
+            >
+          </mat-card-header>
+        </div>
+      </div>
+      <mat-card-content>
+        <div
+          id="chart"
+          ref="chart"
+        >
+          <apx-chart
+            [series]="loadLiveLine.series"
+            [chart]="loadLiveLine.chart"
+            [xaxis]="loadLiveLine.xaxis"
+            [yaxis]="loadLiveLine.yaxis"
+            [colors]="loadLiveLine.colors"
+            [tooltip]="loadLiveLine.tooltip"
+            [dataLabels]="loadLiveLine.dataLabels"
+            [grid]="loadLiveLine.grid"
+            [fill]="loadLiveLine.fill"
+            [stroke]="loadLiveLine.stroke"
+            [title]="loadLiveLine.title"
+          ></apx-chart>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+    <div class="col-6">
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="row">
+          <div class="col-8">
+            <mat-card-header class="mt-4">
+              <mat-card-subtitle class="text-muted"
+                >Energy Distribution</mat-card-subtitle
+              >
+            </mat-card-header>
+          </div>
+          <div class="col-4">
+            <mat-tab-group
+              mat-stretch-tabs
+              (selectedTabChange)="changefactoryTab2($event)"
+            >
+              <mat-tab label="LINE CHART"> </mat-tab>
+              <mat-tab label="RECORD LIST"> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+        <mat-card-content>
+          <div
+            id="chart"
+            ref="chart"
+            *ngIf="tableVisisable3 == false && loadDataSpecific != null"
+          >
+            <apx-chart
+              [series]="loadLine.series"
+              [chart]="loadLine.chart"
+              [xaxis]="loadLine.xaxis"
+              [yaxis]="loadLine.yaxis"
+              [colors]="loadLine.colors"
+              [tooltip]="loadLine.tooltip"
+              [dataLabels]="loadLine.dataLabels"
+              [grid]="loadLine.grid"
+              [fill]="loadLine.fill"
+              [stroke]="loadLine.stroke"
+              [title]="loadLine.title"
+            ></apx-chart>
+          </div>
+          <div
+            class="table-responsive"
+            id="chart"
+            *ngIf="lineChartVisiable3 == false && tableVisisable3 == true"
+            style="height: 350px;"
+          >
+            <table class="table mt-5">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-muted">Name</th>
+
+                  <th
+                    *ngFor="let func of loadData[0].time"
+                    scope="col"
+                    class="text-muted"
+                  >
+                    {{ func }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let val of loadData">
+                  <th scope="row" class="text-muted">
+                    {{ loadName }}
+                  </th>
+
+
+                  <td class="text-muted" *ngFor="let value of val.data">
+                    {{ value | number: "" }} - KWH
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

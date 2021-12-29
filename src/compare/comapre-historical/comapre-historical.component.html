@@ -1,0 +1,478 @@
+<div class="row justify-content-md-center">
+  <img src="../../assets/imgs/unnamed.png" style="width: 150px;" alt="">
+</div>
+<br>
+<div class="container-fluid">
+  <div class="row justify-content-between mt-2">
+    <div class="col-9 mt-3">
+
+
+
+    </div>
+    <div class="col-3">
+      <button [ngClass]="{ active: tabIndex === 3 }" mat-flat-button (click)="getCompareChartsTime(1); getCompareTime(0); onTabClick(3);" class="text-muted btn-outline-warning">
+        Instant Read
+      </button>
+      <button [ngClass]="{ active: tabIndex === 0 }" mat-flat-button (click)="getCompareChartsTime(1); getCompareTime(1); onTabClick(0);" class="text-muted btn-outline-warning active " checked>
+        Today
+      </button>
+      <button [ngClass]="{ active: tabIndex === 1 }" mat-flat-button (click)="getCompareChartsTime(2); getCompareTime(2); onTabClick(1);" class="text-muted btn-outline-warning">
+        Yesterday
+      </button>
+
+      <button [ngClass]="{ active: tabIndex === 2 }" mat-flat-button (click)="getCompareChartsTime(3); getCompareTime(3); onTabClick(2);" class="text-muted btn-outline-warning">
+        Last Week
+      </button>
+
+    </div>
+  </div>
+</div>
+<hr>
+<mat-tab-group mat-stretch-tabs (selectedTabChange)="changeParaTab($event)">
+  <mat-tab label="CURRENT" class="font-weight-bold">
+  </mat-tab>
+  <mat-tab label="VOLTAGE" class="font-weight-bold">
+  </mat-tab>
+  <mat-tab label="Active Power" class="font-weight-bold">  </mat-tab>
+  <mat-tab label="POWER FACTOR" class="font-weight-bold"> </mat-tab>
+  <mat-tab label="Apparent Power" class="font-weight-bold"> </mat-tab>
+  <mat-tab label="Energy" class="font-weight-bold"> </mat-tab>
+</mat-tab-group>
+<div
+  class="container-fluid"
+  style="background-color: rgb(235, 245, 235); padding-top: 50px; "
+>
+<div class="row justify-content-around mt-5">
+<div class="col-4">
+  <mat-form-field appearance="outline" style="width: 430px;">
+    <mat-label><mat-icon style="font-size:20px;" class="mr-3">precision_manufacturing</mat-icon> Load 1</mat-label>
+    <mat-select [(ngModel)]="loadId1" name="load1">
+      <mat-option *ngFor="let load of loads" [value]="load.code">
+        {{load.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <!-- <mat-slide-toggle [(ngModel)]="checked1"  *ngIf="checked1 == true">Set as Reference</mat-slide-toggle>
+  <mat-slide-toggle *ngIf="checked1 == false" (click)="checked2 = false; checked1 = true;loadRef = 'load1';">Set as Reference</mat-slide-toggle> -->
+
+</div>
+<div class="col-4">
+  <mat-form-field appearance="outline" style="width: 430px;">
+    <mat-label> <mat-icon style="font-size:20px;" class="mr-3">precision_manufacturing</mat-icon>Load 2</mat-label>
+    <mat-select [(ngModel)]="loadId2" name="load2">
+      <mat-option *ngFor="let load of loads" [value]="load.code">
+        {{load.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <!-- <mat-slide-toggle [(ngModel)]="checked2" *ngIf="checked2 == true">Set as Reference</mat-slide-toggle>
+  <mat-slide-toggle *ngIf="checked2 == false" (click)="checked1 = false; checked2 = true;loadRef= 'load2'; ">Set as Reference</mat-slide-toggle> -->
+
+</div>
+<div class="col-4 mt-2">
+<!-- <button
+class="btn btn-outline-warning mr-4" style="width: 200px;" >Save Config Option</button> -->
+<button
+class="btn btn-warning text-white" style="width: 170px;" (click)="getCompareDefault(); getCompareCharts()">Compare</button>
+</div>
+</div>
+<br>
+<div class="row justify-content-center">
+  <div *ngIf="loading == true && notLoading == true" class="circles-to-rhombuses-spinner">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+  </div>
+</div>
+
+<div *ngIf="loading ==false" class="row justify-content-around mt-5">
+<div class="col-4">
+  <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+    <mat-card-header>
+      <mat-card-title class="text-muted" *ngIf="!load1"
+        >Load 1</mat-card-title
+      >
+      <mat-card-title class="text-muted" *ngIf="load1"
+    > {{loadName1}}</mat-card-title
+      >
+    </mat-card-header>
+    <mat-card-content>
+      <hr />
+      <div class="col justify-content-center" >
+        <!-- Current -->
+        <div class="row justify-content-around">
+          <h3 class="font-weight-bold text-muted">Current1 (A)</h3>
+        <h3 class="font-weight-bold" *ngIf="load1">{{i1Load1.toFixed(2)}}</h3>
+        </div>
+        <div class="row justify-content-around">
+          <h3 class="font-weight-bold text-muted">Current2 (A)</h3>
+        <h3 class="font-weight-bold" *ngIf="load1">{{i2Load1.toFixed(2)}}</h3>
+        </div>
+        <div class="row justify-content-around">
+          <h3 class="font-weight-bold text-muted">Current3 (A)</h3>
+        <h3 class="font-weight-bold" *ngIf="load1">{{i3Load1.toFixed(2)}}</h3>
+        </div>
+        <!-- Voltage -->
+        <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Voltage1 (V)</h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{v1Load1.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Voltage2 (V)</h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{v2Load1.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Voltage3 (V)</h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{v3Load1.toFixed(2)}}</h3>
+          </div>
+          <!-- Active Power -->
+        <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">ActivePower 1 (KWH)</h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{pact1Load1.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">ActivePower 2 (KWH)</h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{pact2Load1.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">ActivePower 3 (KWH)</h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{pact3Load1.toFixed(2)}}</h3>
+          </div>
+          <!-- Power Factor -->
+        <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Power Factor1 </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{pF1Load1.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Power Factor2 </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{pF2Load1.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Power Factor3 </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{pF3Load1.toFixed(2)}}</h3>
+          </div>
+          <!-- Apparent Power -->
+        <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Apparent Power1 </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{papp1Load1.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Apparent Power2 </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{papp2Load1.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Apparent Power3 </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{papp3Load1.toFixed(2)}}</h3>
+          </div>
+          <!--Energy-->
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Energy1 </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{energy1Load1.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Energy2 </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{energy2Load1.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Energy3 </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{energy3Load1.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Total Energy </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{totalEnergyLoad1.toFixed(2)}}</h3>
+          </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="col-4">
+    <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+        <mat-card-header>
+          <mat-card-title class="text-muted" *ngIf="!loadName2"
+            >Load 2</mat-card-title
+          >
+          <mat-card-title class="text-muted" *ngIf="loadName2"
+        >{{loadName2}}</mat-card-title
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="col justify-content-center" >
+            <!-- Current -->
+            <div class="row justify-content-around">
+              <h3 class="font-weight-bold text-muted">Current1 (A)</h3>
+              <h3 class="font-weight-bold" *ngIf="load2">{{i1Load2.toFixed(2)}}</h3>
+            </div>
+            <div class="row justify-content-around">
+              <h3 class="font-weight-bold text-muted">Current2 (A)</h3>
+              <h3 class="font-weight-bold" *ngIf="load2">{{i2Load2.toFixed(2)}}</h3>
+            </div>
+            <div class="row justify-content-around">
+              <h3 class="font-weight-bold text-muted">Current3 (A)</h3>
+              <h3 class="font-weight-bold" *ngIf="load2">{{i3Load2.toFixed(2)}}</h3>
+            </div>
+            <!-- Voltage -->
+            <div class="row justify-content-around">
+                <h3 class="font-weight-bold text-muted">Voltage1 (V)</h3>
+            <h3 class="font-weight-bold" *ngIf="load2">{{v1Load2.toFixed(2)}}</h3>
+              </div>
+              <div class="row justify-content-around">
+                <h3 class="font-weight-bold text-muted">Voltage2 (V)</h3>
+            <h3 class="font-weight-bold" *ngIf="load2">{{v2Load2.toFixed(2)}}</h3>
+              </div>
+              <div class="row justify-content-around">
+                <h3 class="font-weight-bold text-muted">Voltage3 (V)</h3>
+            <h3 class="font-weight-bold" *ngIf="load2">{{v3Load2.toFixed(2)}}</h3>
+              </div>
+              <!-- Active Power -->
+            <div class="row justify-content-around">
+                <h3 class="font-weight-bold text-muted">Active Power1 (KWH)</h3>
+            <h3 class="font-weight-bold" *ngIf="load2">{{pact1Load2.toFixed(2)}}</h3>
+              </div>
+              <div class="row justify-content-around">
+                <h3 class="font-weight-bold text-muted">Active Power2 (KWH)</h3>
+            <h3 class="font-weight-bold" *ngIf="load2">{{pact2Load2.toFixed(2)}}</h3>
+              </div>
+              <div class="row justify-content-around">
+                <h3 class="font-weight-bold text-muted">Active Power3 (KWH)</h3>
+            <h3 class="font-weight-bold" *ngIf="load2">{{pact3Load2.toFixed(2)}}</h3>
+              </div>
+
+              <!-- Power Factor -->
+            <div class="row justify-content-around">
+                <h3 class="font-weight-bold text-muted">Power Factor1 </h3>
+            <h3 class="font-weight-bold" *ngIf="load2">{{pF1Load2.toFixed(2)}}</h3>
+              </div>
+              <div class="row justify-content-around">
+                <h3 class="font-weight-bold text-muted">Power Factor2 </h3>
+            <h3 class="font-weight-bold" *ngIf="load2">{{pF2Load2.toFixed(2)}}</h3>
+              </div>
+              <div class="row justify-content-around">
+                <h3 class="font-weight-bold text-muted">Power Factor3 </h3>
+            <h3 class="font-weight-bold" *ngIf="load2">{{pF3Load2.toFixed(2)}}</h3>
+              </div>
+              <!-- Apparent Power -->
+            <div class="row justify-content-around">
+                <h3 class="font-weight-bold text-muted">Apparent Power1 </h3>
+            <h3 class="font-weight-bold" *ngIf="load2">{{papp1Load2.toFixed(2)}}</h3>
+              </div>
+              <div class="row justify-content-around">
+                <h3 class="font-weight-bold text-muted">Apparent Power2 </h3>
+            <h3 class="font-weight-bold" *ngIf="load2">{{papp2Load2.toFixed(2)}}</h3>
+              </div>
+              <div class="row justify-content-around">
+                <h3 class="font-weight-bold text-muted">Apparent Power3 </h3>
+            <h3 class="font-weight-bold" *ngIf="load2">{{papp3Load2.toFixed(2)}}</h3>
+              </div>
+              <!--Energy-->
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Energy1 </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{energy1Load2.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Energy2 </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{energy2Load2.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Energy3 </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{energy3Load2.toFixed(2)}}</h3>
+          </div>
+          <div class="row justify-content-around">
+            <h3 class="font-weight-bold text-muted">Total Energy </h3>
+            <h3 class="font-weight-bold" *ngIf="load1">{{totalEnergyLoad2.toFixed(2)}}</h3>
+          </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+</div><div *ngIf="loading ==false" class="row justify-content-around mt-5">
+<div class="col-12">
+    <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" *ngIf="currentRender == true">
+        <div class="row">
+          <div class="col-8">
+            <mat-card-header class="mt-4">
+              <mat-card-subtitle class="text-muted"
+                >Current</mat-card-subtitle
+              >
+            </mat-card-header>
+          </div>
+          <div class="col-4">
+            <mat-tab-group
+              mat-stretch-tabs
+              (selectedTabChange)="changeTab($event)"
+            >
+              <mat-tab label="LINE CHART"> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+        <mat-card-content>
+          <div
+            id="chart"
+            *ngIf="dagta !=null"
+          >
+            <apx-chart
+              [series]="current.series"
+              [chart]="current.chart"
+              [xaxis]="current.xaxis"
+              [dataLabels]="current.dataLabels"
+              [grid]="current.grid"
+              [stroke]="current.stroke"
+              [title]="current.title"
+              [tooltip]="current.tooltip"
+            ></apx-chart>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" *ngIf="voltageRender == true">
+        <div class="row">
+          <div class="col-8">
+            <mat-card-header class="mt-4">
+              <mat-card-subtitle class="text-muted"
+                >Voltage</mat-card-subtitle
+              >
+            </mat-card-header>
+          </div>
+          <div class="col-4">
+            <mat-tab-group
+              mat-stretch-tabs
+              (selectedTabChange)="changeTab($event)"
+            >
+              <mat-tab label="LINE CHART"> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+        <mat-card-content>
+          <div
+            id="chart"
+
+          >
+            <apx-chart
+              [series]="voltage.series"
+              [chart]="voltage.chart"
+              [xaxis]="voltage.xaxis"
+              [dataLabels]="voltage.dataLabels"
+              [grid]="voltage.grid"
+              [stroke]="voltage.stroke"
+              [title]="voltage.title"
+              [tooltip]="voltage.tooltip"
+            ></apx-chart>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" *ngIf="energyRender == true">
+        <div class="row">
+          <div class="col-8">
+            <mat-card-header class="mt-4">
+              <mat-card-subtitle class="text-muted"
+                >Energy</mat-card-subtitle
+              >
+            </mat-card-header>
+          </div>
+          <div class="col-4">
+            <mat-tab-group
+              mat-stretch-tabs
+              (selectedTabChange)="changeTab($event)"
+            >
+              <mat-tab label="LINE CHART"> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+        <mat-card-content>
+          <div
+            id="chart"
+
+          >
+            <apx-chart
+              [series]="energy.series"
+              [chart]="energy.chart"
+              [xaxis]="energy.xaxis"
+              [dataLabels]="energy.dataLabels"
+              [grid]="energy.grid"
+              [stroke]="energy.stroke"
+              [title]="energy.title"
+              [tooltip]="energy.tooltip"
+            ></apx-chart>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" *ngIf="pfRender == true">
+        <div class="row">
+          <div class="col-8">
+            <mat-card-header class="mt-4">
+              <mat-card-subtitle class="text-muted"
+                >Power Factor</mat-card-subtitle
+              >
+            </mat-card-header>
+          </div>
+          <div class="col-4">
+            <mat-tab-group
+              mat-stretch-tabs
+              (selectedTabChange)="changeTab($event)"
+            >
+              <mat-tab label="LINE CHART"> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+        <mat-card-content>
+          <div
+            id="chart"
+
+          >
+            <apx-chart
+              [series]="pf.series"
+              [chart]="pf.chart"
+              [xaxis]="pf.xaxis"
+              [dataLabels]="pf.dataLabels"
+              [grid]="pf.grid"
+              [stroke]="pf.stroke"
+              [title]="pf.title"
+              [tooltip]="pf.tooltip"
+            ></apx-chart>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" *ngIf="apparentRender == true">
+        <div class="row">
+          <div class="col-8">
+            <mat-card-header class="mt-4">
+              <mat-card-subtitle class="text-muted"
+                >Apparent Power</mat-card-subtitle
+              >
+            </mat-card-header>
+          </div>
+          <div class="col-4">
+            <mat-tab-group
+              mat-stretch-tabs
+              (selectedTabChange)="changeTab($event)"
+            >
+              <mat-tab label="LINE CHART"> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+        <mat-card-content>
+          <div
+            id="chart"
+
+          >
+            <apx-chart
+              [series]="ap.series"
+              [chart]="ap.chart"
+              [xaxis]="ap.xaxis"
+              [dataLabels]="ap.dataLabels"
+              [grid]="ap.grid"
+              [stroke]="ap.stroke"
+              [title]="ap.title"
+              [tooltip]="ap.tooltip"
+            ></apx-chart>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+</div>
+</div>
+</div>

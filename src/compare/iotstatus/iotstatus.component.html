@@ -1,0 +1,129 @@
+<div class="row justify-content-md-center">
+  <img src="../../assets/imgs/unnamed.png" style="width: 150px;" alt="">
+</div>
+<br>
+<div >
+  <p>
+    <mat-toolbar >
+      <!-- <button mat-button color="primary" [matMenuTriggerFor]="menu">
+        Factory Name
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+      <button mat-button color="primary" [matMenuTriggerFor]="menu">
+        Feature Name
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu> -->
+      <span class="example-spacer"></span>
+
+      <mat-button-toggle-group
+        [(ngModel)]="display"
+        aria-label="Font Style"
+        style="position: fixed; right: 10px; overflow-x: hidden"
+      >
+        <mat-button-toggle color="primary" value="single"
+          >Single Layout</mat-button-toggle
+        >
+        <mat-button-toggle color="primary" value="split"
+          >Split Layout</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+    </mat-toolbar>
+  </p>
+</div>
+
+<div
+  class="container-fluid d-flex justify-content-center align-items-center"
+  style="height: 100vh"
+  *ngIf="display == 'single'"
+>
+  <mat-card
+    class="example-card shadow p-3 mb-5 bg-white rounded col-sm-10"
+    style="height: 50vh; width: 100%"
+  >
+    <mat-card-header>
+      <mat-card-subtitle class="text-muted">Loads</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content
+      style="overflow-y: scroll; overflow-x: hidden; height: 42vh"
+      class="matcontent"
+    >
+      <hr />
+      <mat-card
+        (click)="openChart(l.code)"
+        *ngFor="let l of loads"
+        style="background-color: lightgrey; padding: 5px; margin-top: 10px"
+        ><mat-icon style="position: relative; top: 10px; color: orange"
+          >show_chart</mat-icon
+        ><span class="mb-4"> {{ l.name }}</span></mat-card
+      >
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div
+  class="container-fluid d-flex justify-content-center align-items-center col-12"
+  style="height: 100vh; position: relative; top: 60px"
+  *ngIf="display == 'split'"
+>
+  <div
+    class="row justify-content-center align-items-center"
+    style="width: 100%"
+  >
+    <div class="col-11 col-lg-5">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 50vh; width: 100%"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">Online Loads - ({{online.length}})</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content
+          style="overflow-y: scroll; overflow-x: hidden; height: 42vh"
+          class="matcontent"
+        >
+          <hr />
+          <mat-card
+            (click)="openChart(on.code)"
+            *ngFor="let on of online"
+            style="background-color: lightgrey; padding: 5px; margin-top: 10px"
+            ><mat-icon style="position: relative; top: 10px; color: orange"
+              >show_chart</mat-icon
+            ><span class="mb-4"> {{ on.name }}</span></mat-card
+          >
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-11 col-lg-5">
+      <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height: 50vh"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted"
+            >Offline Loads  - ({{offline.length}})</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content
+          style="overflow-y: scroll; overflow-x: hidden; height: 42vh"
+          class="matcontent"
+        >
+          <hr />
+          <mat-card
+            (click)="openChart(off.code)"
+            *ngFor="let off of offline"
+            style="background-color: lightgrey; padding: 5px; margin-top: 10px"
+            ><mat-icon style="position: relative; top: 10px; color: orange"
+              >remove</mat-icon
+            ><span class="mb-4">{{ off.name }}</span></mat-card
+          >
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+
+<mat-sidenav-container *ngIf="isLoggedIn">
+  <mat-sidenav #appDrawer  role="navigation" mode="side" opened  [fixedInViewport]="true" >
+    <app-side-nav></app-side-nav>
+
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<app-login *ngIf="!isLoggedIn"></app-login>
+
+<!-- <button (click) = "login = true">login</button> -->

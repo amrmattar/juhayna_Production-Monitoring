@@ -1,0 +1,47 @@
+<div>
+  <form (ngSubmit)="onSubmit()" [formGroup]="alertForm" class="example-form">
+    <div class="row">
+      <mat-form-field class="example-full-width col-6" appearance="fill">
+        <mat-label>Operator</mat-label>
+        <mat-select formControlName="condition">
+          <mat-option>None</mat-option>
+          <mat-option value="&gt"> &gt </mat-option>
+          <mat-option value="&lt"> &lt </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6" appearance="fill">
+        <mat-label>Alert Type</mat-label>
+        <mat-select formControlName="type">
+          <mat-option>None</mat-option>
+          <mat-option value="current">Current</mat-option>
+          <mat-option value="power">Power</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          formControlName="threshValue"
+          placeholder="Threshold value"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6">
+        <input matInput placeholder="Name" formControlName="name" />
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-full-width col-6" appearance="fill">
+        <mat-label>Source ID</mat-label>
+        <mat-select formControlName="sourceId">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let fact of loads" [value]="fact.id"
+            >{{fact.name}}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary">Add Alert</button>
+  </form>
+</div>

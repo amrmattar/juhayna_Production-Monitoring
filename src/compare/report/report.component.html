@@ -1,0 +1,707 @@
+<div class="row justify-content-md-center">
+  <img src="../../assets/imgs/unnamed.png" style="width: 150px;" alt="">
+</div>
+<br>
+<div class="container-fluid">
+<div class="row">
+<div class="col-2" style="background: #FFFFFF 0% 0% no-repeat padding-box;
+box-shadow: 1px 3px 6px #00000029;
+opacity: 1;">
+<div class="row justify-content-center rowdiv">
+  <div class="col-3">
+    <img class="img" src="../../assets/imgs/factory.svg"/>
+  </div>
+  <div class="col">
+    <select  class="form-select factories" aria-label="Default select example">
+      <option selected>Select A Factory</option>
+      <option selected value="1">All Factories</option>
+      <option value="2">EGFood</option>
+
+    </select>
+
+
+  </div>
+</div>
+<br>
+<div class="row">
+<div class="col-3">
+
+</div>
+<div class="col">
+  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+    <label class="btn btn-outline-warning" style="color: grey;" for="btnradio1" (click)="getHierarchyArea()">Area</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+    <label class="btn btn-outline-warning" style="color: grey;" for="btnradio2" (click)="getHierarchy()">Function</label>
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+    <label class="btn btn-outline-warning" style="color: grey;" for="btnradio3" (click)="getHierarchySources()">Sources</label>
+  </div>
+</div>
+</div>
+<br>
+<div class="row">
+<div class="col">
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <!-- This is the tree node template for leaf nodes -->
+    <mat-tree-node    *matTreeNodeDef="let node" matTreeNodePadding class="node-st act">
+      <!-- use a disabled button to provide padding for tree leaf -->
+      <button *ngIf="option == 1&& duration == 1 && resolution==15 " (click)="loadCode = node.code; loadName = node.name; getReport()"  mat-icon-button  ><img [src]='"../../assets/imgs/"+node.img'/></button>
+      <button *ngIf="option != 1|| duration != 1 || resolution!=15 " (click)="loadCode = node.code; loadName = node.name;"  mat-icon-button  ><img [src]='"../../assets/imgs/"+node.img'/></button>
+       <h5 type="button" *ngIf="option == 1&& duration == 1 && resolution==15 " (click)="loadCode = node.code; loadName = node.name; getReport()"> {{node.name}}</h5>
+       <h5 type="button" *ngIf="option != 1|| duration != 1 || resolution!=15 " (click)="loadCode = node.code; loadName = node.name;"> {{node.name}}</h5>
+
+    </mat-tree-node>
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding class="node-st">
+      <button mat-icon-button matTreeNodeToggle
+      class="me-3"
+              [attr.aria-label]="'Toggle ' + node.name">
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+        </mat-icon>
+        <img [src]='"../../assets/imgs/"+node.img'/>
+      </button>
+      {{node.name}}
+    </mat-tree-node>
+  </mat-tree>
+</div>
+</div>
+</div>
+<div class="col-10">
+  <div class="row">
+    <mat-tab-group mat-stretch-tabs  (selectedTabChange)="option = $event.index+1; getReport()">
+      <mat-tab label="CURRENT" class="font-weight-bold">
+      </mat-tab>
+      <mat-tab label="VOLTAGE" class="font-weight-bold">
+      </mat-tab>
+      <mat-tab label="POWER FACTOR" class="font-weight-bold"> </mat-tab>
+      <mat-tab label="Active Power" class="font-weight-bold">  </mat-tab>
+      <mat-tab label="Reactive Power" class="font-weight-bold">  </mat-tab>
+      <mat-tab label="Apparent Power" class="font-weight-bold"> </mat-tab>
+      <mat-tab label="Energy" class="font-weight-bold"> </mat-tab>
+      <mat-tab  label="Harmonics Current" class="font-weight-bold">  </mat-tab>
+      <mat-tab   label="Harmonics Voltage" class="font-weight-bold">  </mat-tab>
+      <mat-tab label="Line CURRENT" class="font-weight-bold">
+      </mat-tab>
+      <mat-tab label="Line VOLTAGE" class="font-weight-bold">
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <br>
+      <div class="row">
+        <div class="col-12">
+          <h3 style="text-align: left;
+          font: normal normal normal 12px/25px Montserrat;
+          letter-spacing: 0px;
+          color: #B2BEC3;
+          opacity: 1;">Absolute Duration</h3>
+        </div>
+        <div class="col-6">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2" matInput
+              [ngxMatDatetimePicker]="picker"
+              placeholder="From"
+              (dateChange)="fromDate($event)"
+                [ngxMatDatetimePicker]="picker"
+                [formControl]="dateControl"
+              >
+              <mat-datepicker-toggle
+              (click)="From = dateControl.value"
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker showSeconds="true"> </ngx-mat-datetime-picker>
+            </div>
+
+        </div>
+       <div class="col-6">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2" matInput
+            placeholder="To"
+            (dateChange)="toDate($event); getReportDate();"
+              matInput
+              [ngxMatDatetimePicker]="picker2"
+              [formControl]="dateControl2"
+            >
+            <mat-datepicker-toggle
+            matSuffix
+            [for]="picker2"
+          ></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #picker2 showSeconds="true"> </ngx-mat-datetime-picker>
+          </div>
+
+       </div>
+      </div>
+    </div>
+    <div class="col-1" >
+      <br>
+      <div style="border-left:2px   solid #B2BEC3; height: 120px;">
+
+      </div>
+    </div>
+    <div class="col-5">
+      <br>
+      <div class="row">
+        <div class="col-12">
+          <h3 style="text-align: left;
+          font: normal normal normal 12px/25px Montserrat;
+          letter-spacing: 0px;
+          color: #B2BEC3;
+          opacity: 1;">Relative Duration</h3>
+        </div>
+
+       <div class="col-7" *ngIf="duration !=6">
+        <select (change)="duration = $event.target.value;getReport()" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+          <option selected >Select A Duration</option>
+          <option  value="1">Today</option>
+          <option  value="2">Yesterday</option>
+          <option value="3">Week</option>
+          <option value="4">Month</option>
+          <option value="5">Quarter</option>
+          <option value="7">Year</option>
+        </select>
+
+       </div>
+       <div class="col-7" *ngIf="duration ==6">
+        <select (change)="duration = $event.target.value; getReport()" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+          <option selected >Select A Duration</option>
+          <option  value="6">Live</option>
+          <option  value="1">Today</option>
+          <option  value="2">Day</option>
+          <option value="3">Week</option>
+          <option value="4">Month</option>
+          <option value="5">Quarter</option>
+          <option value="7">Year</option>
+        </select>
+
+       </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-5">
+      <div class="row">
+        <div class="col-3">
+          <h3 style="text-align: left;
+          font: normal normal normal 12px/25px Montserrat;
+          letter-spacing: 0px;
+          color: #B2BEC3;
+          opacity: 1;">Chart Type</h3>
+        </div>
+        <div class="col-9">
+          <div class="row">
+            <div class="col-4">
+              <i class="fa fa-line-chart" (click)="barChart = false;pieChart = false;lineChart=true;" style="font-size: 30px; color: #707070;" aria-hidden="true"></i>
+
+            </div>
+
+            <div class="col-4">
+              <i class="fa fa-bar-chart" (click)="barChart = true;pieChart = false;lineChart=false;" style="font-size: 30px; color: #707070;" aria-hidden="true"></i>
+
+            </div>
+            <div class="col-4">
+              <i class="fa fa-area-chart" (click)="barChart = false;pieChart = true;lineChart=false;" style="font-size: 30px; color: #707070;" aria-hidden="true"></i>
+
+            </div>
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-1" >
+      <div style="border-left:2px   solid #B2BEC3; height: 50px;">
+
+      </div>
+    </div>
+    <div class="col-5">
+      <div class="row">
+        <div class="col-2">
+          <h3 style="text-align: left;
+          font: normal normal normal 12px/25px Montserrat;
+          letter-spacing: 0px;
+          color: #B2BEC3;
+          opacity: 1;" class="mt-2">Resolution</h3>
+        </div>
+        <div class="col">
+          <div class="btn-group" role="group2" aria-label="Basic radio toggle button group" *ngIf="duration != 6 && duration != 4 && duration != 5 ">
+            <input type="radio" class="btn-check" (click)="resolution = 15; getReport()" name="btnradio" id="btnradio3" autocomplete="off"  >
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio3">15 Min</label>
+
+            <input type="radio" class="btn-check" (click)="resolution = 60; getReport()" name="btnradio" id="btnradio4" autocomplete="off">
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio4">1 Hour</label>
+
+            <input type="radio" class="btn-check" (click)="resolution = 120;getReport()" name="btnradio" id="btnradio5" autocomplete="off">
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio5">2 Hour</label>
+
+            <input type="radio" class="btn-check" (click)="resolution = 180;getReport()" name="btnradio" id="btnradio6" autocomplete="off">
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio6">3 Hour</label>
+
+            <input type="radio" class="btn-check" (click)="resolution = 1440;getReport()" name="btnradio" id="btnradio7" autocomplete="off">
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio7">1 Day</label>
+          </div>
+          <div class="btn-group" role="group2" aria-label="Basic radio toggle button group" *ngIf="duration == 6 ">
+            <input type="radio" class="btn-check" disabled (click)="resolution = 15; getReport()" name="btnradio" id="btnradio3" autocomplete="off"  >
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio3">15 Min</label>
+
+            <input type="radio" class="btn-check" disabled (click)="resolution = 60; getReport()" name="btnradio" id="btnradio4" autocomplete="off">
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio4">1 Hour</label>
+
+            <input type="radio" class="btn-check" disabled (click)="resolution = 120;getReport()" name="btnradio" id="btnradio5" autocomplete="off">
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio5">2 Hour</label>
+
+            <input type="radio" class="btn-check" disabled (click)="resolution = 180;getReport()" name="btnradio" id="btnradio6" autocomplete="off">
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio6">3 Hour</label>
+
+            <input type="radio" class="btn-check" disabled (click)="resolution = 1440;getReport()" name="btnradio" id="btnradio7" autocomplete="off">
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio7">1 Day</label>
+          </div>
+          <div class="btn-group" role="group2" aria-label="Basic radio toggle button group" *ngIf="duration == 4 || duration == 5 ">
+            <input type="radio" class="btn-check" (click)="resolution = 1440; getReport()" name="btnradio" id="btnradio3" autocomplete="off"  >
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio3">Day</label>
+
+            <input type="radio" class="btn-check" (click)="resolution = 10080; getReport()" name="btnradio" id="btnradio4" autocomplete="off">
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio4">Week</label>
+
+            <input type="radio" class="btn-check" (click)="resolution = 40320;getReport()" name="btnradio" id="btnradio5" autocomplete="off">
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio5">Month</label>
+
+            <input type="radio" class="btn-check" (click)="resolution = 120960;getReport()" name="btnradio" id="btnradio6" autocomplete="off">
+            <label class="btn btn-outline-warning" style="color: grey;" for="btnradio6">Quarter</label>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+      <h1 class="text-center" style="font: normal normal medium 14px/18px Montserrat;
+      letter-spacing: 0.28px;
+      color: #000000;
+      opacity: 1;" *ngIf="loadName">Load Name: <span style="font-weight: bold;">
+{{loadName}}
+      </span></h1>
+      <h1 class="text-center" style="font: normal normal medium 14px/18px Montserrat;
+      letter-spacing: 0.28px;
+      color: #000000;
+      opacity: 1;" *ngIf=" option == 7">Period Energy Consumption: <span style="font-weight: bold;">
+{{totalEnergy.toFixed(2)}} KWH
+      </span></h1>
+      <!-- *ngIf="totalEnergy && option == 7" احنا شيلناها-->
+  </div>
+  <br>
+  <div class="row">
+    <div class="col">
+      <h1 class="text-center" *ngIf="from">Start Date: {{from}}</h1>
+
+    </div>
+    <div class="col">
+      <h1 class="text-center" *ngIf="to">End Date: {{tp}}</h1>
+
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-4">
+
+    </div>
+    <div class="col" style="margin-left: 80px;">
+      <!-- <button type="button" class="btn mt-1" style="background: #F39C12 0% 0% no-repeat padding-box;
+        box-shadow: 0px 3px 6px #00000029;
+        border-radius: 8px;
+        opacity: 1;text-align: left;
+font: normal normal normal 16px/19px Montserrat;
+letter-spacing: 0.32px;
+color: #FFFFFF;
+opacity: 1;" *ngIf="From == null" (click)="getReport()">Sumbit</button> -->
+<!-- <button type="button" class="btn mt-1" style="background: #F39C12 0% 0% no-repeat padding-box;
+box-shadow: 0px 3px 6px #00000029;
+border-radius: 8px;
+opacity: 1;text-align: left;
+font: normal normal normal 16px/19px Montserrat;
+letter-spacing: 0.32px;
+color: #FFFFFF;
+opacity: 1;" *ngIf="From != null" (click)="getReportDate()">Save</button> -->
+    </div>
+  </div>
+  <hr>
+  <br><br>
+  <div class="container-fluid" >
+    <div class="row" >
+      <div class="col-8">
+        <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" style="height: 720px;">
+          <div class="row">
+            <div class="col-4">
+              <mat-card-header class="mt-4">
+                <mat-card-subtitle class="text-muted"
+                  >{{optionName}} Consumption</mat-card-subtitle
+                >
+              </mat-card-header>
+            </div>
+            <div class="col-8">
+              <mat-tab-group
+                mat-stretch-tabs
+                (selectedTabChange)="changeTab($event)"
+              >
+                <mat-tab label="CHART"> </mat-tab>
+                <mat-tab label="RECORD LIST"> </mat-tab>
+                <mat-tab label="REPORT DATA"> </mat-tab>
+              </mat-tab-group>
+            </div>
+          </div>
+          <mat-card-content>
+            <div
+              id="chart"
+              *ngIf="lineChart == true && barChart == false && pieChart == false && lineData!=null && table == false&& dataTable == false"
+            >
+              <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [xaxis]="chartOptions.xaxis"
+                [colors]="chartOptions.colors"
+                [tooltip]="chartOptions.tooltip"
+                [dataLabels]="chartOptions.dataLabels"
+                [grid]="chartOptions.grid"
+                [stroke]="chartOptions.stroke"
+                [title]="chartOptions.title"
+                [yaxis]="chartOptions.yaxis"
+              ></apx-chart>
+            </div>
+            <div
+              id="chart"
+              *ngIf="lineChart == false && barChart == true && pieChart == false&& table == false && barData !=null&& dataTable == false"
+            >
+            <apx-chart
+            [series]="chartOptions2.series"
+            [chart]="chartOptions2.chart"
+            [dataLabels]="chartOptions2.dataLabels"
+            [plotOptions]="chartOptions2.plotOptions"
+            [yaxis]="chartOptions2.yaxis"
+            [legend]="chartOptions2.legend"
+            [fill]="chartOptions2.fill"
+            [stroke]="chartOptions2.stroke"
+            [tooltip]="chartOptions2.tooltip"
+            [xaxis]="chartOptions2.xaxis"
+            [yaxis]="chartOptions2.yaxis"
+          ></apx-chart>
+            </div>
+            <div
+              id="chart"
+              *ngIf="lineChart == false && barChart == false && pieChart == true&& dataTable == false &&table == false&& pieData !=null"
+            >
+            <apx-chart
+            [series]="chartOptions3.series"
+                [chart]="chartOptions3.chart"
+                [xaxis]="chartOptions3.xaxis"
+                [stroke]="chartOptions3.stroke"
+                [colors]="chartOptions3.colors"
+                [dataLabels]="chartOptions3.dataLabels"
+                [tooltip]="chartOptions3.tooltip"
+                [plotOptions]="chartOptions3.plotOptions"
+                [markers]="chartOptions3.markers"
+                [yaxis]="chartOptions3.yaxis"
+                [fill]="chartOptions3.fill"
+                [legend]="chartOptions3.legend"
+          ></apx-chart>
+            </div>
+            <div
+            id="myTableElementId"
+            class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+            *ngIf="
+             table == true &&dataTable == false && chart == false
+            "
+          >
+            <table class="table mt-5" >
+              <thead>
+                <tr>
+                  <th scope="col" class="text-muted">Name</th>
+                  <th scope="col" class="text-muted">Phase 1</th>
+                  <th scope="col" class="text-muted">Phase 2</th>
+                  <th scope="col" class="text-muted">Phase 3</th>
+                  <th
+                    scope="col"
+                    class="text-muted"
+                  >
+                    TimeStamp
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngIf="option != 11">
+                <tr *ngFor="let func of data">
+                  <th scope="row" class="text-muted">{{ func.name }}</th>
+                  <td class="text-muted" >
+                    {{ func.phase1.toFixed(2)}} {{func.unit}}
+                  </td>
+                  <td class="text-muted" >
+                    {{ func.phase2.toFixed(2)}}  {{func.unit}}
+                  </td>
+                  <td class="text-muted" >
+                    {{ func.phase3.toFixed(2)}}  {{func.unit}}
+                  </td>
+                  <td class="text-muted">
+                    {{ getTime(func.timeStamp)}}
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="option == 11">
+                <tr *ngFor="let func of data">
+                  <th scope="row" class="text-muted">{{ func.name }}</th>
+                  <td class="text-muted" >
+                    {{ (func.phase1* mathS()).toFixed(2)}} {{func.unit}}
+                  </td>
+                  <td class="text-muted" >
+                    {{ (func.phase2* mathS()).toFixed(2)}}  {{func.unit}}
+                  </td>
+                  <td class="text-muted" >
+                    {{ (func.phase3* mathS()).toFixed(2)}}  {{func.unit}}
+                  </td>
+                  <td class="text-muted">
+                    {{ getTime(func.timeStamp)}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            id="myTableElementId"
+            class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+            *ngIf="
+             table == false && dataTable == true && chart == false
+            "
+          >
+            <table class="table mt-5" >
+              <thead>
+                <tr>
+                  <th scope="col" class="text-muted">Name</th>
+                  <th scope="col" class="text-muted">Phase 1</th>
+                  <th scope="col" class="text-muted">Phase 2</th>
+                  <th scope="col" class="text-muted">Phase 3</th>
+                  <th
+                    scope="col"
+                    class="text-muted"
+                  >
+                    TimeStamp
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let func of definedReports">
+                  <th scope="row" class="text-muted">{{ func.name }}</th>
+                  <td class="text-muted" >
+                    {{ func.phase1.toFixed(2)}}
+                  </td>
+                  <td class="text-muted" >
+                    {{ func.phase2.toFixed(2)}}
+                  </td>
+                  <td class="text-muted" >
+                    {{ func.phase3.toFixed(2)}}
+                  </td>
+                  <td class="text-muted">
+                    {{ getTime(func.timeStamp)}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+            <!-- <div
+              class="table-responsive"
+              id="chart"
+              *ngIf="lineChartVisiable3 == false && tableVisisable3 == true"
+            >
+              <table class="table mt-5">
+                <thead>
+                  <tr>
+                    <th scope="col" class="text-muted">Name</th>
+                    <th scope="col" class="text-muted">State</th>
+
+                    <th
+                      *ngFor="let func of this.loadData[0].time"
+                      scope="col"
+                      class="text-muted"
+                    >
+                      {{ func }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let val of loadData">
+                    <th scope="row" class="text-muted">
+                      {{ loadLine.series[0].name }}
+                    </th>
+                    <td class="text-muted">
+                      <span style="color: #ff9800"
+                        ><mat-icon>show_chart</mat-icon></span
+                      >
+                    </td>
+
+                    <td class="text-muted" *ngFor="let value of val.data">
+                      {{ value | number: "" }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> -->
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-4">
+        <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" style="height: 720px;">
+          <div class="row">
+            <div class="col-12">
+              <mat-card-header class="mt-4">
+                <mat-card-subtitle style="text-align: left;
+                font: normal normal medium 14px/18px Montserrat;
+                letter-spacing: 0.28px;
+                color: #707070;
+                opacity: 1;" class="text-muted"
+                  >Pre Defined Reports</mat-card-subtitle
+                >
+              </mat-card-header>
+            </div>
+          </div>
+          <hr>
+          <mat-card-content  *ngFor="let definedReport of definedReports">
+            <div class="row">
+              <div class="col-1">
+                <span class="material-icons" style="font-size: 30px; color: #707070;">
+                  summarize
+                  </span>
+              </div>
+              <div class="col mt-2">
+                <h2 style="text-align: left;
+                font: normal normal normal 16px/19px Montserrat;
+                letter-spacing: 0.32px;
+                color: #707070;
+                opacity: 1;">{{definedReport.name}}</h2>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <h2 style="text-align: left;
+font: normal normal 600 11px/14px Montserrat;
+letter-spacing: 0.22px;
+color: #B2BEC3;
+opacity: 1;">{{definedReport.loadCode}}</h2>
+              </div>
+              <div class="col-6">
+                <h2 style="text-align: left;
+font: normal normal 600 11px/14px Montserrat;
+letter-spacing: 0.22px;
+color: #B2BEC3;
+opacity: 1;">{{definedReport.option}}</h2>
+              </div>
+            </div>
+           </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</div>
+<div class="row">
+  <div class="col-3" style="background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 1px 3px 6px #00000029;
+  opacity: 1;">
+    <!-- <div class="row">
+      <div class="col-1">
+        <img src="../../assets/imgs/compare_black_24dp.svg" >
+      </div>
+      <div class="col-7">
+        <h3 style="text-align: left;
+        font: normal normal 600 16px/19px Montserrat;
+        letter-spacing: 0.32px;
+        color: #707070;
+        opacity: 1;">Compare Loads</h3>
+      </div>
+      <div class="col">
+        <mat-slide-toggle></mat-slide-toggle>
+      </div>
+    </div> -->
+
+  </div>
+  <div class="col-5">
+    <div class="row">
+      <div class="col-1">
+        <h3 style="text-align: left;
+        font: normal normal 600 16px/19px Montserrat;
+        letter-spacing: 0.32px;
+        color: #B2BEC3;
+        opacity: 1;" class="mt-2">Name</h3>
+      </div>
+      <div class="col-4">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" (change)="reportName = $event.target.value" placeholder="Report Name..." aria-label="Report Name..." aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col">
+        <button type="button" class="btn mt-1" style="background: #F39C12 0% 0% no-repeat padding-box;
+        box-shadow: 0px 3px 6px #00000029;
+        border-radius: 8px;
+        opacity: 1;text-align: left;
+font: normal normal normal 16px/19px Montserrat;
+letter-spacing: 0.32px;
+color: #FFFFFF;
+opacity: 1;" (click)="postReports()">Save</button>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-1" style="border-left:2px   solid #B2BEC3; height: 50px;">
+
+  </div>
+  <div class="col">
+    <div class="row">
+      <div class="col">
+        <button type="button" disabled class="btn mt-1" style="background: transparent 0% 0% no-repeat padding-box;
+
+        border-radius: 8px;
+        opacity: 1;text-align: left;
+    font: normal normal normal 16px/19px Montserrat;
+    letter-spacing: 0.32px;
+    color: grey;
+    opacity: 1;">Export</button>
+      </div>
+      <div class="col">
+        <button type="button" class="btn mt-1" style="background: transparent 0% 0% no-repeat padding-box;
+
+        border-radius: 8px;
+        opacity: 1;text-align: left;
+font: normal normal normal 14px/17px Montserrat;
+letter-spacing: 0.28px;
+color: #F39C12;
+opacity: 1;" (click)="download2()">CSV</button>
+      </div>
+      <div class="col">
+        <button type="button" class="btn mt-1" style="background: transparent 0% 0% no-repeat padding-box;
+
+        border-radius: 8px;
+        opacity: 1;text-align: left;
+font: normal normal normal 14px/17px Montserrat;
+letter-spacing: 0.28px;
+color: #F39C12;
+opacity: 1;" (click)="download3()">XLS</button>
+      </div>
+      <div class="col">
+        <button type="button" class="btn mt-1" style="background: transparent 0% 0% no-repeat padding-box;
+        border-radius: 8px;
+        opacity: 1;text-align: left;
+font: normal normal normal 14px/17px Montserrat;
+letter-spacing: 0.28px;
+color: #F39C12;
+opacity: 1;" (click)="download()">PDF</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</div>

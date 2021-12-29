@@ -1,0 +1,30 @@
+<mat-button-toggle-group value="today" name="fontStyle" aria-label="Font Style">
+  <mat-button-toggle (change)="datechange($event)" color="primary" value="today"
+    >Today</mat-button-toggle
+  >
+  <mat-button-toggle
+    (change)="datechange($event)"
+    color="primary"
+    value="yesterday"
+    >Yesterday</mat-button-toggle
+  >
+  <mat-button-toggle
+    (change)="datechange($event)"
+    color="primary"
+    value="lastweek"
+    >Last Week</mat-button-toggle
+  >
+</mat-button-toggle-group>
+
+<div id="chart" *ngIf="dat">
+  <apx-chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [fill]="chartOptions.fill"
+    [grid]="chartOptions.grid"
+    [dataLabels]="chartOptions.dataLabels"
+    [plotOptions]="chartOptions.plotOptions"
+    [xaxis]="chartOptions.xaxis"
+    [yaxis]="chartOptions.yaxis"
+  ></apx-chart>
+</div>

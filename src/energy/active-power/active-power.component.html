@@ -1,0 +1,2839 @@
+<div class="container-fluid">
+  <div class="row justify-content-between mt-2">
+    <div class="col-9">
+      <button
+
+        mat-flat-button
+        class="text-muted btn-outline-warning active"
+        [matMenuTriggerFor]="menu"
+      >
+        <a style="font-size: 25px">
+          <i class="fa fa-building text-muted"></i>
+        </a>
+      </button>
+      <mat-menu #menu="matMenu"> </mat-menu>
+      <button
+      matTooltip="Function Analysis"
+        (click)="
+          functionRender = true;
+          loadRender = false;
+          oneFunctionRender = false;
+          areaRender = false;
+          oneAreaRender = false;
+          functionName = null;
+          loadName = null;
+          getAllFunctionsDefault();
+        "
+        [matMenuTriggerFor]="menu2"
+        mat-flat-button
+        class="text-muted btn-outline-warning active"
+        [ngClass]="{ active: tabIndex === 0 }"
+        (click)="onTabClick(0)"
+      >
+        <mat-icon
+          *ngIf="functionName == null"
+          class="text-muted"
+          style="font-size: 25px"
+          >settings_input_component</mat-icon
+        >
+        <span
+          *ngIf="functionName != null"
+          class="text-muted"
+          style="font-size: 25px"
+        >
+          {{ functionName }}</span
+        >
+      </button>
+      <mat-menu #menu2="matMenu">
+        <button
+          *ngFor="let func of menuFunctions"
+          (click)="
+            oneFunctionRender = true;
+            functionRender = false;
+            loadRender = false;
+            areaRender = false;
+          oneAreaRender = false;
+            funcId = func.id;
+            functionName = func.name;
+            getAllFunctionDefault(func.id);
+          "
+          mat-menu-item
+        >
+          {{ func.name }}
+        </button>
+      </mat-menu>
+      <button
+      matTooltip="Area Analysis"
+        (click)="
+          functionRender = false;
+          areaRender = true;
+          loadRender = false;
+          oneFunctionRender = false;
+          functionName = null;
+          loadName = null;
+          areaName = null;
+          getAllAreasDefault();
+        "
+        [matMenuTriggerFor]="menu4"
+        mat-flat-button
+        class="text-muted btn-outline-warning active"
+        [ngClass]="{ active: tabIndex ===2 }"
+        (click)="onTabClick(2)"
+      >
+        <mat-icon
+          *ngIf="areaName == null"
+          class="text-muted"
+          style="font-size: 25px"
+          >settings_input_component</mat-icon
+        >
+        <span
+          *ngIf="areaName != null"
+          class="text-muted"
+          style="font-size: 25px"
+        >
+          {{ areaName }}</span
+        >
+      </button>
+      <mat-menu #menu4="matMenu">
+        <button
+          *ngFor="let func of areas"
+          (click)="
+            oneFunctionRender = false;
+            oneAreaRender = true;
+            functionRender = false;
+            loadRender = false;
+            areaRender = false;
+            funcId = func.id;
+            areaName = func.name;
+            getAllAreaDefault(func.id);
+          "
+          mat-menu-item
+        >
+          {{ func.name }}
+        </button>
+      </mat-menu>
+      <button
+      matTooltip="Loads Analysis"
+        [matMenuTriggerFor]="menu3"
+        mat-flat-button
+        class="text-muted btn-outline-warning"
+        (click)="
+          loadRender = true;
+          factoryRender = false;
+          functionRender = false;
+          functionName = null;
+          loadName = null;
+          areaRender  =false;
+            oneAreaRender = false;
+          getAllLoadsDefault();
+        "
+        [ngClass]="{ active: tabIndex === 1 }"
+        (click)="onTabClick(1)"
+      >
+        <a style="font-size: 25px">
+          <i *ngIf="loadName == null" class="fa fa-rocket text-muted"></i>
+          <span *ngIf="loadName != null">{{ loadName }}</span>
+        </a>
+      </button>
+      <mat-menu #menu3="matMenu">
+        <button
+          *ngFor="let func of loads"
+          mat-menu-item
+          (click)="
+            loadCode = func.code;
+            oneLoadRender = true;
+            oneFunctionRender = false;
+            functionRender = false;
+            loadRender = false;
+            loadName = func.name;
+            areaRender  =false;
+            oneAreaRender = false;
+            getAllLoadDefault(func.code);
+          "
+        >
+          {{ func.name }}
+        </button>
+      </mat-menu>
+    </div>
+    <div class="col-3">
+      <div class="row mt-3">
+
+        <div class="col-3 mt-2">
+          <button
+          *ngIf="oneLoadRender == false && oneFunctionRender == false && oneAreaRender == false && areaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+              getAllFunctionsTime(1);
+              getAllLoadsTime(1);
+            "
+          >
+          Today
+          </button>
+          <button
+          *ngIf="areaRender == true && oneLoadRender == false && oneFunctionRender == false && oneAreaRender == false "
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+            getAllAreasTime(1);
+            "
+          >
+          Today
+          </button>
+          <button
+          *ngIf="oneLoadRender == true && oneFunctionRender == false && areaRender == false && oneAreaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+            getAllLoadTime(loadCode, 1);
+            "
+          >
+          Today
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && oneFunctionRender == true && areaRender == false && oneAreaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+            getAllFunctionTime(funcId, 1);
+            "
+          >
+          Today
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && oneFunctionRender == false && oneAreaRender == true && areaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 0 }"
+            (click)="onTabClick2(0)"
+            (click)="
+            getAllAreaTime(funcId, 1);
+            "
+          >
+            Today
+          </button>
+        </div>
+        <div class="col-3 mt-2">
+          <button
+          *ngIf="oneLoadRender == false && oneFunctionRender == false && oneAreaRender == false && areaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 1 }"
+            (click)="onTabClick2(1)"
+            (click)="
+              getAllFunctionsTime(2);
+              getAllLoadsTime(2);
+            "
+          >
+          Yesterday
+          </button>
+          <button
+          *ngIf="areaRender == true && oneLoadRender == false && oneFunctionRender == false && oneAreaRender == false "
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 1 }"
+            (click)="onTabClick2(1)"
+            (click)="
+            getAllAreasTime(2);
+            "
+          >
+          Yesterday
+          </button>
+          <button
+          *ngIf="oneLoadRender == true && oneFunctionRender == false && areaRender == false && oneAreaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 1 }"
+            (click)="onTabClick2(1)"
+            (click)="
+            getAllLoadTime(loadCode, 2);
+            "
+          >
+          Yesterday
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && oneFunctionRender == true && areaRender == false && oneAreaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 1 }"
+            (click)="onTabClick2(1)"
+            (click)="
+            getAllFunctionTime(funcId, 2);
+            "
+          >
+          Yesterday
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && oneFunctionRender == false && oneAreaRender == true && areaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 1 }"
+            (click)="onTabClick2(1)"
+            (click)="
+            getAllAreaTime(funcId, 2);
+            "
+          >
+          Yesterday
+          </button>
+        </div>
+        <div class="col-3 mt-2">
+          <button
+          *ngIf="oneLoadRender == false && oneFunctionRender == false && oneAreaRender == false && areaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 2 }"
+            (click)="onTabClick2(2)"
+            (click)="
+              getAllFunctionsTime(3);
+              getAllLoadsTime(3);
+            "
+          >
+          Last Week
+          </button>
+          <button
+          *ngIf="areaRender == true && oneLoadRender == false && oneFunctionRender == false && oneAreaRender == false "
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 2 }"
+            (click)="onTabClick2(2)"
+            (click)="
+            getAllAreasTime(3);
+            "
+          >
+          Last Week
+          </button>
+          <button
+          *ngIf="oneLoadRender == true && oneFunctionRender == false && areaRender == false && oneAreaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 2 }"
+            (click)="onTabClick2(2)"
+            (click)="
+            getAllLoadTime(loadCode, 3);
+            "
+          >
+          Last Week
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && oneFunctionRender == true && areaRender == false && oneAreaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 2 }"
+            (click)="onTabClick2(2)"
+            (click)="
+            getAllFunctionTime(funcId, 3);
+            "
+          >
+          Last Week
+          </button>
+          <button
+          *ngIf="oneLoadRender == false && oneFunctionRender == false && oneAreaRender == true && areaRender == false"
+            mat-flat-button
+            class="text-muted btn-outline-warning"
+            [ngClass]="{ active: tabIndex2 === 2 }"
+            (click)="onTabClick2(2)"
+            (click)="
+            getAllAreaTime(funcId, 3);
+            "
+          >
+            Last Week
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+
+<div class="container-fluid" style="background-color:#F7F8FA; ">
+  <br><br>
+  <!--Functions-->
+  <div class="row" *ngIf="functionRender == true">
+      <div class="col-4 ">
+          <div class="card shadow p-3 mb-5 bg-white rounded">
+              <div class="card-body">
+                  <h5 class="card-title">Apparent Power</h5>
+                  <div class="row">
+                      <div class="col-4 mt-4">
+                          <p style="color: var(--unnamed-color-000000);
+                    text-align: left;
+                    letter-spacing: NaNpx;
+                    color: #000000; font-size: 18px;
+                    opacity: 1;">{{avgPapp}} KVA</p>
+                          <p style="color: var(--primary);
+                    text-align: left;
+                    font: normal normal 300 12px/14px Montserrat;
+                    letter-spacing: 0.24px;
+                    color: #F39C12; font-weight: 400;
+                    opacity: 1;">Average Apparent Power</p>
+
+                      </div>
+                      <div class="col-3">
+                          <div class="row mt-4">
+                              <div class="col-1">
+                                  <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                      class="material-icons">
+                                      expand_less
+                                  </span>
+                              </div>
+                              <div class="col mt-1">
+                                  <p style="color: var(--tertiary);
+                                  text-align: left;
+                                  font: normal normal normal 10px/12px Montserrat;
+                                  letter-spacing: 0.2px;
+                                  color: #FF2366; margin-left: 10px;
+                                  text-transform: uppercase; font-weight: 600;
+                                  opacity: 1;">MAX</p>
+                              </div>
+                              <p style="color: var(--unnamed-color-272d3b);
+                              text-align: left;
+                              letter-spacing: NaNpx;
+                              color: #272D3B; margin-left: 20px;
+                              text-transform: uppercase;  font-weight: 600;
+                              opacity: 1;">{{maxPapp}} Kva</p>
+
+
+                          </div>
+
+                      </div>
+                      <div class="col">
+                          <div class="row mt-4 ms-2">
+                              <div class="col-1">
+                                  <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                      class="material-icons">
+                                      expand_more
+                                  </span>
+                              </div>
+                              <div class="col mt-1">
+                                  <p style="color: var(--tertiary);
+                                  text-align: left;
+                                  font: normal normal normal 10px/12px Montserrat;
+                                  letter-spacing: 0.2px;
+                                  color: #00CCF2; margin-left: 10px;
+                                  text-transform: uppercase; font-weight: 600;
+                                  opacity: 1;">MIN</p>
+                              </div>
+                              <p style="color: var(--unnamed-color-272d3b);
+                              text-align: left;
+                              letter-spacing: NaNpx;
+                              color: #272D3B; margin-left: 20px;
+                              text-transform: uppercase;  font-weight: 600;
+                              opacity: 1;">{{minPapp}} Kva</p>
+
+
+                          </div>
+                      </div>
+
+                  </div>
+                  <br>
+              </div>
+          </div>
+      </div>
+      <div class="col-4 ">
+          <div class="card shadow p-3 mb-5 bg-white rounded">
+              <div class="card-body">
+                  <h5 class="card-title h5">Reactive Power</h5>
+                  <div class="row">
+                      <div class="col-4 mt-4">
+                          <p style="color: var(--unnamed-color-000000);
+                    text-align: left;
+                    letter-spacing: NaNpx;
+                    color: #000000; font-size: 18px;
+                    opacity: 1;">{{avgPreact}} KVAR</p>
+                          <p style="color: var(--primary);
+                    text-align: left;
+                    font: normal normal 300 12px/14px Montserrat;
+                    letter-spacing: 0.24px;
+                    color: #F39C12; font-weight: 400;
+                    opacity: 1;">Average Reactive Power</p>
+
+                      </div>
+                      <div class="col-3">
+                          <div class="row mt-4">
+                              <div class="col-1">
+                                  <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                      class="material-icons">
+                                      expand_less
+                                  </span>
+                              </div>
+                              <div class="col mt-1">
+                                  <p style="color: var(--tertiary);
+                                  text-align: left;
+                                  font: normal normal normal 10px/12px Montserrat;
+                                  letter-spacing: 0.2px;
+                                  color: #FF2366; margin-left: 10px;
+                                  text-transform: uppercase; font-weight: 600;
+                                  opacity: 1;">MAX</p>
+                              </div>
+                              <p style="color: var(--unnamed-color-272d3b);
+                              text-align: left;
+                              letter-spacing: NaNpx;
+                              color: #272D3B; margin-left: 20px;
+                              text-transform: uppercase;  font-weight: 600;
+                              opacity: 1;">{{maxPreact}} KVAR</p>
+
+
+                          </div>
+
+                      </div>
+                      <div class="col">
+                          <div class="row mt-4 ms-2">
+                              <div class="col-1">
+                                  <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                      class="material-icons">
+                                      expand_more
+                                  </span>
+                              </div>
+                              <div class="col mt-1">
+                                  <p style="color: var(--tertiary);
+                                  text-align: left;
+                                  font: normal normal normal 10px/12px Montserrat;
+                                  letter-spacing: 0.2px;
+                                  color: #00CCF2; margin-left: 10px;
+                                  text-transform: uppercase; font-weight: 600;
+                                  opacity: 1;">MIN</p>
+                              </div>
+                              <p style="color: var(--unnamed-color-272d3b);
+                              text-align: left;
+                              letter-spacing: NaNpx;
+                              color: #272D3B; margin-left: 20px;
+                              text-transform: uppercase;  font-weight: 600;
+                              opacity: 1;">{{minPreact}} KVAR</p>
+
+
+                          </div>
+                      </div>
+
+                  </div>
+                  <br>
+              </div>
+          </div>
+      </div>
+      <div class="col-4">
+          <div class="card shadow p-3 mb-5 bg-white rounded">
+              <div class="card-body">
+                  <h5 class="card-title h5">Active Power</h5>
+                  <div class="row">
+                      <div class="col-3 mt-4">
+                          <p style="color: var(--unnamed-color-000000);
+                    text-align: left;
+                    letter-spacing: NaNpx;
+                    color: #000000; font-size: 18px;
+                    opacity: 1;">{{avgPact}} KW</p>
+                          <p style="color: var(--primary);
+                    text-align: left;
+                    font: normal normal 300 12px/14px Montserrat;
+                    letter-spacing: 0.24px;
+                    color: #F39C12; font-weight: 400;
+                    opacity: 1;">Average Active Power</p>
+
+                      </div>
+                      <div class="col-3 ms-4">
+                          <div class="row mt-4">
+                              <div class="col-1">
+                                  <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                      class="material-icons">
+                                      expand_less
+                                  </span>
+                              </div>
+                              <div class="col mt-1">
+                                  <p style="color: var(--tertiary);
+                                  text-align: left;
+                                  font: normal normal normal 10px/12px Montserrat;
+                                  letter-spacing: 0.2px;
+                                  color: #FF2366; margin-left: 10px;
+                                  text-transform: uppercase; font-weight: 600;
+                                  opacity: 1;">MAX</p>
+                              </div>
+                              <p style="color: var(--unnamed-color-272d3b);
+                              text-align: left;
+                              letter-spacing: NaNpx;
+                              color: #272D3B; margin-left: 20px;
+                              text-transform: uppercase;  font-weight: 600;
+                              opacity: 1;">{{maxPact}} KW</p>
+
+
+                          </div>
+
+                      </div>
+                      <div class="col">
+                          <div class="row mt-4 ms-2">
+                              <div class="col-1">
+                                  <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                      class="material-icons">
+                                      expand_more
+                                  </span>
+                              </div>
+                              <div class="col mt-1">
+                                  <p style="color: var(--tertiary);
+                                  text-align: left;
+                                  font: normal normal normal 10px/12px Montserrat;
+                                  letter-spacing: 0.2px;
+                                  color: #00CCF2; margin-left: 10px;
+                                  text-transform: uppercase; font-weight: 600;
+                                  opacity: 1;">MIN</p>
+                              </div>
+                              <p style="color: var(--unnamed-color-272d3b);
+                              text-align: left;
+                              letter-spacing: NaNpx;
+                              color: #272D3B; margin-left: 20px;
+                              text-transform: uppercase;  font-weight: 600;
+                              opacity: 1;">{{minPact}} KW</p>
+
+
+                          </div>
+                      </div>
+                      <br> <br>
+
+                  </div>
+                  <br>
+              </div>
+          </div>
+      </div>
+
+  </div>
+  <div class="row mt-5" *ngIf="functionRender == true">
+      <div class="col-8">
+          <div class="card col-12 shadow p-3 mb-5 bg-white rounded">
+              <div class="card-body">
+                  <div class="row" style="border-bottom:  2px solid #b9b6b6;">
+                      <div class="col-8 mt-2">
+                          <h5> THD Profile (THDi,THDv) Per Feature</h5>
+                      </div>
+                  </div>
+                  <div class="col" id="chart8" *ngIf="barData != null">
+                      <apx-chart [series]="chartOptions8.series" [colors]="active.colors" [chart]="chartOptions8.chart"
+                          [dataLabels]="chartOptions8.dataLabels" [plotOptions]="chartOptions8.plotOptions"
+                          [responsive]="chartOptions8.responsive" [xaxis]="chartOptions8.xaxis"
+                          [legend]="chartOptions8.legend" [fill]="chartOptions8.fill"></apx-chart>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <diV class="col-4">
+          <div class="card shadow p-3 mb-5 bg-white rounded" style="height: 480px;">
+            <h5 class="card-title h5">Power Factor by Function Category</h5>
+            <mat-tab-group mat-stretch-tabs>
+
+              <mat-tab label="ACTIVE POWER">
+                <div class="card-body">
+
+                  <div class="col mt-5" *ngIf="barData">
+                      <apx-chart [series]="active.series" [colors]="active.colors" [chart]="active.chart"
+                          [labels]="active.labels" [responsive]="active.responsive"></apx-chart>
+                  </div>
+                  <!--<div class="col mt-4">
+                      <div class="row ms-3">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                  class="material-icons">
+                                  expand_less
+                              </span>
+                          </div>
+                          <div class="col-6 mt-1" style="color: var(--tertiary);
+                    text-align: left;
+                    font: normal normal normal 10px/12px Montserrat;
+                    letter-spacing: 0.2px;
+                    color: #FF2366;
+                    text-transform: uppercase;
+                    opacity: 1;">
+                              HIGHEST
+
+                          </div>
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                  class="material-icons">
+                                  expand_more
+                              </span>
+                          </div>
+                          <div class="col mt-1" style="color: var(--tertiary);
+                    text-align: left;
+                    font: normal normal normal 10px/12px Montserrat;
+                    letter-spacing: 0.2px;
+                    color: #00CCF2;
+                    text-transform: uppercase;
+                    opacity: 1;">
+                              LOWEST
+
+                          </div>
+                      </div>
+                      <div class="row ">
+                          <div class="col-7">
+                              <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B;
+                          text-transform: uppercase;
+                          opacity: 1; margin-left: 46px;">
+                                  1000 kWH
+                              </p>
+                          </div>
+                          <div class="col " style="margin-left: 12px;">
+                              <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B;
+                          text-transform: uppercase;
+                          opacity: 1; margin-left: 20px;">
+                                  100 kWH
+                              </p>
+                          </div>
+
+                      </div>
+
+
+                  </div> -->
+                  <br> <br>
+              </div>
+              </mat-tab>
+              <mat-tab label="REACTIVE POWER">
+                <div class="card-body">
+                  <div class="col mt-5" *ngIf="barData">
+                      <apx-chart [series]="reactive.series" [colors]="active.colors" [chart]="reactive.chart"
+                          [labels]="reactive.labels" [responsive]="reactive.responsive"></apx-chart>
+                  </div>
+                  <!--<div class="col mt-4">
+                      <div class="row ms-3">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                  class="material-icons">
+                                  expand_less
+                              </span>
+                          </div>
+                          <div class="col-6 mt-1" style="color: var(--tertiary);
+                    text-align: left;
+                    font: normal normal normal 10px/12px Montserrat;
+                    letter-spacing: 0.2px;
+                    color: #FF2366;
+                    text-transform: uppercase;
+                    opacity: 1;">
+                              HIGHEST
+
+                          </div>
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                  class="material-icons">
+                                  expand_more
+                              </span>
+                          </div>
+                          <div class="col mt-1" style="color: var(--tertiary);
+                    text-align: left;
+                    font: normal normal normal 10px/12px Montserrat;
+                    letter-spacing: 0.2px;
+                    color: #00CCF2;
+                    text-transform: uppercase;
+                    opacity: 1;">
+                              LOWEST
+
+                          </div>
+                      </div>
+                      <div class="row ">
+                          <div class="col-7">
+                              <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B;
+                          text-transform: uppercase;
+                          opacity: 1; margin-left: 46px;">
+                                  1000 kWH
+                              </p>
+                          </div>
+                          <div class="col " style="margin-left: 12px;">
+                              <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B;
+                          text-transform: uppercase;
+                          opacity: 1; margin-left: 20px;">
+                                  100 kWH
+                              </p>
+                          </div>
+
+                      </div>
+
+
+                  </div> -->
+                  <br> <br>
+              </div>
+              </mat-tab>
+              <mat-tab label="APPARENT POWER">
+                <div class="card-body">
+                  <div class="col mt-5" *ngIf="barData">
+                      <apx-chart [series]="apparent.series" [colors]="active.colors" [chart]="apparent.chart"
+                          [labels]="apparent.labels" [responsive]="apparent.responsive"></apx-chart>
+                  </div>
+                  <!--<div class="col mt-4">
+                      <div class="row ms-3">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                  class="material-icons">
+                                  expand_less
+                              </span>
+                          </div>
+                          <div class="col-6 mt-1" style="color: var(--tertiary);
+                    text-align: left;
+                    font: normal normal normal 10px/12px Montserrat;
+                    letter-spacing: 0.2px;
+                    color: #FF2366;
+                    text-transform: uppercase;
+                    opacity: 1;">
+                              HIGHEST
+
+                          </div>
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                  class="material-icons">
+                                  expand_more
+                              </span>
+                          </div>
+                          <div class="col mt-1" style="color: var(--tertiary);
+                    text-align: left;
+                    font: normal normal normal 10px/12px Montserrat;
+                    letter-spacing: 0.2px;
+                    color: #00CCF2;
+                    text-transform: uppercase;
+                    opacity: 1;">
+                              LOWEST
+
+                          </div>
+                      </div>
+                      <div class="row ">
+                          <div class="col-7">
+                              <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B;
+                          text-transform: uppercase;
+                          opacity: 1; margin-left: 46px;">
+                                  1000 kWH
+                              </p>
+                          </div>
+                          <div class="col " style="margin-left: 12px;">
+                              <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B;
+                          text-transform: uppercase;
+                          opacity: 1; margin-left: 20px;">
+                                  100 kWH
+                              </p>
+                          </div>
+
+                      </div>
+
+
+                  </div> -->
+                  <br> <br>
+              </div>
+              </mat-tab>
+
+            </mat-tab-group>
+
+          </div>
+
+      </diV>
+
+  </div>
+  <!--Function-->
+  <div class="row" *ngIf="oneFunctionRender == true">
+    <div class="col-4 ">
+        <div class="card shadow p-3 mb-5 bg-white rounded">
+            <div class="card-body">
+                <h5 class="card-title">Apparent Power</h5>
+                <div class="row">
+                    <div class="col-4 mt-4">
+                        <p style="color: var(--unnamed-color-000000);
+                  text-align: left;
+                  letter-spacing: NaNpx;
+                  color: #000000; font-size: 18px;
+                  opacity: 1;">{{avgPapp}} KVA</p>
+                        <p style="color: var(--primary);
+                  text-align: left;
+                  font: normal normal 300 12px/14px Montserrat;
+                  letter-spacing: 0.24px;
+                  color: #F39C12; font-weight: 400;
+                  opacity: 1;">Average Apparent Power</p>
+
+                    </div>
+                    <div class="col-3">
+                        <div class="row mt-4">
+                            <div class="col-1">
+                                <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                    class="material-icons">
+                                    expand_less
+                                </span>
+                            </div>
+                            <div class="col mt-1">
+                                <p style="color: var(--tertiary);
+                                text-align: left;
+                                font: normal normal normal 10px/12px Montserrat;
+                                letter-spacing: 0.2px;
+                                color: #FF2366; margin-left: 10px;
+                                text-transform: uppercase; font-weight: 600;
+                                opacity: 1;">MAX</p>
+                            </div>
+                            <p style="color: var(--unnamed-color-272d3b);
+                            text-align: left;
+                            letter-spacing: NaNpx;
+                            color: #272D3B; margin-left: 20px;
+                            text-transform: uppercase;  font-weight: 600;
+                            opacity: 1;">{{maxPapp}} Kva</p>
+
+
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <div class="row mt-4 ms-2">
+                            <div class="col-1">
+                                <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                    class="material-icons">
+                                    expand_more
+                                </span>
+                            </div>
+                            <div class="col mt-1">
+                                <p style="color: var(--tertiary);
+                                text-align: left;
+                                font: normal normal normal 10px/12px Montserrat;
+                                letter-spacing: 0.2px;
+                                color: #00CCF2; margin-left: 10px;
+                                text-transform: uppercase; font-weight: 600;
+                                opacity: 1;">MIN</p>
+                            </div>
+                            <p style="color: var(--unnamed-color-272d3b);
+                            text-align: left;
+                            letter-spacing: NaNpx;
+                            color: #272D3B; margin-left: 20px;
+                            text-transform: uppercase;  font-weight: 600;
+                            opacity: 1;">{{minPapp}} Kva</p>
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 ">
+        <div class="card shadow p-3 mb-5 bg-white rounded">
+            <div class="card-body">
+                <h5 class="card-title h5">Reactive Power</h5>
+                <div class="row">
+                    <div class="col-4 mt-4">
+                        <p style="color: var(--unnamed-color-000000);
+                  text-align: left;
+                  letter-spacing: NaNpx;
+                  color: #000000; font-size: 18px;
+                  opacity: 1;">{{avgPreact}} KVAR</p>
+                        <p style="color: var(--primary);
+                  text-align: left;
+                  font: normal normal 300 12px/14px Montserrat;
+                  letter-spacing: 0.24px;
+                  color: #F39C12; font-weight: 400;
+                  opacity: 1;">Average Reactive Power</p>
+
+                    </div>
+                    <div class="col-3">
+                        <div class="row mt-4">
+                            <div class="col-1">
+                                <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                    class="material-icons">
+                                    expand_less
+                                </span>
+                            </div>
+                            <div class="col mt-1">
+                                <p style="color: var(--tertiary);
+                                text-align: left;
+                                font: normal normal normal 10px/12px Montserrat;
+                                letter-spacing: 0.2px;
+                                color: #FF2366; margin-left: 10px;
+                                text-transform: uppercase; font-weight: 600;
+                                opacity: 1;">MAX</p>
+                            </div>
+                            <p style="color: var(--unnamed-color-272d3b);
+                            text-align: left;
+                            letter-spacing: NaNpx;
+                            color: #272D3B; margin-left: 20px;
+                            text-transform: uppercase;  font-weight: 600;
+                            opacity: 1;">{{maxPreact}} KVAR</p>
+
+
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <div class="row mt-4 ms-2">
+                            <div class="col-1">
+                                <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                    class="material-icons">
+                                    expand_more
+                                </span>
+                            </div>
+                            <div class="col mt-1">
+                                <p style="color: var(--tertiary);
+                                text-align: left;
+                                font: normal normal normal 10px/12px Montserrat;
+                                letter-spacing: 0.2px;
+                                color: #00CCF2; margin-left: 10px;
+                                text-transform: uppercase; font-weight: 600;
+                                opacity: 1;">MIN</p>
+                            </div>
+                            <p style="color: var(--unnamed-color-272d3b);
+                            text-align: left;
+                            letter-spacing: NaNpx;
+                            color: #272D3B; margin-left: 20px;
+                            text-transform: uppercase;  font-weight: 600;
+                            opacity: 1;">{{minPreact}} KVAR</p>
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card shadow p-3 mb-5 bg-white rounded">
+            <div class="card-body">
+                <h5 class="card-title h5">Active Power</h5>
+                <div class="row">
+                    <div class="col-3 mt-4">
+                        <p style="color: var(--unnamed-color-000000);
+                  text-align: left;
+                  letter-spacing: NaNpx;
+                  color: #000000; font-size: 18px;
+                  opacity: 1;">{{avgPact}} KW</p>
+                        <p style="color: var(--primary);
+                  text-align: left;
+                  font: normal normal 300 12px/14px Montserrat;
+                  letter-spacing: 0.24px;
+                  color: #F39C12; font-weight: 400;
+                  opacity: 1;">Average Active Power</p>
+
+                    </div>
+                    <div class="col-3 ms-4">
+                        <div class="row mt-4">
+                            <div class="col-1">
+                                <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                    class="material-icons">
+                                    expand_less
+                                </span>
+                            </div>
+                            <div class="col mt-1">
+                                <p style="color: var(--tertiary);
+                                text-align: left;
+                                font: normal normal normal 10px/12px Montserrat;
+                                letter-spacing: 0.2px;
+                                color: #FF2366; margin-left: 10px;
+                                text-transform: uppercase; font-weight: 600;
+                                opacity: 1;">MAX</p>
+                            </div>
+                            <p style="color: var(--unnamed-color-272d3b);
+                            text-align: left;
+                            letter-spacing: NaNpx;
+                            color: #272D3B; margin-left: 20px;
+                            text-transform: uppercase;  font-weight: 600;
+                            opacity: 1;">{{maxPact}} KW</p>
+
+
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <div class="row mt-4 ms-2">
+                            <div class="col-1">
+                                <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                    class="material-icons">
+                                    expand_more
+                                </span>
+                            </div>
+                            <div class="col mt-1">
+                                <p style="color: var(--tertiary);
+                                text-align: left;
+                                font: normal normal normal 10px/12px Montserrat;
+                                letter-spacing: 0.2px;
+                                color: #00CCF2; margin-left: 10px;
+                                text-transform: uppercase; font-weight: 600;
+                                opacity: 1;">MIN</p>
+                            </div>
+                            <p style="color: var(--unnamed-color-272d3b);
+                            text-align: left;
+                            letter-spacing: NaNpx;
+                            color: #272D3B; margin-left: 20px;
+                            text-transform: uppercase;  font-weight: 600;
+                            opacity: 1;">{{minPact}} KW</p>
+
+
+                        </div>
+                    </div>
+                    <br> <br>
+
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row mt-5" *ngIf="oneFunctionRender == true">
+    <div class="col-12">
+        <div class="card col-12 shadow p-3 mb-5 bg-white rounded">
+            <div class="card-body">
+                <div class="row" style="border-bottom:  2px solid #b9b6b6;">
+                    <div class="col-8 mt-2">
+                        <h5> Power Profile</h5>
+                    </div>
+                </div>
+                <div class="col" id="chart8" *ngIf="lineChartData != null">
+                    <apx-chart [series]="chartOptions3.series" [chart]="chartOptions3.chart"
+                        [dataLabels]="chartOptions3.dataLabels" [plotOptions]="chartOptions3.plotOptions"
+                        [responsive]="chartOptions3.responsive" [xaxis]="chartOptions3.xaxis"
+                        [legend]="chartOptions3.legend" [fill]="chartOptions3.fill"></apx-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <diV class="col-4">
+        <div class="card shadow p-3 mb-5 bg-white rounded">
+          <h5 class="card-title h5">Power Factor by Function Category</h5>
+          <mat-tab-group mat-stretch-tabs>
+
+            <mat-tab label="ACTIVE POWER">
+              <div class="card-body">
+
+                <div class="col mt-5" *ngIf="barData">
+                    <apx-chart [series]="active.series" [chart]="active.chart"
+                        [labels]="active.labels" [responsive]="active.responsive"></apx-chart>
+                </div>
+                <div class="col mt-4">
+                    <div class="row ms-3">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                class="material-icons">
+                                expand_less
+                            </span>
+                        </div>
+                        <div class="col-6 mt-1" style="color: var(--tertiary);
+                  text-align: left;
+                  font: normal normal normal 10px/12px Montserrat;
+                  letter-spacing: 0.2px;
+                  color: #FF2366;
+                  text-transform: uppercase;
+                  opacity: 1;">
+                            HIGHEST
+
+                        </div>
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                class="material-icons">
+                                expand_more
+                            </span>
+                        </div>
+                        <div class="col mt-1" style="color: var(--tertiary);
+                  text-align: left;
+                  font: normal normal normal 10px/12px Montserrat;
+                  letter-spacing: 0.2px;
+                  color: #00CCF2;
+                  text-transform: uppercase;
+                  opacity: 1;">
+                            LOWEST
+
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-7">
+                            <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B;
+                        text-transform: uppercase;
+                        opacity: 1; margin-left: 46px;">
+                                1000 kWH
+                            </p>
+                        </div>
+                        <div class="col " style="margin-left: 12px;">
+                            <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B;
+                        text-transform: uppercase;
+                        opacity: 1; margin-left: 20px;">
+                                100 kWH
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <br> <br>
+            </div>
+            </mat-tab>
+            <mat-tab label="REACTIVE POWER">
+              <div class="card-body">
+                <div class="col mt-5" *ngIf="barData">
+                    <apx-chart [series]="reactive.series" [chart]="reactive.chart"
+                        [labels]="reactive.labels" [responsive]="reactive.responsive"></apx-chart>
+                </div>
+                <div class="col mt-4">
+                    <div class="row ms-3">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                class="material-icons">
+                                expand_less
+                            </span>
+                        </div>
+                        <div class="col-6 mt-1" style="color: var(--tertiary);
+                  text-align: left;
+                  font: normal normal normal 10px/12px Montserrat;
+                  letter-spacing: 0.2px;
+                  color: #FF2366;
+                  text-transform: uppercase;
+                  opacity: 1;">
+                            HIGHEST
+
+                        </div>
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                class="material-icons">
+                                expand_more
+                            </span>
+                        </div>
+                        <div class="col mt-1" style="color: var(--tertiary);
+                  text-align: left;
+                  font: normal normal normal 10px/12px Montserrat;
+                  letter-spacing: 0.2px;
+                  color: #00CCF2;
+                  text-transform: uppercase;
+                  opacity: 1;">
+                            LOWEST
+
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-7">
+                            <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B;
+                        text-transform: uppercase;
+                        opacity: 1; margin-left: 46px;">
+                                1000 kWH
+                            </p>
+                        </div>
+                        <div class="col " style="margin-left: 12px;">
+                            <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B;
+                        text-transform: uppercase;
+                        opacity: 1; margin-left: 20px;">
+                                100 kWH
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <br> <br>
+            </div>
+            </mat-tab>
+            <mat-tab label="APPARENT POWER">
+              <div class="card-body">
+                <div class="col mt-5" *ngIf="barData">
+                    <apx-chart [series]="apparent.series" [chart]="apparent.chart"
+                        [labels]="apparent.labels" [responsive]="apparent.responsive"></apx-chart>
+                </div>
+                <div class="col mt-4">
+                    <div class="row ms-3">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                class="material-icons">
+                                expand_less
+                            </span>
+                        </div>
+                        <div class="col-6 mt-1" style="color: var(--tertiary);
+                  text-align: left;
+                  font: normal normal normal 10px/12px Montserrat;
+                  letter-spacing: 0.2px;
+                  color: #FF2366;
+                  text-transform: uppercase;
+                  opacity: 1;">
+                            HIGHEST
+
+                        </div>
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                class="material-icons">
+                                expand_more
+                            </span>
+                        </div>
+                        <div class="col mt-1" style="color: var(--tertiary);
+                  text-align: left;
+                  font: normal normal normal 10px/12px Montserrat;
+                  letter-spacing: 0.2px;
+                  color: #00CCF2;
+                  text-transform: uppercase;
+                  opacity: 1;">
+                            LOWEST
+
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-7">
+                            <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B;
+                        text-transform: uppercase;
+                        opacity: 1; margin-left: 46px;">
+                                1000 kWH
+                            </p>
+                        </div>
+                        <div class="col " style="margin-left: 12px;">
+                            <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B;
+                        text-transform: uppercase;
+                        opacity: 1; margin-left: 20px;">
+                                100 kWH
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <br> <br>
+            </div>
+            </mat-tab>
+
+          </mat-tab-group>
+
+        </div>
+
+    </diV> -->
+
+</div>
+
+<!--Areas-->
+<div class="row" *ngIf="areaRender == true">
+  <div class="col-4 ">
+      <div class="card shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+              <h5 class="card-title">Apparent Power</h5>
+              <div class="row">
+                  <div class="col-4 mt-4">
+                      <p style="color: var(--unnamed-color-000000);
+                text-align: left;
+                letter-spacing: NaNpx;
+                color: #000000; font-size: 18px;
+                opacity: 1;">{{avgPapp}} KVA</p>
+                      <p style="color: var(--primary);
+                text-align: left;
+                font: normal normal 300 12px/14px Montserrat;
+                letter-spacing: 0.24px;
+                color: #F39C12; font-weight: 400;
+                opacity: 1;">Average Apparent Power</p>
+
+                  </div>
+                  <div class="col-3">
+                      <div class="row mt-4">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                  class="material-icons">
+                                  expand_less
+                              </span>
+                          </div>
+                          <div class="col mt-1">
+                              <p style="color: var(--tertiary);
+                              text-align: left;
+                              font: normal normal normal 10px/12px Montserrat;
+                              letter-spacing: 0.2px;
+                              color: #FF2366; margin-left: 10px;
+                              text-transform: uppercase; font-weight: 600;
+                              opacity: 1;">MAX</p>
+                          </div>
+                          <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B; margin-left: 20px;
+                          text-transform: uppercase;  font-weight: 600;
+                          opacity: 1;">{{maxPapp}} Kva</p>
+
+
+                      </div>
+
+                  </div>
+                  <div class="col">
+                      <div class="row mt-4 ms-2">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                  class="material-icons">
+                                  expand_more
+                              </span>
+                          </div>
+                          <div class="col mt-1">
+                              <p style="color: var(--tertiary);
+                              text-align: left;
+                              font: normal normal normal 10px/12px Montserrat;
+                              letter-spacing: 0.2px;
+                              color: #00CCF2; margin-left: 10px;
+                              text-transform: uppercase; font-weight: 600;
+                              opacity: 1;">MIN</p>
+                          </div>
+                          <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B; margin-left: 20px;
+                          text-transform: uppercase;  font-weight: 600;
+                          opacity: 1;">{{minPapp}} Kva</p>
+
+
+                      </div>
+                  </div>
+
+              </div>
+              <br>
+          </div>
+      </div>
+  </div>
+  <div class="col-4 ">
+      <div class="card shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+              <h5 class="card-title h5">Reactive Power</h5>
+              <div class="row">
+                  <div class="col-4 mt-4">
+                      <p style="color: var(--unnamed-color-000000);
+                text-align: left;
+                letter-spacing: NaNpx;
+                color: #000000; font-size: 18px;
+                opacity: 1;">{{avgPreact}} KVAR</p>
+                      <p style="color: var(--primary);
+                text-align: left;
+                font: normal normal 300 12px/14px Montserrat;
+                letter-spacing: 0.24px;
+                color: #F39C12; font-weight: 400;
+                opacity: 1;">Average Reactive Power</p>
+
+                  </div>
+                  <div class="col-3">
+                      <div class="row mt-4">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                  class="material-icons">
+                                  expand_less
+                              </span>
+                          </div>
+                          <div class="col mt-1">
+                              <p style="color: var(--tertiary);
+                              text-align: left;
+                              font: normal normal normal 10px/12px Montserrat;
+                              letter-spacing: 0.2px;
+                              color: #FF2366; margin-left: 10px;
+                              text-transform: uppercase; font-weight: 600;
+                              opacity: 1;">MAX</p>
+                          </div>
+                          <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B; margin-left: 20px;
+                          text-transform: uppercase;  font-weight: 600;
+                          opacity: 1;">{{maxPreact}} KVAR</p>
+
+
+                      </div>
+
+                  </div>
+                  <div class="col">
+                      <div class="row mt-4 ms-2">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                  class="material-icons">
+                                  expand_more
+                              </span>
+                          </div>
+                          <div class="col mt-1">
+                              <p style="color: var(--tertiary);
+                              text-align: left;
+                              font: normal normal normal 10px/12px Montserrat;
+                              letter-spacing: 0.2px;
+                              color: #00CCF2; margin-left: 10px;
+                              text-transform: uppercase; font-weight: 600;
+                              opacity: 1;">MIN</p>
+                          </div>
+                          <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B; margin-left: 20px;
+                          text-transform: uppercase;  font-weight: 600;
+                          opacity: 1;">{{minPreact}} KVAR</p>
+
+
+                      </div>
+                  </div>
+
+              </div>
+              <br>
+          </div>
+      </div>
+  </div>
+  <div class="col-4">
+      <div class="card shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+              <h5 class="card-title h5">Active Power</h5>
+              <div class="row">
+                  <div class="col-3 mt-4">
+                      <p style="color: var(--unnamed-color-000000);
+                text-align: left;
+                letter-spacing: NaNpx;
+                color: #000000; font-size: 18px;
+                opacity: 1;">{{avgPact}} KW</p>
+                      <p style="color: var(--primary);
+                text-align: left;
+                font: normal normal 300 12px/14px Montserrat;
+                letter-spacing: 0.24px;
+                color: #F39C12; font-weight: 400;
+                opacity: 1;">Average Active Power</p>
+
+                  </div>
+                  <div class="col-3 ms-4">
+                      <div class="row mt-4">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                  class="material-icons">
+                                  expand_less
+                              </span>
+                          </div>
+                          <div class="col mt-1">
+                              <p style="color: var(--tertiary);
+                              text-align: left;
+                              font: normal normal normal 10px/12px Montserrat;
+                              letter-spacing: 0.2px;
+                              color: #FF2366; margin-left: 10px;
+                              text-transform: uppercase; font-weight: 600;
+                              opacity: 1;">MAX</p>
+                          </div>
+                          <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B; margin-left: 20px;
+                          text-transform: uppercase;  font-weight: 600;
+                          opacity: 1;">{{maxPact}} KW</p>
+
+
+                      </div>
+
+                  </div>
+                  <div class="col">
+                      <div class="row mt-4 ms-2">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                  class="material-icons">
+                                  expand_more
+                              </span>
+                          </div>
+                          <div class="col mt-1">
+                              <p style="color: var(--tertiary);
+                              text-align: left;
+                              font: normal normal normal 10px/12px Montserrat;
+                              letter-spacing: 0.2px;
+                              color: #00CCF2; margin-left: 10px;
+                              text-transform: uppercase; font-weight: 600;
+                              opacity: 1;">MIN</p>
+                          </div>
+                          <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B; margin-left: 20px;
+                          text-transform: uppercase;  font-weight: 600;
+                          opacity: 1;">{{minPact}} KW</p>
+
+
+                      </div>
+                  </div>
+                  <br> <br>
+
+              </div>
+              <br>
+          </div>
+      </div>
+  </div>
+
+</div>
+<div class="row mt-5" *ngIf="areaRender == true">
+  <div class="col-8">
+      <div class="card col-12 shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+              <div class="row" style="border-bottom:  2px solid #b9b6b6;">
+                  <div class="col-8 mt-2">
+                      <h5> THD Profile (THDi,THDv) Per Feature</h5>
+                  </div>
+              </div>
+              <div class="col" id="chart8" *ngIf="barData != null">
+                  <apx-chart [series]="chartOptions8.series" [colors]="active.colors" [chart]="chartOptions8.chart"
+                      [dataLabels]="chartOptions8.dataLabels" [plotOptions]="chartOptions8.plotOptions"
+                      [responsive]="chartOptions8.responsive" [xaxis]="chartOptions8.xaxis"
+                      [legend]="chartOptions8.legend" [fill]="chartOptions8.fill"></apx-chart>
+              </div>
+          </div>
+      </div>
+  </div>
+  <diV class="col-4">
+      <div class="card shadow p-3 mb-5 bg-white rounded">
+        <h5 class="card-title h5">Power Factor by Function Category</h5>
+        <mat-tab-group mat-stretch-tabs>
+
+          <mat-tab label="ACTIVE POWER">
+            <div class="card-body">
+
+              <div class="col mt-5" *ngIf="barData">
+                  <apx-chart [series]="active.series" [colors]="active.colors" [chart]="active.chart"
+                      [labels]="active.labels" [responsive]="active.responsive"></apx-chart>
+              </div>
+              <!--<div class="col mt-4">
+                  <div class="row ms-3">
+                      <div class="col-1">
+                          <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                              class="material-icons">
+                              expand_less
+                          </span>
+                      </div>
+                      <div class="col-6 mt-1" style="color: var(--tertiary);
+                text-align: left;
+                font: normal normal normal 10px/12px Montserrat;
+                letter-spacing: 0.2px;
+                color: #FF2366;
+                text-transform: uppercase;
+                opacity: 1;">
+                          HIGHEST
+
+                      </div>
+                      <div class="col-1">
+                          <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                              class="material-icons">
+                              expand_more
+                          </span>
+                      </div>
+                      <div class="col mt-1" style="color: var(--tertiary);
+                text-align: left;
+                font: normal normal normal 10px/12px Montserrat;
+                letter-spacing: 0.2px;
+                color: #00CCF2;
+                text-transform: uppercase;
+                opacity: 1;">
+                          LOWEST
+
+                      </div>
+                  </div>
+                  <div class="row ">
+                      <div class="col-7">
+                          <p style="color: var(--unnamed-color-272d3b);
+                      text-align: left;
+                      letter-spacing: NaNpx;
+                      color: #272D3B;
+                      text-transform: uppercase;
+                      opacity: 1; margin-left: 46px;">
+                              1000 kWH
+                          </p>
+                      </div>
+                      <div class="col " style="margin-left: 12px;">
+                          <p style="color: var(--unnamed-color-272d3b);
+                      text-align: left;
+                      letter-spacing: NaNpx;
+                      color: #272D3B;
+                      text-transform: uppercase;
+                      opacity: 1; margin-left: 20px;">
+                              100 kWH
+                          </p>
+                      </div>
+
+                  </div>
+
+
+              </div> -->
+              <br> <br>
+          </div>
+          </mat-tab>
+          <mat-tab label="REACTIVE POWER">
+            <div class="card-body">
+              <div class="col mt-5" *ngIf="barData">
+                  <apx-chart [series]="reactive.series" [colors]="active.colors" [chart]="reactive.chart"
+                      [labels]="reactive.labels" [responsive]="reactive.responsive"></apx-chart>
+              </div>
+              <!--<div class="col mt-4">
+                  <div class="row ms-3">
+                      <div class="col-1">
+                          <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                              class="material-icons">
+                              expand_less
+                          </span>
+                      </div>
+                      <div class="col-6 mt-1" style="color: var(--tertiary);
+                text-align: left;
+                font: normal normal normal 10px/12px Montserrat;
+                letter-spacing: 0.2px;
+                color: #FF2366;
+                text-transform: uppercase;
+                opacity: 1;">
+                          HIGHEST
+
+                      </div>
+                      <div class="col-1">
+                          <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                              class="material-icons">
+                              expand_more
+                          </span>
+                      </div>
+                      <div class="col mt-1" style="color: var(--tertiary);
+                text-align: left;
+                font: normal normal normal 10px/12px Montserrat;
+                letter-spacing: 0.2px;
+                color: #00CCF2;
+                text-transform: uppercase;
+                opacity: 1;">
+                          LOWEST
+
+                      </div>
+                  </div>
+                  <div class="row ">
+                      <div class="col-7">
+                          <p style="color: var(--unnamed-color-272d3b);
+                      text-align: left;
+                      letter-spacing: NaNpx;
+                      color: #272D3B;
+                      text-transform: uppercase;
+                      opacity: 1; margin-left: 46px;">
+                              1000 kWH
+                          </p>
+                      </div>
+                      <div class="col " style="margin-left: 12px;">
+                          <p style="color: var(--unnamed-color-272d3b);
+                      text-align: left;
+                      letter-spacing: NaNpx;
+                      color: #272D3B;
+                      text-transform: uppercase;
+                      opacity: 1; margin-left: 20px;">
+                              100 kWH
+                          </p>
+                      </div>
+
+                  </div>
+
+
+              </div> -->
+              <br> <br>
+          </div>
+          </mat-tab>
+          <mat-tab label="APPARENT POWER">
+            <div class="card-body">
+              <div class="col mt-5" *ngIf="barData">
+                  <apx-chart [series]="apparent.series" [colors]="active.colors" [chart]="apparent.chart"
+                      [labels]="apparent.labels" [responsive]="apparent.responsive"></apx-chart>
+              </div>
+              <!--<div class="col mt-4">
+                  <div class="row ms-3">
+                      <div class="col-1">
+                          <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                              class="material-icons">
+                              expand_less
+                          </span>
+                      </div>
+                      <div class="col-6 mt-1" style="color: var(--tertiary);
+                text-align: left;
+                font: normal normal normal 10px/12px Montserrat;
+                letter-spacing: 0.2px;
+                color: #FF2366;
+                text-transform: uppercase;
+                opacity: 1;">
+                          HIGHEST
+
+                      </div>
+                      <div class="col-1">
+                          <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                              class="material-icons">
+                              expand_more
+                          </span>
+                      </div>
+                      <div class="col mt-1" style="color: var(--tertiary);
+                text-align: left;
+                font: normal normal normal 10px/12px Montserrat;
+                letter-spacing: 0.2px;
+                color: #00CCF2;
+                text-transform: uppercase;
+                opacity: 1;">
+                          LOWEST
+
+                      </div>
+                  </div>
+                  <div class="row ">
+                      <div class="col-7">
+                          <p style="color: var(--unnamed-color-272d3b);
+                      text-align: left;
+                      letter-spacing: NaNpx;
+                      color: #272D3B;
+                      text-transform: uppercase;
+                      opacity: 1; margin-left: 46px;">
+                              1000 kWH
+                          </p>
+                      </div>
+                      <div class="col " style="margin-left: 12px;">
+                          <p style="color: var(--unnamed-color-272d3b);
+                      text-align: left;
+                      letter-spacing: NaNpx;
+                      color: #272D3B;
+                      text-transform: uppercase;
+                      opacity: 1; margin-left: 20px;">
+                              100 kWH
+                          </p>
+                      </div>
+
+                  </div>
+
+
+              </div> -->
+              <br> <br>
+          </div>
+          </mat-tab>
+
+        </mat-tab-group>
+
+      </div>
+
+  </diV>
+
+</div>
+<!--Area-->
+<div class="row" *ngIf="oneAreaRender == true">
+<div class="col-4 ">
+    <div class="card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+            <h5 class="card-title">Apparent Power</h5>
+            <div class="row">
+                <div class="col-4 mt-4">
+                    <p style="color: var(--unnamed-color-000000);
+              text-align: left;
+              letter-spacing: NaNpx;
+              color: #000000; font-size: 18px;
+              opacity: 1;">{{avgPapp}} KVA</p>
+                    <p style="color: var(--primary);
+              text-align: left;
+              font: normal normal 300 12px/14px Montserrat;
+              letter-spacing: 0.24px;
+              color: #F39C12; font-weight: 400;
+              opacity: 1;">Average Apparent Power</p>
+
+                </div>
+                <div class="col-3">
+                    <div class="row mt-4">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                class="material-icons">
+                                expand_less
+                            </span>
+                        </div>
+                        <div class="col mt-1">
+                            <p style="color: var(--tertiary);
+                            text-align: left;
+                            font: normal normal normal 10px/12px Montserrat;
+                            letter-spacing: 0.2px;
+                            color: #FF2366; margin-left: 10px;
+                            text-transform: uppercase; font-weight: 600;
+                            opacity: 1;">MAX</p>
+                        </div>
+                        <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B; margin-left: 20px;
+                        text-transform: uppercase;  font-weight: 600;
+                        opacity: 1;">{{maxPapp}} Kva</p>
+
+
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="row mt-4 ms-2">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                class="material-icons">
+                                expand_more
+                            </span>
+                        </div>
+                        <div class="col mt-1">
+                            <p style="color: var(--tertiary);
+                            text-align: left;
+                            font: normal normal normal 10px/12px Montserrat;
+                            letter-spacing: 0.2px;
+                            color: #00CCF2; margin-left: 10px;
+                            text-transform: uppercase; font-weight: 600;
+                            opacity: 1;">MIN</p>
+                        </div>
+                        <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B; margin-left: 20px;
+                        text-transform: uppercase;  font-weight: 600;
+                        opacity: 1;">{{minPapp}} Kva</p>
+
+
+                    </div>
+                </div>
+
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+<div class="col-4 ">
+    <div class="card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+            <h5 class="card-title h5">Reactive Power</h5>
+            <div class="row">
+                <div class="col-4 mt-4">
+                    <p style="color: var(--unnamed-color-000000);
+              text-align: left;
+              letter-spacing: NaNpx;
+              color: #000000; font-size: 18px;
+              opacity: 1;">{{avgPreact}} KVAR</p>
+                    <p style="color: var(--primary);
+              text-align: left;
+              font: normal normal 300 12px/14px Montserrat;
+              letter-spacing: 0.24px;
+              color: #F39C12; font-weight: 400;
+              opacity: 1;">Average Reactive Power</p>
+
+                </div>
+                <div class="col-3">
+                    <div class="row mt-4">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                class="material-icons">
+                                expand_less
+                            </span>
+                        </div>
+                        <div class="col mt-1">
+                            <p style="color: var(--tertiary);
+                            text-align: left;
+                            font: normal normal normal 10px/12px Montserrat;
+                            letter-spacing: 0.2px;
+                            color: #FF2366; margin-left: 10px;
+                            text-transform: uppercase; font-weight: 600;
+                            opacity: 1;">MAX</p>
+                        </div>
+                        <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B; margin-left: 20px;
+                        text-transform: uppercase;  font-weight: 600;
+                        opacity: 1;">{{maxPreact}} KVAR</p>
+
+
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="row mt-4 ms-2">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                class="material-icons">
+                                expand_more
+                            </span>
+                        </div>
+                        <div class="col mt-1">
+                            <p style="color: var(--tertiary);
+                            text-align: left;
+                            font: normal normal normal 10px/12px Montserrat;
+                            letter-spacing: 0.2px;
+                            color: #00CCF2; margin-left: 10px;
+                            text-transform: uppercase; font-weight: 600;
+                            opacity: 1;">MIN</p>
+                        </div>
+                        <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B; margin-left: 20px;
+                        text-transform: uppercase;  font-weight: 600;
+                        opacity: 1;">{{minPreact}} KVAR</p>
+
+
+                    </div>
+                </div>
+
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+<div class="col-4">
+    <div class="card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+            <h5 class="card-title h5">Active Power</h5>
+            <div class="row">
+                <div class="col-3 mt-4">
+                    <p style="color: var(--unnamed-color-000000);
+              text-align: left;
+              letter-spacing: NaNpx;
+              color: #000000; font-size: 18px;
+              opacity: 1;">{{avgPact}} KW</p>
+                    <p style="color: var(--primary);
+              text-align: left;
+              font: normal normal 300 12px/14px Montserrat;
+              letter-spacing: 0.24px;
+              color: #F39C12; font-weight: 400;
+              opacity: 1;">Average Active Power</p>
+
+                </div>
+                <div class="col-3 ms-4">
+                    <div class="row mt-4">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                class="material-icons">
+                                expand_less
+                            </span>
+                        </div>
+                        <div class="col mt-1">
+                            <p style="color: var(--tertiary);
+                            text-align: left;
+                            font: normal normal normal 10px/12px Montserrat;
+                            letter-spacing: 0.2px;
+                            color: #FF2366; margin-left: 10px;
+                            text-transform: uppercase; font-weight: 600;
+                            opacity: 1;">MAX</p>
+                        </div>
+                        <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B; margin-left: 20px;
+                        text-transform: uppercase;  font-weight: 600;
+                        opacity: 1;">{{maxPact}} KW</p>
+
+
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="row mt-4 ms-2">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                class="material-icons">
+                                expand_more
+                            </span>
+                        </div>
+                        <div class="col mt-1">
+                            <p style="color: var(--tertiary);
+                            text-align: left;
+                            font: normal normal normal 10px/12px Montserrat;
+                            letter-spacing: 0.2px;
+                            color: #00CCF2; margin-left: 10px;
+                            text-transform: uppercase; font-weight: 600;
+                            opacity: 1;">MIN</p>
+                        </div>
+                        <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B; margin-left: 20px;
+                        text-transform: uppercase;  font-weight: 600;
+                        opacity: 1;">{{minPact}} KW</p>
+
+
+                    </div>
+                </div>
+                <br> <br>
+
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+
+</div>
+<div class="row mt-5" *ngIf="oneAreaRender == true">
+<div class="col-12">
+    <div class="card col-12 shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+            <div class="row" style="border-bottom:  2px solid #b9b6b6;">
+                <div class="col-8 mt-2">
+                    <h5> Power Profile</h5>
+                </div>
+            </div>
+            <div class="col" id="chart8" *ngIf="lineChartData != null">
+                <apx-chart [series]="chartOptions3.series" [chart]="chartOptions3.chart"
+                    [dataLabels]="chartOptions3.dataLabels" [plotOptions]="chartOptions3.plotOptions"
+                    [responsive]="chartOptions3.responsive" [xaxis]="chartOptions3.xaxis"
+                    [legend]="chartOptions3.legend" [fill]="chartOptions3.fill"></apx-chart>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+<!--Loads-->
+<div class="row" *ngIf="loadRender == true">
+  <div class="col-4 ">
+      <div class="card shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+              <h5 class="card-title">Apparent Power</h5>
+              <div class="row">
+                  <div class="col-4 mt-4">
+                      <p style="color: var(--unnamed-color-000000);
+                text-align: left;
+                letter-spacing: NaNpx;
+                color: #000000; font-size: 18px;
+                opacity: 1;">{{avgPapp}} KVA</p>
+                      <p style="color: var(--primary);
+                text-align: left;
+                font: normal normal 300 12px/14px Montserrat;
+                letter-spacing: 0.24px;
+                color: #F39C12; font-weight: 400;
+                opacity: 1;">Average Apparent Power</p>
+
+                  </div>
+                  <div class="col-3">
+                      <div class="row mt-4">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                  class="material-icons">
+                                  expand_less
+                              </span>
+                          </div>
+                          <div class="col mt-1">
+                              <p style="color: var(--tertiary);
+                              text-align: left;
+                              font: normal normal normal 10px/12px Montserrat;
+                              letter-spacing: 0.2px;
+                              color: #FF2366; margin-left: 10px;
+                              text-transform: uppercase; font-weight: 600;
+                              opacity: 1;">MAX</p>
+                          </div>
+                          <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B; margin-left: 20px;
+                          text-transform: uppercase;  font-weight: 600;
+                          opacity: 1;">{{maxPapp}} Kva</p>
+
+
+                      </div>
+
+                  </div>
+                  <div class="col">
+                      <div class="row mt-4 ms-2">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                  class="material-icons">
+                                  expand_more
+                              </span>
+                          </div>
+                          <div class="col mt-1">
+                              <p style="color: var(--tertiary);
+                              text-align: left;
+                              font: normal normal normal 10px/12px Montserrat;
+                              letter-spacing: 0.2px;
+                              color: #00CCF2; margin-left: 10px;
+                              text-transform: uppercase; font-weight: 600;
+                              opacity: 1;">MIN</p>
+                          </div>
+                          <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B; margin-left: 20px;
+                          text-transform: uppercase;  font-weight: 600;
+                          opacity: 1;">{{minPapp}} Kva</p>
+
+
+                      </div>
+                  </div>
+
+              </div>
+              <br>
+          </div>
+      </div>
+  </div>
+  <div class="col-4 ">
+      <div class="card shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+              <h5 class="card-title h5">Reactive Power</h5>
+              <div class="row">
+                  <div class="col-4 mt-4">
+                      <p style="color: var(--unnamed-color-000000);
+                text-align: left;
+                letter-spacing: NaNpx;
+                color: #000000; font-size: 18px;
+                opacity: 1;">{{avgPreact}} KVAR</p>
+                      <p style="color: var(--primary);
+                text-align: left;
+                font: normal normal 300 12px/14px Montserrat;
+                letter-spacing: 0.24px;
+                color: #F39C12; font-weight: 400;
+                opacity: 1;">Average Reactive Power</p>
+
+                  </div>
+                  <div class="col-3">
+                      <div class="row mt-4">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                  class="material-icons">
+                                  expand_less
+                              </span>
+                          </div>
+                          <div class="col mt-1">
+                              <p style="color: var(--tertiary);
+                              text-align: left;
+                              font: normal normal normal 10px/12px Montserrat;
+                              letter-spacing: 0.2px;
+                              color: #FF2366; margin-left: 10px;
+                              text-transform: uppercase; font-weight: 600;
+                              opacity: 1;">MAX</p>
+                          </div>
+                          <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B; margin-left: 20px;
+                          text-transform: uppercase;  font-weight: 600;
+                          opacity: 1;">{{maxPreact}} KVAR</p>
+
+
+                      </div>
+
+                  </div>
+                  <div class="col">
+                      <div class="row mt-4 ms-2">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                  class="material-icons">
+                                  expand_more
+                              </span>
+                          </div>
+                          <div class="col mt-1">
+                              <p style="color: var(--tertiary);
+                              text-align: left;
+                              font: normal normal normal 10px/12px Montserrat;
+                              letter-spacing: 0.2px;
+                              color: #00CCF2; margin-left: 10px;
+                              text-transform: uppercase; font-weight: 600;
+                              opacity: 1;">MIN</p>
+                          </div>
+                          <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B; margin-left: 20px;
+                          text-transform: uppercase;  font-weight: 600;
+                          opacity: 1;">{{minPreact}} KVAR</p>
+
+
+                      </div>
+                  </div>
+
+              </div>
+              <br>
+          </div>
+      </div>
+  </div>
+  <div class="col-4">
+      <div class="card shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+              <h5 class="card-title h5">Active Power</h5>
+              <div class="row">
+                  <div class="col-3 mt-4">
+                      <p style="color: var(--unnamed-color-000000);
+                text-align: left;
+                letter-spacing: NaNpx;
+                color: #000000; font-size: 18px;
+                opacity: 1;">{{avgPact}} KW</p>
+                      <p style="color: var(--primary);
+                text-align: left;
+                font: normal normal 300 12px/14px Montserrat;
+                letter-spacing: 0.24px;
+                color: #F39C12; font-weight: 400;
+                opacity: 1;">Average Active Power</p>
+
+                  </div>
+                  <div class="col-3 ms-4">
+                      <div class="row mt-4">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                  class="material-icons">
+                                  expand_less
+                              </span>
+                          </div>
+                          <div class="col mt-1">
+                              <p style="color: var(--tertiary);
+                              text-align: left;
+                              font: normal normal normal 10px/12px Montserrat;
+                              letter-spacing: 0.2px;
+                              color: #FF2366; margin-left: 10px;
+                              text-transform: uppercase; font-weight: 600;
+                              opacity: 1;">MAX</p>
+                          </div>
+                          <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B; margin-left: 20px;
+                          text-transform: uppercase;  font-weight: 600;
+                          opacity: 1;">{{maxPact}} KW</p>
+
+
+                      </div>
+
+                  </div>
+                  <div class="col">
+                      <div class="row mt-4 ms-2">
+                          <div class="col-1">
+                              <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                  class="material-icons">
+                                  expand_more
+                              </span>
+                          </div>
+                          <div class="col mt-1">
+                              <p style="color: var(--tertiary);
+                              text-align: left;
+                              font: normal normal normal 10px/12px Montserrat;
+                              letter-spacing: 0.2px;
+                              color: #00CCF2; margin-left: 10px;
+                              text-transform: uppercase; font-weight: 600;
+                              opacity: 1;">MIN</p>
+                          </div>
+                          <p style="color: var(--unnamed-color-272d3b);
+                          text-align: left;
+                          letter-spacing: NaNpx;
+                          color: #272D3B; margin-left: 20px;
+                          text-transform: uppercase;  font-weight: 600;
+                          opacity: 1;">{{minPact}} KW</p>
+
+
+                      </div>
+                  </div>
+                  <br> <br>
+
+              </div>
+              <br>
+          </div>
+      </div>
+  </div>
+
+</div>
+<div class="row mt-5" *ngIf="loadRender == true">
+  <div class="col-8">
+      <div class="card col-12 shadow p-3 mb-5 bg-white rounded" >
+          <div class="card-body">
+              <div class="row" style="border-bottom:  2px solid #b9b6b6;">
+                  <div class="col-8 mt-2">
+                      <h5> THD Profile (THDi,THDv) Per Feature</h5>
+                  </div>
+              </div>
+              <div class="col" id="chart8" *ngIf="barData != null">
+                  <apx-chart [series]="chartOptions8.series" [colors]="active.colors" [chart]="chartOptions8.chart"
+                      [dataLabels]="chartOptions8.dataLabels" [plotOptions]="chartOptions8.plotOptions"
+                      [responsive]="chartOptions8.responsive" [xaxis]="chartOptions8.xaxis"
+                      [legend]="chartOptions8.legend" [fill]="chartOptions8.fill"></apx-chart>
+              </div>
+          </div>
+      </div>
+  </div>
+  <diV class="col-4">
+      <div class="card shadow p-3 mb-5 bg-white rounded" style="height: 500px;">
+        <h5 class="card-title h5">Power Factor by Function Category</h5>
+        <mat-tab-group mat-stretch-tabs>
+
+          <mat-tab label="ACTIVE POWER">
+            <div class="card-body">
+
+              <div class="col mt-5" *ngIf="barData">
+                  <apx-chart [series]="active.series" [colors]="active.colors" [chart]="active.chart"
+                      [labels]="active.labels" [responsive]="active.responsive"></apx-chart>
+              </div>
+              <!--<div class="col mt-4">
+                  <div class="row ms-3">
+                      <div class="col-1">
+                          <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                              class="material-icons">
+                              expand_less
+                          </span>
+                      </div>
+                      <div class="col-6 mt-1" style="color: var(--tertiary);
+                text-align: left;
+                font: normal normal normal 10px/12px Montserrat;
+                letter-spacing: 0.2px;
+                color: #FF2366;
+                text-transform: uppercase;
+                opacity: 1;">
+                          HIGHEST
+
+                      </div>
+                      <div class="col-1">
+                          <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                              class="material-icons">
+                              expand_more
+                          </span>
+                      </div>
+                      <div class="col mt-1" style="color: var(--tertiary);
+                text-align: left;
+                font: normal normal normal 10px/12px Montserrat;
+                letter-spacing: 0.2px;
+                color: #00CCF2;
+                text-transform: uppercase;
+                opacity: 1;">
+                          LOWEST
+
+                      </div>
+                  </div>
+                  <div class="row ">
+                      <div class="col-7">
+                          <p style="color: var(--unnamed-color-272d3b);
+                      text-align: left;
+                      letter-spacing: NaNpx;
+                      color: #272D3B;
+                      text-transform: uppercase;
+                      opacity: 1; margin-left: 46px;">
+                              1000 kWH
+                          </p>
+                      </div>
+                      <div class="col " style="margin-left: 12px;">
+                          <p style="color: var(--unnamed-color-272d3b);
+                      text-align: left;
+                      letter-spacing: NaNpx;
+                      color: #272D3B;
+                      text-transform: uppercase;
+                      opacity: 1; margin-left: 20px;">
+                              100 kWH
+                          </p>
+                      </div>
+
+                  </div>
+
+
+              </div> -->
+              <br> <br>
+          </div>
+          </mat-tab>
+          <mat-tab label="REACTIVE POWER">
+            <div class="card-body">
+              <div class="col mt-5" *ngIf="barData">
+                  <apx-chart [series]="reactive.series" [colors]="active.colors" [chart]="reactive.chart"
+                      [labels]="reactive.labels" [responsive]="reactive.responsive"></apx-chart>
+              </div>
+              <!--<div class="col mt-4">
+                  <div class="row ms-3">
+                      <div class="col-1">
+                          <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                              class="material-icons">
+                              expand_less
+                          </span>
+                      </div>
+                      <div class="col-6 mt-1" style="color: var(--tertiary);
+                text-align: left;
+                font: normal normal normal 10px/12px Montserrat;
+                letter-spacing: 0.2px;
+                color: #FF2366;
+                text-transform: uppercase;
+                opacity: 1;">
+                          HIGHEST
+
+                      </div>
+                      <div class="col-1">
+                          <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                              class="material-icons">
+                              expand_more
+                          </span>
+                      </div>
+                      <div class="col mt-1" style="color: var(--tertiary);
+                text-align: left;
+                font: normal normal normal 10px/12px Montserrat;
+                letter-spacing: 0.2px;
+                color: #00CCF2;
+                text-transform: uppercase;
+                opacity: 1;">
+                          LOWEST
+
+                      </div>
+                  </div>
+                  <div class="row ">
+                      <div class="col-7">
+                          <p style="color: var(--unnamed-color-272d3b);
+                      text-align: left;
+                      letter-spacing: NaNpx;
+                      color: #272D3B;
+                      text-transform: uppercase;
+                      opacity: 1; margin-left: 46px;">
+                              1000 kWH
+                          </p>
+                      </div>
+                      <div class="col " style="margin-left: 12px;">
+                          <p style="color: var(--unnamed-color-272d3b);
+                      text-align: left;
+                      letter-spacing: NaNpx;
+                      color: #272D3B;
+                      text-transform: uppercase;
+                      opacity: 1; margin-left: 20px;">
+                              100 kWH
+                          </p>
+                      </div>
+
+                  </div>
+
+
+              </div> -->
+              <br> <br>
+          </div>
+          </mat-tab>
+          <mat-tab label="APPARENT POWER">
+            <div class="card-body">
+              <div class="col mt-5" *ngIf="barData">
+                  <apx-chart [series]="apparent.series" [colors]="active.colors" [chart]="apparent.chart"
+                      [labels]="apparent.labels" [responsive]="apparent.responsive"></apx-chart>
+              </div>
+              <!--<div class="col mt-4">
+                  <div class="row ms-3">
+                      <div class="col-1">
+                          <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                              class="material-icons">
+                              expand_less
+                          </span>
+                      </div>
+                      <div class="col-6 mt-1" style="color: var(--tertiary);
+                text-align: left;
+                font: normal normal normal 10px/12px Montserrat;
+                letter-spacing: 0.2px;
+                color: #FF2366;
+                text-transform: uppercase;
+                opacity: 1;">
+                          HIGHEST
+
+                      </div>
+                      <div class="col-1">
+                          <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                              class="material-icons">
+                              expand_more
+                          </span>
+                      </div>
+                      <div class="col mt-1" style="color: var(--tertiary);
+                text-align: left;
+                font: normal normal normal 10px/12px Montserrat;
+                letter-spacing: 0.2px;
+                color: #00CCF2;
+                text-transform: uppercase;
+                opacity: 1;">
+                          LOWEST
+
+                      </div>
+                  </div>
+                  <div class="row ">
+                      <div class="col-7">
+                          <p style="color: var(--unnamed-color-272d3b);
+                      text-align: left;
+                      letter-spacing: NaNpx;
+                      color: #272D3B;
+                      text-transform: uppercase;
+                      opacity: 1; margin-left: 46px;">
+                              1000 kWH
+                          </p>
+                      </div>
+                      <div class="col " style="margin-left: 12px;">
+                          <p style="color: var(--unnamed-color-272d3b);
+                      text-align: left;
+                      letter-spacing: NaNpx;
+                      color: #272D3B;
+                      text-transform: uppercase;
+                      opacity: 1; margin-left: 20px;">
+                              100 kWH
+                          </p>
+                      </div>
+
+                  </div>
+
+
+              </div> -->
+              <br> <br>
+          </div>
+          </mat-tab>
+
+        </mat-tab-group>
+
+      </div>
+
+  </diV>
+
+</div>
+<!--Load-->
+<div class="row" *ngIf="oneLoadRender == true">
+<div class="col-4 ">
+    <div class="card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+            <h5 class="card-title">Apparent Power</h5>
+            <div class="row">
+                <div class="col-4 mt-4">
+                    <p style="color: var(--unnamed-color-000000);
+              text-align: left;
+              letter-spacing: NaNpx;
+              color: #000000; font-size: 18px;
+              opacity: 1;">{{avgPapp}} KVA</p>
+                    <p style="color: var(--primary);
+              text-align: left;
+              font: normal normal 300 12px/14px Montserrat;
+              letter-spacing: 0.24px;
+              color: #F39C12; font-weight: 400;
+              opacity: 1;">Average Apparent Power</p>
+
+                </div>
+                <div class="col-3">
+                    <div class="row mt-4">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                class="material-icons">
+                                expand_less
+                            </span>
+                        </div>
+                        <div class="col mt-1">
+                            <p style="color: var(--tertiary);
+                            text-align: left;
+                            font: normal normal normal 10px/12px Montserrat;
+                            letter-spacing: 0.2px;
+                            color: #FF2366; margin-left: 10px;
+                            text-transform: uppercase; font-weight: 600;
+                            opacity: 1;">MAX</p>
+                        </div>
+                        <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B; margin-left: 20px;
+                        text-transform: uppercase;  font-weight: 600;
+                        opacity: 1;">{{maxPapp}} Kva</p>
+
+
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="row mt-4 ms-2">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                class="material-icons">
+                                expand_more
+                            </span>
+                        </div>
+                        <div class="col mt-1">
+                            <p style="color: var(--tertiary);
+                            text-align: left;
+                            font: normal normal normal 10px/12px Montserrat;
+                            letter-spacing: 0.2px;
+                            color: #00CCF2; margin-left: 10px;
+                            text-transform: uppercase; font-weight: 600;
+                            opacity: 1;">MIN</p>
+                        </div>
+                        <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B; margin-left: 20px;
+                        text-transform: uppercase;  font-weight: 600;
+                        opacity: 1;">{{minPapp}} Kva</p>
+
+
+                    </div>
+                </div>
+
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+<div class="col-4 ">
+    <div class="card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+            <h5 class="card-title h5">Reactive Power</h5>
+            <div class="row">
+                <div class="col-4 mt-4">
+                    <p style="color: var(--unnamed-color-000000);
+              text-align: left;
+              letter-spacing: NaNpx;
+              color: #000000; font-size: 18px;
+              opacity: 1;">{{avgPreact}} KVAR</p>
+                    <p style="color: var(--primary);
+              text-align: left;
+              font: normal normal 300 12px/14px Montserrat;
+              letter-spacing: 0.24px;
+              color: #F39C12; font-weight: 400;
+              opacity: 1;">Average Reactive Power</p>
+
+                </div>
+                <div class="col-3">
+                    <div class="row mt-4">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                class="material-icons">
+                                expand_less
+                            </span>
+                        </div>
+                        <div class="col mt-1">
+                            <p style="color: var(--tertiary);
+                            text-align: left;
+                            font: normal normal normal 10px/12px Montserrat;
+                            letter-spacing: 0.2px;
+                            color: #FF2366; margin-left: 10px;
+                            text-transform: uppercase; font-weight: 600;
+                            opacity: 1;">MAX</p>
+                        </div>
+                        <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B; margin-left: 20px;
+                        text-transform: uppercase;  font-weight: 600;
+                        opacity: 1;">{{maxPreact}} KVAR</p>
+
+
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="row mt-4 ms-2">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                class="material-icons">
+                                expand_more
+                            </span>
+                        </div>
+                        <div class="col mt-1">
+                            <p style="color: var(--tertiary);
+                            text-align: left;
+                            font: normal normal normal 10px/12px Montserrat;
+                            letter-spacing: 0.2px;
+                            color: #00CCF2; margin-left: 10px;
+                            text-transform: uppercase; font-weight: 600;
+                            opacity: 1;">MIN</p>
+                        </div>
+                        <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B; margin-left: 20px;
+                        text-transform: uppercase;  font-weight: 600;
+                        opacity: 1;">{{minPreact}} KVAR</p>
+
+
+                    </div>
+                </div>
+
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+<div class="col-4">
+    <div class="card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+            <h5 class="card-title h5">Active Power</h5>
+            <div class="row">
+                <div class="col-3 mt-4">
+                    <p style="color: var(--unnamed-color-000000);
+              text-align: left;
+              letter-spacing: NaNpx;
+              color: #000000; font-size: 18px;
+              opacity: 1;">{{avgPact}} KW</p>
+                    <p style="color: var(--primary);
+              text-align: left;
+              font: normal normal 300 12px/14px Montserrat;
+              letter-spacing: 0.24px;
+              color: #F39C12; font-weight: 400;
+              opacity: 1;">Average Active Power</p>
+
+                </div>
+                <div class="col-3 ms-4">
+                    <div class="row mt-4">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #FF2366;"
+                                class="material-icons">
+                                expand_less
+                            </span>
+                        </div>
+                        <div class="col mt-1">
+                            <p style="color: var(--tertiary);
+                            text-align: left;
+                            font: normal normal normal 10px/12px Montserrat;
+                            letter-spacing: 0.2px;
+                            color: #FF2366; margin-left: 10px;
+                            text-transform: uppercase; font-weight: 600;
+                            opacity: 1;">MAX</p>
+                        </div>
+                        <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B; margin-left: 20px;
+                        text-transform: uppercase;  font-weight: 600;
+                        opacity: 1;">{{maxPact}} KW</p>
+
+
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="row mt-4 ms-2">
+                        <div class="col-1">
+                            <span style="font-size: 20px; margin-left: 15px; color: #00CCF2;"
+                                class="material-icons">
+                                expand_more
+                            </span>
+                        </div>
+                        <div class="col mt-1">
+                            <p style="color: var(--tertiary);
+                            text-align: left;
+                            font: normal normal normal 10px/12px Montserrat;
+                            letter-spacing: 0.2px;
+                            color: #00CCF2; margin-left: 10px;
+                            text-transform: uppercase; font-weight: 600;
+                            opacity: 1;">MIN</p>
+                        </div>
+                        <p style="color: var(--unnamed-color-272d3b);
+                        text-align: left;
+                        letter-spacing: NaNpx;
+                        color: #272D3B; margin-left: 20px;
+                        text-transform: uppercase;  font-weight: 600;
+                        opacity: 1;">{{minPact}} KW</p>
+
+
+                    </div>
+                </div>
+                <br> <br>
+
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+
+</div>
+<div class="row mt-5" *ngIf="oneLoadRender == true">
+<div class="col-12">
+    <div class="card col-12 shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+            <div class="row" style="border-bottom:  2px solid #b9b6b6;">
+                <div class="col-8 mt-2">
+                    <h5> Power Profile</h5>
+                </div>
+            </div>
+            <div class="col" id="chart8" *ngIf="lineChartData != null">
+                <apx-chart [series]="chartOptions3.series" [chart]="chartOptions3.chart"
+                    [dataLabels]="chartOptions3.dataLabels" [plotOptions]="chartOptions3.plotOptions"
+                    [responsive]="chartOptions3.responsive" [xaxis]="chartOptions3.xaxis"
+                    [legend]="chartOptions3.legend" [fill]="chartOptions3.fill"></apx-chart>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+</div>

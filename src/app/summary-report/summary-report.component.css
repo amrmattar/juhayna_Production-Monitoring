@@ -1,0 +1,32 @@
+.factories{
+  text-align: left;
+  font: normal normal 600 16px/19px Montserrat;
+  letter-spacing: 0px;
+  color: #F39C12;
+  opacity: 1;
+  margin-top: 20px;
+  background-color: transparent;
+  }
+  .rowdiv{
+    background: #F39C124D 0% 0% no-repeat padding-box;
+  opacity: 1;
+  height: 70px;
+  }
+  .img{
+    margin-top: 10px;
+  opacity: 1;
+  width: 40px;
+  }
+  .node-st
+  {
+    text-align: left;
+  font: normal normal normal 13px/25px Montserrat;
+  letter-spacing: 0px;
+  opacity: 1;
+  }
+  mat-card{
+    border-radius: 20px;
+    max-height:800px;
+    position: relative;
+    overflow: auto;
+  }

@@ -1,0 +1,301 @@
+<div class="container-fluid">
+    <div class="row justify-content-between mt-2">
+      <div class="col-9">
+        <button
+        (click) = "functionRender = false; factoryRender = true;"
+          mat-flat-button
+          class="text-muted btn-outline-warning active"
+          [matMenuTriggerFor]="menu"
+        >
+          <mat-icon class="mr-5 text-muted" style="font-size: 25px;"
+            >domain</mat-icon
+          >
+        </button>
+        <mat-menu #menu="matMenu">
+          <button   mat-menu-item>Factory 1</button>
+          <button   mat-menu-item>Factory 2</button>
+        </mat-menu>
+        <button
+        (click) = "functionRender = true; loadRender = false;"
+          [matMenuTriggerFor]="menu2"
+          mat-flat-button
+          class="text-muted btn-outline-warning active"
+        >
+          <mat-icon class="mr-5 text-muted" style="font-size: 25px;"
+            >settings_input_component</mat-icon
+          >
+        </button>
+        <mat-menu #menu2="matMenu">
+          <button  mat-menu-item>Function 1</button>
+          <button  mat-menu-item>Function 2</button>
+        </mat-menu>
+        <button
+          [matMenuTriggerFor]="menu3"
+          mat-flat-button
+          class="text-muted btn-outline-warning"
+          (click) = "loadRender = true; factoryRender = false; functionRender = false;"
+        >
+          <mat-icon class="text-muted" style="font-size: 25px;">domain</mat-icon>
+        </button>
+        <mat-menu #menu3="matMenu">
+          <button mat-menu-item>Load 1</button>
+          <button mat-menu-item>Load 2</button>
+        </mat-menu>
+      </div>
+      <div class="col-3">
+        <button mat-flat-button class="text-muted btn-outline-warning active " checked>
+          Today
+        </button>
+        <button mat-flat-button class="text-muted btn-outline-warning">
+          Yesterday
+        </button>
+        <mat-form-field
+          style="
+          visibility: hidden;
+          height: 0;
+          width: 0;"
+          class="example-full-width"
+          appearance="fill"
+        >
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="picker" />
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <button mat-flat-button class="text-muted btn-outline-warning">
+          Last Week
+        </button>
+        <mat-icon
+          (click)="picker.open()"
+          class="text-muted"
+          style="font-size: 25px;"
+          >today</mat-icon
+        >
+      </div>
+    </div>
+  </div>
+
+  <div
+  class="container-fluid"
+  style="background-color: rgb(235, 245, 235); padding-top: 50px; "
+>
+<div class="row" *ngIf="functionRender == false && loadRender == true">
+    <div class="col-3">
+        <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" style="height: 250px;">
+          <mat-card-header>
+            <mat-card-subtitle class="text-muted"
+              >Max Swell</mat-card-subtitle
+            >
+          </mat-card-header>
+          <mat-card-content>
+            <hr />
+            <h3 class="font-weight-bold">
+              Drawing-Copper
+            </h3>
+                  <div class="row justify-content-around">
+                    <div class="col mt-2">
+                      <span style="color: red;">
+                        <mat-icon>keyboard_arrow_up</mat-icon> MAX</span
+                      >
+                      <h4 class="font-weight-bold">0.95</h4>
+                      <span>Sun 23 JULY 2020</span>
+                    </div>
+                  </div>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-3">
+          <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" style="height: 250px;">
+            <mat-card-header>
+              <mat-card-subtitle class="text-muted"
+                >Min Swell</mat-card-subtitle
+              >
+            </mat-card-header>
+            <mat-card-content>
+              <hr />
+              <h3 class="font-weight-bold">
+                Extrusion
+              </h3>
+                    <div class="row justify-content-around">
+                      <div class="col mt-2">
+                        <span style="color: red;">
+                          <mat-icon>keyboard_arrow_down</mat-icon> MIN</span
+                        >
+                        <h4 class="font-weight-bold">0.95</h4>
+                        <span>Mon 23 JAN 2021</span>
+                      </div>
+                    </div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-3">
+            <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" style="height: 250px;">
+              <mat-card-header>
+                <mat-card-subtitle class="text-muted"
+                  >Max Dwell</mat-card-subtitle
+                >
+              </mat-card-header>
+              <mat-card-content>
+                <hr />
+                <h3 class="font-weight-bold">
+                  Drawing-Copper
+                </h3>
+                      <div class="row justify-content-around">
+                        <div class="col mt-2">
+                          <span style="color: red;">
+                            <mat-icon>keyboard_arrow_up</mat-icon> MAX</span
+                          >
+                          <h4 class="font-weight-bold">0.95</h4>
+                          <span>Sun 23 JULY 2020</span>
+                        </div>
+                      </div>
+
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="col-3">
+              <mat-card class="example-card shadow p-3 mb-5 bg-white rounded" style="height: 250px;">
+                <mat-card-header>
+                  <mat-card-subtitle class="text-muted"
+                    >Min Dwell</mat-card-subtitle
+                  >
+                </mat-card-header>
+                <mat-card-content>
+                  <hr />
+                  <h3 class="font-weight-bold">
+                    Extrusion
+                  </h3>
+                        <div class="row justify-content-around">
+                          <div class="col mt-2">
+                            <span style="color: red;">
+                              <mat-icon>keyboard_arrow_down</mat-icon> MIN</span
+                            >
+                            <h4 class="font-weight-bold">0.95</h4>
+                            <span>Mon 23 JAN 2021</span>
+                          </div>
+                        </div>
+
+                </mat-card-content>
+              </mat-card>
+            </div>
+
+</div>
+<div class="row" *ngIf="functionRender == false && loadRender == true">
+    <div class="col-8">
+        <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+            <div class="row">
+              <div class="col-8">
+                <mat-card-header class="mt-4">
+                  <mat-card-subtitle class="text-muted"
+                    >[Feature Name] Energy Distribution</mat-card-subtitle
+                  >
+                </mat-card-header>
+              </div>
+              <div class="col-4">
+                <mat-tab-group
+                  mat-stretch-tabs
+                  (selectedTabChange)="changeTab($event)"
+                >
+                  <mat-tab label="LINE CHART"> </mat-tab>
+                  <mat-tab label="BAR CHART"> </mat-tab>
+                  <mat-tab label="RECORD LIST"> </mat-tab>
+                </mat-tab-group>
+              </div>
+            </div>
+            <mat-card-content>
+              <div
+                id="chart"
+                *ngIf="lineChartVisiable == true && tableVisisable == false && BarVisisable == false"
+              >
+              <apx-chart
+              [series]="chartOptions3.series"
+              [chart]="chartOptions3.chart"
+              [xaxis]="chartOptions3.xaxis"
+              [stroke]="chartOptions3.stroke"
+              [tooltip]="chartOptions3.tooltip"
+              [dataLabels]="chartOptions3.dataLabels"
+              [fill]="chartOptions3.fill"
+              [yaxis]="chartOptions3.yaxis"
+            ></apx-chart>
+              </div>
+              <div
+                id="chart"
+                *ngIf="lineChartVisiable == false && tableVisisable == false && BarVisisable == true"
+              >
+              <apx-chart
+              [series]="chartOptions4.series"
+              [chart]="chartOptions4.chart"
+              [xaxis]="chartOptions4.xaxis"
+              [stroke]="chartOptions4.stroke"
+              [tooltip]="chartOptions4.tooltip"
+              [dataLabels]="chartOptions4.dataLabels"
+              [fill]="chartOptions4.fill"
+              [yaxis]="chartOptions4.yaxis"
+            ></apx-chart>
+              </div>
+              <div
+                id="chart"
+                *ngIf="lineChartVisiable == false && tableVisisable == true && BarVisisable == false"
+              >
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">First</th>
+                      <th scope="col">Last</th>
+                      <th scope="col">Handle</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Mark</td>
+                      <td>Otto</td>
+                      <td>@mdo</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td colspan="2">Larry the Bird</td>
+                      <td>@twitter</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </mat-card-content>
+          </mat-card>
+      </div>
+    <div class="col-4">
+        <mat-card
+        class="example-card shadow p-3 mb-5 bg-white rounded"
+        style="height:460px;"
+      >
+        <mat-card-header>
+          <mat-card-subtitle class="text-muted">[Factory Name] Energy Distribution</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr />
+          <div class="row">
+            <div class="col-12">
+              <div id="chart">
+                <!-- <apx-chart
+                [series]="chartOptions5.series"
+                [chart]="chartOptions5.chart"
+                [labels]="chartOptions5.labels"
+                [responsive]="chartOptions5.responsive"
+
+                ></apx-chart> -->
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+</div>
+  </div>

@@ -1,0 +1,23 @@
+mat-sidenav-content {
+  background-color: white;
+}
+.mat-drawer .mat-list-base .mat-list-item {
+  color: #ffffff !important ;
+}
+
+.mat-drawer{
+  background-color: rgb(248,156,20) !important;
+  color: white;
+}
+mat-sidenav {
+  width: 90px;
+}
+.mat-sidenav-container {
+background-color: rgb(235, 245, 235) !important;
+min-height: 100vh;
+}
+.mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+}
+

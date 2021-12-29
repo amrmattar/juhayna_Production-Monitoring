@@ -1,0 +1,194 @@
+<div class="container-fluid" style="width: 100%; height: 1130px;">
+    <div *ngIf="!register" class="row">
+        <div class="col-8 align-self-end" style="background-color: rgb(248,156,20);width: 100%; height: 1150px; ">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br><br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br><br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br><br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+          <h1 class="ml-5 font-weight-bold" style="font-size: 45px; color: white;">WELCOME TO EMS</h1>
+        <br><br>
+        <h2 class="ml-5 " style=" color: white;">
+          Ask the admin to create an account for you to
+          <br>
+          start viewing our Dashboards.
+        </h2>
+        <br><br>
+        <button type="button" class="ml-5 btn btn-lg btn-outline-light rounded-pill example-form" style="background-color: rgb(248,156,20); color: white;" (click)="register = true;">Request Account</button>
+        </div>
+        <div class="col-4">
+
+          <!-- <div class="row justify-content-center">
+              <div class="col-1" style="border-left: 4px solid rgb(248,156,20);
+              height: 200px; "></div>
+          </div> -->
+          <div class="row justify-content-center">
+            <div class="col-4">
+              <div class="row justify-content-md-center">
+                <img src="../../assets/imgs/unnamed.png" style="width: 150px;" alt="">
+              </div>
+
+            </div>
+          </div>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <div class="row justify-content-center ml-1">
+              <h1 class="" style="font-size: 50px;">E M S</h1>
+            </div>
+            <br>
+          <br>
+          <br>
+          <br>
+          <br>
+            <div class="row justify-content-center">
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input style="height: 60px;" type="text" formControlName="email" class="form-control rounded-pill" aria-label="Sizing example input" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder="email@domail.com" aria-describedby="inputGroup-sizing-lg">
+                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                            <div *ngIf="f.email.errors.required">Email is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input style="height: 60px;" formControlName="password" type="password" class="form-control rounded-pill" aria-label="Sizing example input" placeholder="Password" aria-describedby="inputGroup-sizing-lg">
+                        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                            <div *ngIf="f.password.errors.required">Password is required</div>
+                        </div>
+                    </div>
+                    <button (click)="onSubmit()" type="button"  class="btn btn-lg rounded-pill example-form" style="background-color: rgb(248,156,20); color: white;">
+                        <!-- <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> -->
+                        LOGIN
+                    </button>
+                    <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                </form>
+
+        </div>
+        </div>
+</div>
+<div *ngIf="register" class="row">
+    <div
+      class="col-8 align-self-end"
+      style="background-color: rgb(248, 156, 20); width: 100%; height: 1150px"
+    >
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br /><br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br /><br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br /><br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <h1 class="ml-3 font-weight-bold" style="font-size: 45px; color: white">
+        WELCOME TO EMS
+      </h1>
+      <br /><br />
+      <h2 class="ml-3" style="color: white">
+        Ask the admin to create an account for you to
+        <br />
+        start viewing our Dashboards.
+      </h2>
+      <button type="button" class="ml-5 btn btn-lg btn-outline-light rounded-pill example-form" style="background-color: rgb(248,156,20); color: white;" (click)="register = false;">Sign In</button>
+
+    </div>
+    <div class="col-4">
+      <div class="row justify-content-center ml-1">
+        <div
+          style="border-left: 4px solid rgb(248, 156, 20); height: 200px; margin-left: 570px;"
+        ></div>
+      </div>
+      <div class="row justify-content-center mr-4">
+        <mat-icon style="color: rgb(248, 156, 20); font-size: 80px"
+          >tungsten</mat-icon
+        >
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <div class="row justify-content-center ml-1">
+        <h1 class="" style="font-size: 50px">E M S</h1>
+      </div>
+
+      <div class="row justify-content-center">
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input style="height: 60px;" type="text" formControlName="email" class="form-control rounded-pill" aria-label="Sizing example input" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder="email@domail.com" aria-describedby="inputGroup-sizing-lg">
+                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">Email is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input style="height: 60px;" formControlName="password" type="password" class="form-control rounded-pill" aria-label="Sizing example input" placeholder="Password" aria-describedby="inputGroup-sizing-lg">
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
+                </div>
+            </div>
+            <button (click)="onRegister()" type="button"  class="btn btn-lg rounded-pill example-form" style="background-color: rgb(248,156,20); color: white;">
+                <!-- <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> -->
+                REGISTER
+            </button>
+            <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+        </form>
+
+</div>
+    </div>
+  </div>
+</div>

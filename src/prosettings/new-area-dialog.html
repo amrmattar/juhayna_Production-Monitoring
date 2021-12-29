@@ -1,0 +1,58 @@
+<div *ngIf="!data">
+  <form (ngSubmit)="onSubmit()" [formGroup]="areaForm" class="example-form">
+    <mat-form-field class="example-full-width col-12">
+      <input matInput formControlName="name" placeholder="Name" />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width col-12">
+      <input matInput formControlName="description" placeholder="Description" />
+    </mat-form-field>
+    <mat-form-field class="example-full-width col-6" appearance="fill">
+      <mat-label>Factory Name</mat-label>
+      <mat-select formControlName="factoryId">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let fact of factories" [value]="fact.id"
+          >{{fact.name}}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary">Add Area</button>
+  </form>
+</div>
+<div *ngIf="data">
+  <form (ngSubmit)="onSubmit2()" name="areaForm" class="example-form">
+    <mat-form-field class="example-full-width col-12">
+      <input
+        matInput
+        [(value)]="data.name"
+        name="name"
+        [(ngModel)]="data.name"
+        placeholder="Name"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width col-12">
+      <input
+        matInput
+        [(value)]="data.description"
+        name="description"
+        [(ngModel)]="data.description"
+        placeholder="Description"
+      />
+    </mat-form-field>
+    <mat-form-field class="example-full-width col-6" appearance="fill">
+      <mat-label>Factory Name</mat-label>
+      <mat-select
+        [(value)]="data.factoryId"
+        name="factoryId"
+        [(ngModel)]="data.factoryId"
+      >
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let fact of factories" [value]="fact.id"
+          >{{fact.name}}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary">Add Area</button>
+  </form>
+</div>

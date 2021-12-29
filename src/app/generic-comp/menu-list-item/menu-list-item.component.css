@@ -1,0 +1,7 @@
+.menu-list-item{
+  color: white !important;
+  font-size: 12px !important;
+}
+.active {
+  color: #e6c548 !important;
+}

@@ -1,0 +1,20 @@
+<mat-nav-list class="nav-list" >
+  <mat-icon style="font-size: 35px; " class="routeIcon ml-3 material-icons"
+    >tungsten</mat-icon
+  >
+  <hr>
+  <app-menu-list-item
+    *ngFor="let item of navItems"
+    [item]="item"
+  ></app-menu-list-item>
+</mat-nav-list>
+<!-- <div>
+  <mat-icon style="font-size: 35px; margin-bottom: 45px" class="routeIcon ml-3"
+    >settings</mat-icon
+  >
+</div> -->
+<hr>
+<div>
+    <a type="button" >  <mat-icon (click)="logout()" matTooltip="Logout"style="font-size: 35px" class="routeIcon ml-3">logout</mat-icon>
+    </a>
+</div>

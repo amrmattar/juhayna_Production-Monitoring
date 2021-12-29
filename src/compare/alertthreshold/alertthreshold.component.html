@@ -1,0 +1,66 @@
+<div
+  class="container-fluid d-flex justify-content-center align-items-center"
+  style="height: 100vh"
+>
+  <mat-card
+    *ngIf="alerts"
+    class="example-card shadow p-3 mb-5 bg-white rounded col-sm-10"
+    style="height: 50vh; width: 100%"
+  >
+    <mat-card-header>
+      <mat-card-subtitle class="text-muted">Alerts</mat-card-subtitle>
+      <mat-tab-group
+        class="col-11"
+        (selectedTabChange)="onTabChanged($event)"
+        mat-align-tabs="end"
+      >
+        <mat-tab label="THRESHOLD"></mat-tab>
+        <mat-tab label="ON/OFF"></mat-tab>
+      </mat-tab-group>
+    </mat-card-header>
+    <mat-card-content
+      style="overflow-y: scroll; overflow-x: hidden; height: 42vh"
+      class="matcontent"
+    >
+      <hr />
+      <mat-card
+        *ngFor="let l of alerts"
+        style="background-color: lightgrey; margin-top: 10px"
+        ><div *ngIf="selected == 0" class="row">
+          <div class="col col-3" style="border-right: 2px solid black">
+            {{ l.alertType }}
+          </div>
+          <div class="col col-3" style="border-right: 2px solid black">
+            {{ l.timeStamp }}
+          </div>
+          <div class="col col-3" style="border-right: 2px solid black">
+            {{ l.sourceId }}
+          </div>
+          <div class="col col-3">{{ l.alertCondition }}</div>
+        </div>
+
+        <div *ngIf="selected == 1" class="row">
+          <div class="col col-6" style="border-right: 2px solid black">
+            {{ l.sourceId }} | {{ l.flag ? "On" : "off" }}
+          </div>
+          <div class="col col-6">D</div>
+        </div>
+      </mat-card>
+    </mat-card-content>
+    <mat-card-footer>
+      <div
+        class="example-button-container d-flex justify-content-end"
+        style="position: relative; bottom: 15px; right: 10px"
+      >
+        <button
+          (click)="openAddDialog()"
+          mat-fab
+          color="primary"
+          aria-label="Example icon button with a home icon"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </mat-card-footer>
+  </mat-card>
+</div>

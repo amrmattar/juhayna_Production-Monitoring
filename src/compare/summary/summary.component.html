@@ -1,0 +1,342 @@
+<div class="row justify-content-md-center">
+  <img src="../../assets/imgs/unnamed.png" style="width: 150px;" alt="">
+</div>
+<br>
+<div class="row justify-content-between mb-2">
+  <div class="col-3 mt-4" id="btnToggle">
+
+  </div>
+  <div class="col">
+    <div class="row  mt-3">
+
+      <div class=" row">
+        <div class="col">
+          <mat-form-field style="width: 230px">
+            <input
+              (dateChange)="fromDate($event)"
+              matInput
+              [ngxMatDatetimePicker]="picker"
+              placeholder="Start Date"
+              [formControl]="dateControl"
+            />
+            <mat-datepicker-toggle
+              (click)="From = dateControl.value"
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker showSeconds="true"> </ngx-mat-datetime-picker>
+          </mat-form-field>
+        </div>
+       <div class="col">
+        <mat-form-field style="width: 230px">
+          <input
+            (dateChange)="toDate($event)"
+            matInput
+            [ngxMatDatetimePicker]="picker2"
+            placeholder="End Date"
+            [formControl]="dateControl2"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker2"
+          ></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #picker2 showSeconds="true"> </ngx-mat-datetime-picker>
+        </mat-form-field>
+       </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-12">
+  <mat-card class="example-card shadow p-3 mb-5 bg-white rounded">
+    <div class="row">
+      <div class="col-10">
+        <mat-card-subtitle class="text-muted"
+        >Last Day Energy Consumption</mat-card-subtitle
+      >
+      </div>
+
+    </div>
+    <mat-card-header>
+
+    </mat-card-header>
+    <mat-tab-group mat-align-tabs="center">
+      <mat-tab label="All Loads">
+        <mat-card-content class="mt-5">
+          <table class="table mt-5" id="myTableElementId" >
+            <thead>
+              <tr>
+                <th scope="col" class="text-muted">Name</th>
+                <th scope="col" class="text-muted">Total Energy</th>
+                <th scope="col" class="text-muted">Total Price</th>
+                <th><div class="col-2">
+                  <button type="button" class="btn mt-1" style="background: transparent 0% 0% no-repeat padding-box;
+
+              border-radius: 8px;
+              opacity: 1;text-align: left;
+          font: normal normal normal 14px/17px Montserrat;
+          letter-spacing: 0.28px;
+          color: #F39C12;
+          opacity: 1;" (click)="download2()">CSV</button>
+                </div></th>
+
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr *ngFor="let mF of allLoads" id="myTableElementId" >
+                <th scope="row" class="text-muted">{{ mF.name }}</th>
+            <td class="text-muted">
+              {{ mF.energy.toFixed(2)}} KWH
+            </td>
+            <td class="text-muted" >
+              {{ pricing(mF.energy) }} EGP
+            </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+    </mat-tab>
+      <mat-tab label="Sorted Loads">
+        <mat-card-content class="mt-5" *ngIf="tableChange!=null">
+          <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Loads">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header >
+                  <mat-panel-title >
+                    MDB1
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <table class="table mt-5" id="myTableElementId" >
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-muted">Name</th>
+                      <th scope="col" class="text-muted">Total Energy</th>
+                      <th scope="col" class="text-muted">Total Price</th>
+                      <th><div class="col-2">
+                        <button type="button" class="btn mt-1" style="background: transparent 0% 0% no-repeat padding-box;
+
+                    border-radius: 8px;
+                    opacity: 1;text-align: left;
+                font: normal normal normal 14px/17px Montserrat;
+                letter-spacing: 0.28px;
+                color: #F39C12;
+                opacity: 1;" (click)="download2()">CSV</button>
+                      </div></th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr *ngFor="let mF of md1" id="myTableElementId" >
+                      <th scope="row" class="text-muted">{{ mF.name }}</th>
+                  <td class="text-muted">
+                    {{ mF.energy.toFixed(2)}} KWH
+                  </td>
+                  <td class="text-muted" >
+                    {{ pricing(mF.energy) }} EGP
+                  </td>
+
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- <div >
+
+                </div> -->
+
+              </mat-expansion-panel>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header >
+                  <mat-panel-title >
+                    MDB2
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <table class="table mt-5" id="myTableElementId" >
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-muted">Name</th>
+                      <th scope="col" class="text-muted">Total Energy</th>
+                      <th scope="col" class="text-muted">Total Price</th>
+                      <th><div class="col-2">
+                        <button type="button" class="btn mt-1" style="background: transparent 0% 0% no-repeat padding-box;
+
+                    border-radius: 8px;
+                    opacity: 1;text-align: left;
+                font: normal normal normal 14px/17px Montserrat;
+                letter-spacing: 0.28px;
+                color: #F39C12;
+                opacity: 1;" (click)="download2()">CSV</button>
+                      </div></th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr *ngFor="let mF of md2" id="myTableElementId" >
+                      <th scope="row" class="text-muted">{{ mF.name }}</th>
+                  <td class="text-muted">
+                    {{ mF.energy.toFixed(2)}} KWH
+                  </td>
+                  <td class="text-muted">
+                    {{ pricing(mF.energy) }} EGP
+                  </td>
+
+                    </tr>
+                  </tbody>
+                </table>
+
+              </mat-expansion-panel>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header >
+                  <mat-panel-title >
+                    MDB3
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <table class="table mt-5" id="myTableElementId" >
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-muted">Name</th>
+                      <th scope="col" class="text-muted">Total Energy</th>
+                      <th scope="col" class="text-muted">Total Price</th>
+                      <th><div class="col-2">
+                        <button type="button" class="btn mt-1" style="background: transparent 0% 0% no-repeat padding-box;
+
+                    border-radius: 8px;
+                    opacity: 1;text-align: left;
+                font: normal normal normal 14px/17px Montserrat;
+                letter-spacing: 0.28px;
+                color: #F39C12;
+                opacity: 1;" (click)="download2()">CSV</button>
+                      </div></th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr *ngFor="let mF of md3" id="myTableElementId" >
+                      <th scope="row" class="text-muted">{{ mF.name }}</th>
+                  <td class="text-muted">
+                    {{ mF.energy.toFixed(2)}} KWH
+                  </td>
+                  <td class="text-muted">
+                    {{ pricing(mF.energy) }} EGP
+                  </td>
+
+                    </tr>
+                  </tbody>
+                </table>
+
+              </mat-expansion-panel>
+
+          </mat-tab>
+            <mat-tab label="Sources">
+              <div class="row" *ngFor="let func of sources">
+                <mat-expansion-panel *ngIf="func.name == 'Switch Gear INC 1'">
+                  <mat-expansion-panel-header >
+                    <mat-panel-title >
+                      {{func.name}}
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <table class="table mt-5" id="myTableElementId" >
+                    <thead>
+                      <tr>
+                        <th scope="col" class="text-muted">Name</th>
+                        <th scope="col" class="text-muted">Total Energy</th>
+                        <th scope="col" class="text-muted">Total Price</th>
+                        <th><div class="col-2">
+                          <button type="button" class="btn mt-1" style="background: transparent 0% 0% no-repeat padding-box;
+
+                      border-radius: 8px;
+                      opacity: 1;text-align: left;
+                  font: normal normal normal 14px/17px Montserrat;
+                  letter-spacing: 0.28px;
+                  color: #F39C12;
+                  opacity: 1;" (click)="download2()">CSV</button>
+                        </div></th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <tr *ngFor="let mF of mF1" id="myTableElementId" >
+                        <th scope="row" class="text-muted">{{ mF.name }}</th>
+                    <td class="text-muted">
+                      {{ mF.energy.toFixed(2)}} KWH
+                    </td>
+                    <td class="text-muted">
+                      {{ pricing(mF.energy) }} EGP
+                    </td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="func.name == 'Switch Gear INC 2'">
+                  <mat-expansion-panel-header >
+                    <mat-panel-title >
+                      {{func.name}}
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <table class="table mt-5" id="myTableElementId" >
+                    <thead>
+                      <tr>
+                        <th scope="col" class="text-muted">Name</th>
+                        <th scope="col" class="text-muted">Total Energy</th>
+                        <th scope="col" class="text-muted">Total Price</th>
+                        <th><div class="col-2">
+                          <button type="button" class="btn mt-1" style="background: transparent 0% 0% no-repeat padding-box;
+
+                      border-radius: 8px;
+                      opacity: 1;text-align: left;
+                  font: normal normal normal 14px/17px Montserrat;
+                  letter-spacing: 0.28px;
+                  color: #F39C12;
+                  opacity: 1;" (click)="download2()">CSV</button>
+                        </div></th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <tr *ngFor="let mF of mF2" id="myTableElementId" >
+                        <th scope="row" class="text-muted">{{ mF.name }}</th>
+                    <td class="text-muted">
+                      {{ mF.energy.toFixed(2)}} KWH
+                    </td>
+                    <td class="text-muted">
+                      {{ pricing(mF.energy) }} EGP
+                    </td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+                </mat-expansion-panel>
+              </div>
+               <!-- <table class="table mt-5" >
+              <thead>
+                <tr>
+                  <th scope="col" class="text-muted">Name</th>
+                  <th scope="col" class="text-muted">Total Energy</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr >
+
+
+                </tr>
+              </tbody>
+            </table>-->
+          </mat-tab>
+          </mat-tab-group>
+
+        </mat-card-content>
+      </mat-tab>
+    </mat-tab-group>
+
+  </mat-card>
+
+</div>

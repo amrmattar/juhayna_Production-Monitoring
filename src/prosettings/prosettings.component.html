@@ -1,0 +1,318 @@
+<div class="row justify-content-md-center">
+  <img src="../../assets/imgs/unnamed.png" style="width: 150px;" alt="">
+</div>
+<br>
+<div class="container-fluid col mt-3">
+  <mat-card class="example-card shadow p-3 mb-5 bg-white rounded col-sm-12">
+    <mat-card-header>
+      <mat-card-subtitle class="text-muted">Factories</mat-card-subtitle>
+      <mat-tab-group
+        class="col-10"
+        (selectedTabChange)="onTabChangedfact($event)"
+        mat-align-tabs="end"
+      >
+        <mat-tab label="Bar Chart"></mat-tab>
+        <mat-tab label="Record List"></mat-tab>
+      </mat-tab-group>
+    </mat-card-header>
+    <mat-card-content class="matcontent">
+      <hr />
+      <mat-chip-list *ngIf="selectedTabIndex1 == 0" aria-label="Fish selection">
+        <mat-chip *ngFor="let fact of factories" color="primary" selected
+          >{{ fact.name }}
+        </mat-chip>
+        <!-- <mat-chip color="primary" selected>Primary </mat-chip>
+        <mat-chip color="accent" selected>Accent </mat-chip>
+        <mat-chip color="accent" selected>Accent </mat-chip> -->
+      </mat-chip-list>
+      <table class="table table-striped" *ngIf="selectedTabIndex1 == 1">
+        <thead>
+          <tr>
+            <th scope="col">NAME</th>
+
+            <th scope="col">Description</th>
+
+            <th class="d-flex justify-content-center" scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fact of factories">
+            <th scope="row">{{ fact.name }}</th>
+
+            <td>{{ fact.description }}</td>
+
+            <td class="d-flex justify-content-center">
+              <button
+                class="mr-2"
+                mat-mini-fab
+                (click)="openEditDialog(fact)"
+                id="button"
+                aria-label="Example icon button with a delete icon"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Edit Drum Data"
+              >
+                <mat-icon id="icon" aria-hidden="false">edit</mat-icon>
+              </button>
+              <!-- <button
+                (click)="deletefact(fact)"
+                mat-mini-fab
+                id="button"
+                aria-label="Example icon button with a delete icon"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Delete"
+              >
+                <mat-icon id="icon" aria-hidden="false">delete</mat-icon>
+              </button> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card shadow p-3 mb-5 bg-white rounded col-sm-12">
+    <mat-card-header>
+      <mat-card-subtitle class="text-muted">Loads</mat-card-subtitle>
+      <mat-tab-group
+        class="col-10"
+        (selectedTabChange)="onTabChanged($event)"
+        mat-align-tabs="end"
+      >
+        <mat-tab label="Bar Chart"></mat-tab>
+        <mat-tab label="Record List"></mat-tab>
+      </mat-tab-group>
+    </mat-card-header>
+
+    <mat-card-content class="matcontent">
+      <hr />
+      <mat-chip-list *ngIf="selectedTabIndex == 0" aria-label="Fish selection">
+        <mat-chip *ngFor="let func of functions" color="primary" selected
+          >{{ func.name }}
+        </mat-chip>
+        <!-- <mat-chip color="primary" selected>Primary </mat-chip>
+        <mat-chip color="accent" selected>Accent </mat-chip>
+        <mat-chip color="accent" selected>Accent </mat-chip> -->
+      </mat-chip-list>
+      <table class="table table-striped" *ngIf="selectedTabIndex == 1">
+        <thead>
+          <tr>
+            <th scope="col">NAME</th>
+
+            <th scope="col">Description</th>
+
+            <th class="d-flex justify-content-center" scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fact of functions">
+            <th scope="row">{{ fact.name }}</th>
+
+            <td>{{ fact.description }}</td>
+            <td class="d-flex justify-content-center">
+              <button
+                class="mr-2"
+                mat-mini-fab
+                (click)="openEditfunctionDialog(fact)"
+                id="button"
+                aria-label="Example icon button with a delete icon"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Edit Drum Data"
+              >
+                <mat-icon id="icon" aria-hidden="false">edit</mat-icon>
+              </button>
+              <!-- <button
+                (click)="deleteload(fact)"
+                mat-mini-fab
+                id="button"
+                aria-label="Example icon button with a delete icon"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Delete"
+              >
+                <mat-icon id="icon" aria-hidden="false">delete</mat-icon>
+              </button> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card shadow p-3 mb-5 bg-white rounded col-sm-12">
+    <mat-card-header>
+      <mat-card-subtitle class="text-muted">Functions</mat-card-subtitle>
+      <mat-tab-group
+        class="col-10"
+        (selectedTabChange)="onTabChangedload($event)"
+        mat-align-tabs="end"
+      >
+        <mat-tab label="Bar Chart"></mat-tab>
+        <mat-tab label="Record List"></mat-tab>
+      </mat-tab-group>
+    </mat-card-header>
+    <mat-card-content class="matcontent">
+      <hr />
+      <mat-chip-list *ngIf="selectedTabIndex2 == 0" aria-label="Fish selection">
+        <mat-chip *ngFor="let func of functions2" color="primary" selected
+          >{{ func.name }}
+        </mat-chip>
+      </mat-chip-list>
+      <table class="table table-striped" *ngIf="selectedTabIndex2 == 1">
+        <thead>
+          <tr>
+            <th scope="col">NAME</th>
+            <th scope="col">Descriptions</th>
+
+            <th class="d-flex justify-content-center" scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fact of functions2">
+            <th scope="row">{{ fact.name }}</th>
+
+            <td>{{ fact.description }}</td>
+            <td class="d-flex justify-content-center">
+              <button
+                class="mr-2"
+                mat-mini-fab
+                (click)="openEditFuncDialog(fact)"
+                id="button"
+                aria-label="Example icon button with a delete icon"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Edit Drum Data"
+              >
+                <mat-icon id="icon" aria-hidden="false">edit</mat-icon>
+              </button>
+              <!-- <button
+                (click)="deletefunc(fact)"
+                mat-mini-fab
+                id="button"
+                aria-label="Example icon button with a delete icon"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Delete"
+              >
+                <mat-icon id="icon" aria-hidden="false">delete</mat-icon>
+              </button> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="example-card shadow p-3 mb-5 bg-white rounded col-sm-12">
+    <mat-card-header>
+      <mat-card-subtitle class="text-muted">Areas</mat-card-subtitle>
+      <mat-tab-group
+        class="col-10"
+        (selectedTabChange)="onTabChangedArea($event)"
+        mat-align-tabs="end"
+      >
+        <mat-tab label="Bar Chart"></mat-tab>
+        <mat-tab label="Record List"></mat-tab>
+      </mat-tab-group>
+    </mat-card-header>
+    <mat-card-content class="matcontent">
+      <hr />
+      <mat-chip-list *ngIf="selectedTabIndex3 == 0" aria-label="Fish selection">
+        <mat-chip *ngFor="let func of areas" color="primary" selected
+          >{{ func.name }}
+        </mat-chip>
+      </mat-chip-list>
+      <table class="table table-striped" *ngIf="selectedTabIndex3 == 1">
+        <thead>
+          <tr>
+            <th scope="col">NAME</th>
+            <th scope="col">Descriptions</th>
+
+            <th class="d-flex justify-content-center" scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fact of areas">
+            <th scope="row">{{ fact.name }}</th>
+
+            <td>{{ fact.description }}</td>
+            <td class="d-flex justify-content-center">
+              <button
+                class="mr-2"
+                mat-mini-fab
+                (click)="openEditAreaDialog(fact)"
+                id="button"
+                aria-label="Example icon button with a delete icon"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Edit Drum Data"
+              >
+                <mat-icon id="icon" aria-hidden="false">edit</mat-icon>
+              </button>
+              <!-- <button
+                (click)="deletefunc(fact)"
+                mat-mini-fab
+                id="button"
+                aria-label="Example icon button with a delete icon"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Delete"
+              >
+                <mat-icon id="icon" aria-hidden="false">delete</mat-icon>
+              </button> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  <smd-fab-speed-dial
+    class="d-flex flex-row-reverse mb-2"
+    direction="up"
+    animationMode="scale"
+  >
+    <smd-fab-trigger>
+      <button mat-fab (click)="actionX()"><mat-icon>add</mat-icon></button>
+    </smd-fab-trigger>
+
+    <smd-fab-actions>
+      <button
+        data-bs-toggle="tooltip"
+        data-bs-placement="left"
+        title="new factory"
+        mat-mini-fab
+        (click)="action1()"
+      >
+        Factory
+      </button>
+      <button
+        data-bs-toggle="tooltip"
+        data-bs-placement="left"
+        title="new feature"
+        mat-mini-fab
+        (click)="action2()"
+      >
+        Function
+      </button>
+      <button
+        data-bs-toggle="tooltip"
+        data-bs-placement="left"
+        title="new area"
+        mat-mini-fab
+        (click)="action4()"
+      >
+        Area
+      </button>
+      <button
+        data-bs-toggle="tooltip"
+        data-bs-placement="left"
+        title="new load"
+        mat-mini-fab
+        (click)="action3()"
+      >
+        Load
+      </button>
+    </smd-fab-actions>
+  </smd-fab-speed-dial>
+</div>

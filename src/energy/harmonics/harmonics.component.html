@@ -1,0 +1,1330 @@
+<div class="container-fluid">
+  <div class="row justify-content-between mt-2">
+    <div class="col-9">
+      <button mat-flat-button class="text-muted btn-outline-warning active" [matMenuTriggerFor]="menu">
+        <a style="font-size: 25px">
+          <i class="fa fa-building text-muted"></i>
+        </a>
+      </button>
+      <mat-menu #menu="matMenu"> </mat-menu>
+      <button (click)="
+          functionRender = true;
+          loadRender = false;
+          oneFunctionRender = false;
+          areaRender = false;
+          functionName = null;
+          loadName = null;
+          areaName = null;
+          getAllFunctionsDefault();
+        " [matMenuTriggerFor]="menu2" mat-flat-button class="text-muted btn-outline-warning active"
+        [ngClass]="{ active: tabIndex2 === 0 }" (click)="onTabClick2(0)">
+        <mat-icon *ngIf="functionName == null" class="text-muted" style="font-size: 25px">settings_input_component
+        </mat-icon>
+        <span *ngIf="functionName != null" class="text-muted" style="font-size: 25px">
+          {{ functionName }}</span>
+      </button>
+      <mat-menu #menu2="matMenu">
+        <button *ngFor="let func of menuFunctions" (click)="
+            oneFunctionRender = true;
+            functionRender = false;
+            loadRender = false;
+            areaRender = false;
+            funcId = func.id;
+            functionName = func.name
+          " mat-menu-item (click)="getAllFunctionDefault(func.id)">
+          {{ func.name }}
+        </button>
+      </mat-menu>
+      <button (click)="
+        functionRender = true;
+        loadRender = false;
+        oneFunctionRender = false;
+        areaRender = false;
+        functionName = null;
+        loadName = null;
+        areaName = null;
+
+      " [matMenuTriggerFor]="menu4" mat-flat-button class="text-muted btn-outline-warning active"
+        [ngClass]="{ active: tabIndex2 === 3 }" (click)="onTabClick2(3)">
+        <mat-icon *ngIf="areaName == null" class="text-muted" style="font-size: 25px">settings_input_component
+        </mat-icon>
+        <span *ngIf="areaName != null" class="text-muted" style="font-size: 25px">
+          {{ areaName }}</span>
+      </button>
+      <mat-menu #menu4="matMenu">
+        <button *ngFor="let func of areas" (click)="
+          oneFunctionRender = false;
+          functionRender = false;
+          loadRender = false;
+          areaRender = true;
+          funcId = func.id;
+          areaName = func.name
+        " mat-menu-item (click)="getAllAreaDefault(func.id)">
+          {{ func.name }}
+        </button>
+      </mat-menu>
+      <button [matMenuTriggerFor]="menu3" mat-flat-button class="text-muted btn-outline-warning"
+        [ngClass]="{ active: tabIndex2 === 1 }" (click)="onTabClick2(1)">
+        <a style="font-size: 25px">
+          <i *ngIf="loadName == null" class="fa fa-rocket text-muted"></i>
+          <span *ngIf="loadName != null">{{ loadName }}</span>
+        </a>
+      </button>
+      <mat-menu #menu3="matMenu">
+        <button *ngFor="let func of loads" mat-menu-item (click)="
+            getLoadDefault(func.code);
+            loadCode = func.code;
+            oneLoadRender = false;
+            oneFunctionRender = false;
+            functionRender = false;
+            loadRender = true;
+            areaRender = false;
+            areaName = null;
+            loadName = func.name;
+
+          ">
+          {{ func.name }}
+        </button>
+      </mat-menu>
+    </div>
+    <div class="col-3">
+      <button mat-flat-button class="text-muted btn-outline-warning active" checked (click)="getAllFunctionsTime(1);">
+        Today
+      </button>
+      <button mat-flat-button class="text-muted btn-outline-warning" (click)="getAllFunctionsTime(2)">
+        Yesterday
+      </button>
+      <button mat-flat-button class="text-muted btn-outline-warning" (click)="getAllFunctionsTime(3);">
+        Last Week
+      </button>
+      <div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt-5" style="background-color:#F7F8FA; " *ngIf="functionRender == true">
+  <div class="row">
+    <div class="col-4 ">
+      <div *ngIf="avgTHDi" class="card mt-3 h-75  example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body ">
+          <h5 class="card-title " style="text-align: left;
+                      font: normal normal medium 18px/22px Montserrat;
+                      letter-spacing: 0.28px;
+                      color: #707070;
+                      opacity: 1;">Average Harmonic KPI's</h5>
+          <hr>
+          <h3 class="card-text " style="text-align: left;
+                      letter-spacing: 0px;
+                      color: #000000;
+                      opacity: 1; font-size: 18px; font-weight: bold;
+                  ">THD Voltage</h3>
+          <div class="row">
+            <div class="col-9 mt-3">
+              <mat-progress-bar style="height:7px" mode="determinate" [value]="avgTHDv.toFixed(2)"></mat-progress-bar>
+
+            </div>
+            <div class="col ">
+              <h3 style="font-weight: bold;
+                              text-align: center;
+                              letter-spacing: 0px;
+                              color: #000000;
+                              font-size: 24px;
+                              opacity: 1;">{{avgTHDv.toFixed(2)}}%</h3>
+
+            </div>
+
+          </div>
+          <h3 class="card-text " style="text-align: left;
+                      letter-spacing: 0px;
+                      color: #000000;
+                      opacity: 1; font-size: 18px; font-weight: bold;
+                  ">THD Current</h3>
+          <div class="row">
+            <div class="col-9 mt-3">
+              <mat-progress-bar style="height:7px" mode="determinate" [value]="avgTHDi.toFixed(2)"></mat-progress-bar>
+
+            </div>
+            <div class="col mb-5">
+              <h3 style="font-weight: bold;
+                              text-align: center;
+                              letter-spacing: 0px;
+                              color: #000000;
+                              font-size: 24px;
+                              opacity: 1;">{{avgTHDi.toFixed(2)}}%</h3>
+
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card mt-3  h-75  example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body " *ngIf="maxTHDv">
+          <h5 class="card-title  ">Highest Feature</h5>
+          <hr>
+          <h3 class="card-text " style=" font-weight: bold;
+                text-align: left;
+                letter-spacing: 0px;
+                color: #000000; margin-top: 25px;
+                opacity: 1;">{{maxTHDiName}}</h3>
+                <br><br>
+          <div class="row ">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-7">
+                  <h3 style="text-align: left;font-size: 16px;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;">THD Voltage</h3>
+                </div>
+                <div class="col-4">
+                  <h3 style="text-align: left;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold; font-size: 18px;">{{maxTHDv.toFixed(2)}}%</h3>
+
+                </div>
+                <mat-progress-bar style="height:7px" color="warn"  mode="determinate" [value]="maxTHDv.toFixed(2)">
+                </mat-progress-bar>
+
+              </div>
+
+            </div>
+            <div class="col-6 ">
+              <div class="row">
+                <div class="col">
+                  <h3 style="text-align: left;font-size: 16px;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;">THD Current</h3>
+                </div>
+                <div class="col">
+                  <h3 style="text-align: left;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;font-size: 18px;">{{maxTHDi.toFixed(2)}}%</h3>
+
+                </div>
+                <mat-progress-bar color="warn" style="height:7px"  mode="determinate" [value]="maxTHDi.toFixed(2)">
+                </mat-progress-bar>
+
+              </div>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4" *ngIf="maxTHDi">
+      <div class="card mt-3 h-75   example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body " *ngIf="minTHDv">
+          <h5 class="card-title  ">Lowest Feature</h5>
+          <hr>
+          <h3 class="card-text " style=" font-weight: bold;
+                text-align: left;
+                letter-spacing: 0px;
+                color: #000000; margin-top: 25px;
+                opacity: 1;">{{minTHDiName}}</h3>
+                <br><br>
+          <div class="row ">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-7">
+                  <h3 style="text-align: left;font-size: 16px;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;">THD Voltage</h3>
+                </div>
+                <div class="col-4">
+                  <h3 style="text-align: left;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold; font-size: 18px;">{{minTHDv.toFixed(2)}}%</h3>
+
+                </div>
+                <mat-progress-bar style="height:7px" color="warn"  mode="determinate" [value]="minTHDv.toFixed(2)">
+                </mat-progress-bar>
+
+              </div>
+
+            </div>
+            <div class="col-6 ">
+              <div class="row">
+                <div class="col">
+                  <h3 style="text-align: left;font-size: 16px;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;">THD Current</h3>
+                </div>
+                <div class="col">
+                  <h3 style="text-align: left;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;font-size: 18px;">{{minTHDi.toFixed(2)}}%</h3>
+
+                </div>
+                <mat-progress-bar color="warn" style="height:7px"  mode="determinate" [value]="minTHDi.toFixed(2)">
+                </mat-progress-bar>
+
+              </div>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row  mt-3">
+    <div class="col-8">
+      <div class="card example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+          <div class="row" style="border-bottom:  2px solid #b9b6b6;">
+            <div class="col-8 mt-2">
+              <h5 class="card-title ">THD Profile (THDi,THDv)
+              </h5>
+            </div>
+
+
+          </div>
+
+
+          <div id="chart" *ngIf="lineChartData != null">
+            <apx-chart [series]="functionsBar.series" [chart]="functionsBar.chart"
+              [dataLabels]="functionsBar.dataLabels" [plotOptions]="functionsBar.plotOptions"
+              [legend]="functionsBar.legend" [fill]="functionsBar.fill" [colors]="pieFunctions.colors" [xaxis]="functionsBar.xaxis"></apx-chart>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4 ">
+      <div style="height: 480px;" class="card example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+          <h5 class="card-title" style="border-bottom:  2px solid #b9b6b6;">Harmonics Current Orders</h5>
+          <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Current">
+              <div id="chart " style="margin-top: 60px;">
+                <div id="chart2" *ngIf="lineChartData != null">
+                  <apx-chart [series]="pieCurrent.series" [chart]="pieCurrent.chart"
+                    [responsive]="pieCurrent.responsive" [labels]="pieCurrent.labels" [colors]="pieFunctions.colors"></apx-chart>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Voltage">
+              <div id="chart " style="margin-top: 60px;">
+                <div id="chart2" *ngIf="lineChartData != null">
+                  <apx-chart [series]="pieVoltage.series" [chart]="pieVoltage.chart"
+                    [responsive]="pieVoltage.responsive" [labels]="pieVoltage.labels" [colors]="pieFunctions.colors"></apx-chart>
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>
+<div class="container-fluid mt-5" style="background-color:#F7F8FA; " *ngIf="oneFunctionRender == true">
+  <div class="row">
+    <div class="col-4 ">
+      <div *ngIf="avgTHDi" class="card mt-3 h-75  example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body ">
+          <h5 class="card-title " style="text-align: left;
+                      font: normal normal medium 18px/22px Montserrat;
+                      letter-spacing: 0.28px;
+                      color: #707070;
+                      opacity: 1;">Average Harmonic KPI's</h5>
+          <hr>
+          <h3 class="card-text " style="text-align: left;
+                      letter-spacing: 0px;
+                      color: #000000;
+                      opacity: 1; font-size: 18px; font-weight: bold;
+                  ">THD Voltage</h3>
+          <div class="row">
+            <div class="col-9 mt-3">
+              <mat-progress-bar style="height:7px" mode="determinate" [value]="avgTHDv.toFixed(2)"></mat-progress-bar>
+
+            </div>
+            <div class="col ">
+              <h3 style="font-weight: bold;
+                              text-align: center;
+                              letter-spacing: 0px;
+                              color: #000000;
+                              font-size: 24px;
+                              opacity: 1;">{{avgTHDv.toFixed(2)}}%</h3>
+
+            </div>
+
+          </div>
+          <h3 class="card-text " style="text-align: left;
+                      letter-spacing: 0px;
+                      color: #000000;
+                      opacity: 1; font-size: 18px; font-weight: bold;
+                  ">THD Current</h3>
+          <div class="row">
+            <div class="col-9 mt-3">
+              <mat-progress-bar style="height:7px" mode="determinate" [value]="avgTHDi.toFixed(2)"></mat-progress-bar>
+
+            </div>
+            <div class="col mb-5">
+              <h3 style="font-weight: bold;
+                              text-align: center;
+                              letter-spacing: 0px;
+                              color: #000000;
+                              font-size: 24px;
+                              opacity: 1;">{{avgTHDi.toFixed(2)}}%</h3>
+
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card mt-3  h-75  example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body " *ngIf="maxTHDv">
+          <h5 class="card-title  ">Highest Feature</h5>
+          <hr>
+          <h3 class="card-text " style=" font-weight: bold;
+                text-align: left;
+                letter-spacing: 0px;
+                color: #000000; margin-top: 25px;
+                opacity: 1;">DRAWING-COPPER</h3>
+                <br><br>
+          <div class="row ">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-7">
+                  <h3 style="text-align: left;font-size: 16px;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;">THD Voltage</h3>
+                </div>
+                <div class="col-4">
+                  <h3 style="text-align: left;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold; font-size: 18px;">{{maxTHDv.toFixed(2)}}%</h3>
+
+                </div>
+                <mat-progress-bar style="height:7px" color="warn"  mode="determinate" [value]="maxTHDv.toFixed(2)">
+                </mat-progress-bar>
+
+              </div>
+
+            </div>
+            <div class="col-6 ">
+              <div class="row">
+                <div class="col">
+                  <h3 style="text-align: left;font-size: 16px;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;">THD Current</h3>
+                </div>
+                <div class="col">
+                  <h3 style="text-align: left;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;font-size: 18px;">{{maxTHDi.toFixed(2)}}%</h3>
+
+                </div>
+                <mat-progress-bar color="warn" style="height:7px"  mode="determinate" [value]="maxTHDi.toFixed(2)">
+                </mat-progress-bar>
+
+              </div>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4" *ngIf="maxTHDi">
+      <div class="card mt-3 h-75   example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body " *ngIf="minTHDv">
+          <h5 class="card-title  ">Lowest Feature</h5>
+          <hr>
+          <h3 class="card-text " style=" font-weight: bold;
+                text-align: left;
+                letter-spacing: 0px;
+                color: #000000; margin-top: 25px;
+                opacity: 1;">DRAWING-COPPER</h3>
+                <br><br>
+          <div class="row ">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-7">
+                  <h3 style="text-align: left;font-size: 16px;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;">THD Voltage</h3>
+                </div>
+                <div class="col-4">
+                  <h3 style="text-align: left;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold; font-size: 18px;">{{minTHDv.toFixed(2)}}%</h3>
+
+                </div>
+                <mat-progress-bar style="height:7px" color="warn"  mode="determinate" [value]="minTHDv.toFixed(2)">
+                </mat-progress-bar>
+
+              </div>
+
+            </div>
+            <div class="col-6 ">
+              <div class="row">
+                <div class="col">
+                  <h3 style="text-align: left;font-size: 16px;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;">THD Current</h3>
+                </div>
+                <div class="col">
+                  <h3 style="text-align: left;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;font-size: 18px;">{{minTHDi.toFixed(2)}}%</h3>
+
+                </div>
+                <mat-progress-bar color="warn" style="height:7px"  mode="determinate" [value]="minTHDi.toFixed(2)">
+                </mat-progress-bar>
+
+              </div>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row mt-3">
+    <div class="col-8">
+      <div class="card example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+          <div class="row" style="border-bottom:  2px solid #b9b6b6;">
+            <div class="col-8 mt-2">
+              <h5 class="card-title ">THD Profile (THDi,THDv)
+              </h5>
+            </div>
+
+
+          </div>
+
+
+          <div id="chart" *ngIf="lineChartData != null">
+            <apx-chart [series]="functionsBar.series" [chart]="functionsBar.chart"
+              [dataLabels]="functionsBar.dataLabels" [plotOptions]="functionsBar.plotOptions"
+              [legend]="functionsBar.legend" [fill]="functionsBar.fill" [colors]="pieFunctions.colors" [xaxis]="functionsBar.xaxis"></apx-chart>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4 ">
+      <div style="height: 480px;" class="card example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+          <h5 class="card-title" style="border-bottom:  2px solid #b9b6b6;">Harmonics Current Orders</h5>
+          <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Current">
+              <div id="chart " style="margin-top: 60px;">
+                <div id="chart2" *ngIf="lineChartData != null">
+                  <apx-chart [series]="pieCurrent.series" [chart]="pieCurrent.chart"
+                    [responsive]="pieCurrent.responsive" [colors]="pieFunctions.colors" [labels]="pieCurrent.labels"></apx-chart>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Voltage">
+              <div id="chart " style="margin-top: 60px;">
+                <div id="chart2" *ngIf="lineChartData != null">
+                  <apx-chart [series]="pieVoltage.series" [chart]="pieVoltage.chart"
+                    [responsive]="pieVoltage.responsive" [colors]="pieFunctions.colors" [labels]="pieVoltage.labels"></apx-chart>
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>
+<div class="container-fluid mt-5" style="background-color:#F7F8FA; " *ngIf="areaRender == true">
+  <div class="row">
+    <div class="col-4 ">
+      <div *ngIf="avgTHDi" class="card mt-3 h-75  example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body ">
+          <h5 class="card-title " style="text-align: left;
+                      font: normal normal medium 18px/22px Montserrat;
+                      letter-spacing: 0.28px;
+                      color: #707070;
+                      opacity: 1;">Average Harmonic KPI's</h5>
+          <hr>
+          <h3 class="card-text " style="text-align: left;
+                      letter-spacing: 0px;
+                      color: #000000;
+                      opacity: 1; font-size: 18px; font-weight: bold;
+                  ">THD Voltage</h3>
+          <div class="row">
+            <div class="col-9 mt-3">
+              <mat-progress-bar style="height:7px" mode="determinate" [value]="avgTHDv.toFixed(2)"></mat-progress-bar>
+
+            </div>
+            <div class="col ">
+              <h3 style="font-weight: bold;
+                              text-align: center;
+                              letter-spacing: 0px;
+                              color: #000000;
+                              font-size: 24px;
+                              opacity: 1;">{{avgTHDv.toFixed(2)}}%</h3>
+
+            </div>
+
+          </div>
+          <h3 class="card-text " style="text-align: left;
+                      letter-spacing: 0px;
+                      color: #000000;
+                      opacity: 1; font-size: 18px; font-weight: bold;
+                  ">THD Current</h3>
+          <div class="row">
+            <div class="col-9 mt-3">
+              <mat-progress-bar style="height:7px" mode="determinate" [value]="avgTHDi.toFixed(2)"></mat-progress-bar>
+
+            </div>
+            <div class="col mb-5">
+              <h3 style="font-weight: bold;
+                              text-align: center;
+                              letter-spacing: 0px;
+                              color: #000000;
+                              font-size: 24px;
+                              opacity: 1;">{{avgTHDi.toFixed(2)}}%</h3>
+
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card mt-3  h-75  example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body " *ngIf="maxTHDv">
+          <h5 class="card-title  ">Highest Feature</h5>
+          <hr>
+          <h3 class="card-text " style=" font-weight: bold;
+                text-align: left;
+                letter-spacing: 0px;
+                color: #000000; margin-top: 25px;
+                opacity: 1;">{{maxTHDiName}}</h3>
+                <br><br>
+          <div class="row ">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-7">
+                  <h3 style="text-align: left;font-size: 16px;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;">THD Voltage</h3>
+                </div>
+                <div class="col-4">
+                  <h3 style="text-align: left;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold; font-size: 18px;">{{maxTHDv.toFixed(2)}}%</h3>
+
+                </div>
+                <mat-progress-bar style="height:7px" color="warn"  mode="determinate" [value]="maxTHDv.toFixed(2)">
+                </mat-progress-bar>
+
+              </div>
+
+            </div>
+            <div class="col-6 ">
+              <div class="row">
+                <div class="col">
+                  <h3 style="text-align: left;font-size: 16px;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;">THD Current</h3>
+                </div>
+                <div class="col">
+                  <h3 style="text-align: left;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;font-size: 18px;">{{maxTHDi.toFixed(2)}}%</h3>
+
+                </div>
+                <mat-progress-bar color="warn" style="height:7px"  mode="determinate" [value]="maxTHDi.toFixed(2)">
+                </mat-progress-bar>
+
+              </div>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4" *ngIf="maxTHDi">
+      <div class="card mt-3 h-75   example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body " *ngIf="minTHDv">
+          <h5 class="card-title  ">Lowest Feature</h5>
+          <hr>
+          <h3 class="card-text " style=" font-weight: bold;
+                text-align: left;
+                letter-spacing: 0px;
+                color: #000000; margin-top: 25px;
+                opacity: 1;">{{minTHDiName}}</h3>
+                <br><br>
+          <div class="row ">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-7">
+                  <h3 style="text-align: left;font-size: 16px;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;">THD Voltage</h3>
+                </div>
+                <div class="col-4">
+                  <h3 style="text-align: left;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold; font-size: 18px;">{{minTHDv.toFixed(2)}}%</h3>
+
+                </div>
+                <mat-progress-bar style="height:7px" color="warn"  mode="determinate" [value]="minTHDv.toFixed(2)">
+                </mat-progress-bar>
+
+              </div>
+
+            </div>
+            <div class="col-6 ">
+              <div class="row">
+                <div class="col">
+                  <h3 style="text-align: left;font-size: 16px;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;">THD Current</h3>
+                </div>
+                <div class="col">
+                  <h3 style="text-align: left;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1; font-weight:bold;font-size: 18px;">{{minTHDi.toFixed(2)}}%</h3>
+
+                </div>
+                <mat-progress-bar color="warn" style="height:7px"  mode="determinate" [value]="minTHDi.toFixed(2)">
+                </mat-progress-bar>
+
+              </div>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row  mt-3">
+    <div class="col-8">
+      <div class="card example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+          <div class="row" style="border-bottom:  2px solid #b9b6b6;">
+            <div class="col-8 mt-2">
+              <h5 class="card-title ">THD Profile (THDi,THDv)
+              </h5>
+            </div>
+
+
+          </div>
+
+
+          <div id="chart" *ngIf="lineChartData != null">
+            <apx-chart [series]="functionsBar.series" [colors]="pieFunctions.colors" [chart]="functionsBar.chart"
+              [dataLabels]="functionsBar.dataLabels" [plotOptions]="functionsBar.plotOptions"
+              [legend]="functionsBar.legend" [fill]="functionsBar.fill" [xaxis]="functionsBar.xaxis"></apx-chart>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4 ">
+      <div style="height: 480px;" class="card example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+          <h5 class="card-title" style="border-bottom:  2px solid #b9b6b6;">Harmonics Current Orders</h5>
+          <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Current">
+              <div id="chart " style="margin-top: 60px;">
+                <div id="chart2" *ngIf="lineChartData != null">
+                  <apx-chart [series]="pieCurrent.series" [colors]="pieFunctions.colors" [chart]="pieCurrent.chart"
+                    [responsive]="pieCurrent.responsive" [labels]="pieCurrent.labels"></apx-chart>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Voltage">
+              <div id="chart " style="margin-top: 60px;">
+                <div id="chart2" *ngIf="lineChartData != null">
+                  <apx-chart [series]="pieVoltage.series" [colors]="pieFunctions.colors" [chart]="pieVoltage.chart"
+                    [responsive]="pieVoltage.responsive" [labels]="pieVoltage.labels"></apx-chart>
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>
+<div class="container-fluid mt-5" style="background-color:#F7F8FA; " *ngIf="loadRender == true">
+  <div class="row">
+    <div class="col-4 ">
+      <div *ngIf="avgTHDi2" class="card mt-3 ms-5 h-75  example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body ">
+          <h5 class="card-title " style="text-align: left;
+                    font: normal normal medium 18px/22px Montserrat;
+                    letter-spacing: 0.28px;
+                    color: #707070;
+                    opacity: 1;">Average Harmonic KPI's</h5>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Voltage 1</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="avgTHDv1.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col ">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{avgTHDv1.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Current 1</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="avgTHDi1.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col mb-5">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{avgTHDi1.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+            </div>
+            <div class="col">
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Voltage 2</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="avgTHDv2.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col ">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{avgTHDv2.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Current 2</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="avgTHDi2.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col mb-5">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{avgTHDi2.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+            </div>
+            <div class="col">
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Voltage 3</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="avgTHDv3.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col ">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{avgTHDv3.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Current 3</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="avgTHDi3.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col mb-5">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{avgTHDi3.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card mt-3 ms-3 h-75  example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body " *ngIf="maxTHDv2">
+          <h5 class="card-title  ">Highest Feature</h5>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Voltage 1</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="maxTHDv1.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col ">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{maxTHDv1.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Current 1</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="maxTHDi1.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col mb-5">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{maxTHDi1.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+            </div>
+            <div class="col">
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Voltage 2</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="maxTHDv2.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col ">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{maxTHDv2.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Current 2</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="maxTHDi2.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col mb-5">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{maxTHDi2.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+            </div>
+            <div class="col">
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Voltage 3</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="maxTHDv3.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col ">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{maxTHDv3.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Current 3</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="maxTHDi3.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col mb-5">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{maxTHDi3.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4" *ngIf="maxTHDi">
+      <div class="card mt-3 h-75  ms-3 example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body ">
+          <h5 class="card-title ">Lowest Feature</h5>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Voltage 1</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="minTHDv1.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col ">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{minTHDv1.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Current 1</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="minTHDi1.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col mb-5">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{minTHDi1.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+            </div>
+            <div class="col">
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Voltage 2</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="minTHDv2.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col ">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{minTHDv2.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Current 2</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="minTHDi2.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col mb-5">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{minTHDi2.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+            </div>
+            <div class="col">
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Voltage 3</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="minTHDv3.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col ">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{minTHDv3.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+              <h3 class="card-text " style="text-align: left;
+                        letter-spacing: 0px;
+                        color: #000000;
+                        opacity: 1; margin-top: 25px; font-weight: bold;
+                    ">THD Current 3</h3>
+              <div class="row">
+                <div class="col-9 mt-2">
+                  <mat-progress-bar style="height:7px" mode="determinate" [value]="minTHDi3.toFixed(2)">
+                  </mat-progress-bar>
+
+                </div>
+                <div class="col mb-5">
+                  <h3 style="font-weight: bold;
+                                text-align: center;
+                                letter-spacing: 0px;
+                                color: #000000;
+                                opacity: 1;">{{minTHDi3.toFixed(2)}}%</h3>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row  mt-3">
+    <div class="col-8">
+      <div class="card example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+          <div class="row" style="border-bottom:  2px solid #b9b6b6;">
+            <div class="col-8 mt-2">
+              <h5 class="card-title ">THD Profile (THDi,THDv)
+              </h5>
+            </div>
+
+
+          </div>
+
+
+          <div id="chart" *ngIf="barChartData != null">
+            <apx-chart [series]="loadBar.series" [colors]="pieFunctions.colors" [chart]="loadBar.chart" [dataLabels]="loadBar.dataLabels"
+              [plotOptions]="loadBar.plotOptions" [legend]="loadBar.legend" [fill]="loadBar.fill"
+              [xaxis]="loadBar.xaxis"></apx-chart>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4 ">
+      <div style="height: 480px;" class="card example-card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+          <h5 class="card-title" style="border-bottom:  2px solid #b9b6b6;">Harmonics Current Orders</h5>
+          <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Current">
+              <div id="chart " style="margin-top: 60px;">
+                <div id="chart2" *ngIf="barChartData != null">
+                  <apx-chart [series]="pieCurrent.series" [colors]="pieFunctions.colors" [chart]="pieCurrent.chart"
+                    [responsive]="pieCurrent.responsive" [labels]="pieCurrent.labels"></apx-chart>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Voltage">
+              <div id="chart " style="margin-top: 60px;">
+                <div id="chart2" *ngIf="barChartData != null">
+                  <apx-chart [series]="pieVoltage.series" [colors]="pieFunctions.colors" [chart]="pieVoltage.chart"
+                    [responsive]="pieVoltage.responsive" [labels]="pieVoltage.labels"></apx-chart>
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>

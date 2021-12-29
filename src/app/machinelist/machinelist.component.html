@@ -1,0 +1,371 @@
+<!-- <p>
+  <mat-toolbar>
+    <button
+      class="mr-1"
+      mat-flat-button
+      color="primary"
+      [matMenuTriggerFor]="menu"
+      *ngIf="selectedfactname"
+    >
+      {{ selectedfactname ? selectedfactname : null }}
+    </button>
+    <button
+      class="mr-1"
+      mat-flat-button
+      color="secondary"
+      *ngIf="!selectedfactname"
+      [matMenuTriggerFor]="menu"
+    >
+      <i style="font-size: 25px" class="fa fa-building text-muted"></i>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button
+        *ngFor="let fact of factories"
+        mat-menu-item
+        (click)="getFactData(fact.id, fact.name)"
+      >
+        {{ fact.name }}
+      </button>
+    </mat-menu>
+    <button
+      class="mr-1"
+      mat-flat-button
+      color="secondary"
+      *ngIf="!selectedfeatname"
+      [matMenuTriggerFor]="menu4"
+    >
+      <mat-icon class="text-muted" style="font-size: 25px"
+        >settings_input_component</mat-icon
+      >
+    </button>
+    <button
+      class="mr-1"
+      mat-flat-button
+      *ngIf="selectedfeatname"
+      color="primary"
+      [matMenuTriggerFor]="menu4"
+    >
+      {{ selectedfeatname ? selectedfeatname : null }}
+    </button>
+    <mat-menu #menu4="matMenu">
+      <button
+        *ngFor="let fact of features"
+        mat-menu-item
+        (click)="getFeatData(fact.name, fact.id)"
+      >
+        {{ fact.name }}
+      </button>
+    </mat-menu>
+    <button
+      *ngIf="!selectedloadname"
+      mat-flat-button
+      color="secondary"
+      [matMenuTriggerFor]="menuu"
+    >
+      <i style="font-size: 25px" class="fa fa-rocket text-muted"></i>
+    </button>
+    <button
+      *ngIf="selectedloadname"
+      mat-flat-button
+      color="primary"
+      [matMenuTriggerFor]="menuu"
+    >
+      {{ selectedloadname ? selectedloadname : null }}
+    </button>
+    <mat-menu #menuu="matMenu">
+      <button mat-menu-item>Item 1</button>
+      <button
+        mat-menu-item
+        *ngFor="let func of functions"
+        (click)="getDataforLoads(func.name, func.code)"
+      >
+        {{ func.name }}
+      </button>
+    </mat-menu>
+    <span class="spacer"></span>
+
+    <mat-button-toggle-group
+      value="today"
+      appearance="legacy"
+      name="fontStyle"
+      aria-label="Font Style"
+    >
+      <mat-button-toggle
+        mat-button
+        (change)="datechange($event)"
+        color="primary"
+        value="today"
+        >Today</mat-button-toggle
+      >
+      <mat-button-toggle
+        mat-button
+        (change)="datechange($event)"
+        color="primary"
+        value="yesterday"
+        >Yesterday</mat-button-toggle
+      >
+      <mat-button-toggle
+        mat-button
+        (change)="datechange($event)"
+        color="primary"
+        value="lastweek"
+        >Last Week</mat-button-toggle
+      >
+    </mat-button-toggle-group>
+
+    <mat-form-field
+      style="width: 0px; visibility: hidden"
+      class="example-full-width"
+      appearance="fill"
+    >
+      <mat-label>Choose a date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        (dateChange)="onChangeEvent($event)"
+      />
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-icon class="text-muted" style="font-size: 25px" (click)="picker.open()"
+      >today</mat-icon
+    >
+  </mat-toolbar>
+</p> -->
+<div class="row justify-content-md-center">
+  <img src="../../assets/imgs/unnamed.png" style="width: 150px;" alt="">
+</div>
+<br>
+<div class="container-fluid">
+  <div class="row mt-5 mb-2">
+    <div class="d-flex col-6 justify-content-end">
+      <p>
+        <!-- <mat-button-toggle-group
+          appearance="legacy"
+          name="fontStyle"
+          aria-label="Font Style"
+          value="all"
+        >
+          <mat-button-toggle value="active">Active</mat-button-toggle>
+          <mat-button-toggle value="all">All</mat-button-toggle>
+          <mat-button-toggle value="inactive">Inactive</mat-button-toggle>
+        </mat-button-toggle-group> -->
+      </p>
+    </div>
+    <div class="col-6">
+      <div class="row">
+        <div class="col-6 d-flex justify-content-end">
+          <!-- <button mat-flat-button color="primary">Properties</button> -->
+        </div>
+        <div class="col-6">
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping"
+              ><i style="font-size: 24px" class="fa">&#xf002;</i></span
+            >
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search By Load Name"
+              aria-label="Username"
+              aria-describedby="addon-wrapping"
+              (keyup)="searchfilter($event)"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-center" *ngIf="!data">
+        <mat-spinner></mat-spinner>
+      </div>
+      <div class="row" *ngIf="data">
+        <div *ngFor="let machine of data" class="col-md-8 col-lg-6 col-sm-12">
+          <mat-card
+            class="example-card shadow p-3 mb-5 bg-white rounded"
+            style="min-width: 300px"
+          >
+            <mat-card-header>
+              <mat-card-subtitle class="text-muted" style="width: 100%">
+                {{ machine.name }}
+                <span
+                  class="mt-2"
+                  style="
+                    font-size: 50px;
+                    color: darkorange;
+                    position: relative;
+                    left: 2vw;
+                    top: 13px;
+                  "
+                  >&#8226;<span
+                    style="font-size: 15px; position: relative; top: -13px"
+                  >
+                    {{ machine.machineId }}
+                  </span></span
+                >
+              </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content class="matcontent">
+              <hr />
+              <div class="d-flex row overflow-auto">
+                <div class="col-6">
+                  <rg-gauge-chart
+                    [canvasWidth]="canvasWidth"
+                    [needleValue]="machine.totalEnergy"
+                    [centralLabel]="centralLabel"
+                    [options]="options"
+                    [name]="name"
+                    [bottomLabel]="
+                      'Energy Consumption ' +
+                      machine.totalEnergy.toFixed(2) +
+                      ' KW'
+                    "
+                  ></rg-gauge-chart>
+                </div>
+                <div class="col-3">
+                  <div class="mt-1">V 1</div>
+                  <div class="mt-1">V 2</div>
+                  <div class="mt-1">V 3</div>
+                  <br>
+                  <div class="mt-1">LV 1</div>
+                  <div class="mt-1">LV 2</div>
+                  <div class="mt-1">LV 3</div>
+                  <br>
+                  <div class="mt-1">I 1</div>
+                  <div class="mt-1">I 2</div>
+                  <div class="mt-1">I 2</div>
+                </div>
+                <div class="col-3" *ngIf="machine.sourceReadingLoad">
+                  <div class="mt-1" >
+                    {{ machine.sourceReadingLoad.v1.toFixed(2) }} V
+                  </div>
+                  <div class="mt-1">
+                    {{ machine.sourceReadingLoad.v2.toFixed(2) }} V
+                  </div>
+                  <div class="mt-1">
+                    {{ machine.sourceReadingLoad.v3.toFixed(2) }} V
+                  </div>
+                  <br>
+                  <div class="mt-1" >
+                    {{ (machine.sourceReadingLoad.v1*mathS()).toFixed(2) }} V
+                  </div>
+                  <div class="mt-1">
+                    {{ (machine.sourceReadingLoad.v2*mathS()).toFixed(2) }} V
+                  </div>
+                  <div class="mt-1">
+                    {{ (machine.sourceReadingLoad.v3*mathS()).toFixed(2) }} V
+                  </div>
+                  <br>
+                  <div class="mt-1">
+                    {{ machine.sourceReadingLoad.i1.toFixed(2) }} A
+                  </div>
+                  <div class="mt-1">
+                    {{ machine.sourceReadingLoad.i2.toFixed(2) }} A
+                  </div>
+                  <div class="mt-1">
+                    {{ machine.sourceReadingLoad.i3.toFixed(2) }} A
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <div class="d-flex row overflow-auto" *ngIf="machine.sourceReadingLoad">
+                <div class="justify-content-center col-5 ml-1">
+                  <h3 class="d-flex justify-content-center">Active Power</h3>
+                  <div class="row">
+                    <div class="col-5">A.P 1</div>
+                    <div class="col-7">
+                      {{ machine.sourceReadingLoad.pact1 }} KW
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">A.P 2</div>
+                    <div class="col-7">
+                      {{ machine.sourceReadingLoad.pact2 }} KW
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">A.P 3</div>
+                    <div class="col-7">
+                      {{ machine.sourceReadingLoad.pact3 }} KW
+                    </div>
+                  </div>
+                </div>
+                <div class="justify-content-center col-6 ml-1" *ngIf="machine.sourceReadingLoad">
+                  <h3 class="d-flex justify-content-center">Power Factor</h3>
+                  <div class="row">
+                    <div class="col-5">P.F 1</div>
+                    <div class="col-7" *ngIf="machine.sourceReadingLoad.pF1>0">
+                      {{ machine.sourceReadingLoad.pF1 }}
+                    </div>
+                    <div class="col-7" *ngIf="machine.sourceReadingLoad.pF1<=0">
+                      1
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">P.F 2</div>
+                    <div class="col-7" *ngIf="machine.sourceReadingLoad.pF2>0">
+                      {{ machine.sourceReadingLoad.pF2 }}
+                    </div>
+                    <div class="col-7" *ngIf="machine.sourceReadingLoad.pF2<=0">
+                      1
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">P.F 3</div>
+                    <div class="col-7" *ngIf="machine.sourceReadingLoad.pF3>0">
+                      {{ machine.sourceReadingLoad.pF3 }}
+                    </div>
+                    <div class="col-7" *ngIf="machine.sourceReadingLoad.pF3<=0">
+                      1
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <h3>{{getTime(machine.sourceReadingLoad.timeStamp)}}</h3>
+              </div>
+              <!-- <div class="d-flex row overflow-auto">
+                <div class="justify-content-center col-5 ml-1">
+                  <h3 class="d-flex justify-content-center">Power Factor</h3>
+                  <div class="row">
+                    <div class="col-5">P.F 1</div>
+                    <div class="col-7" *ngIf="machine.sourceReadingLoad.pF1>0">
+                      {{ machine.sourceReadingLoad.pF1 }}
+                    </div>
+                    <div class="col-7" *ngIf="machine.sourceReadingLoad.pF1<=0">
+                      0
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">P.F 2</div>
+                    <div class="col-7" *ngIf="machine.sourceReadingLoad.pF2>0">
+                      {{ machine.sourceReadingLoad.pF2 }}
+                    </div>
+                    <div class="col-7" *ngIf="machine.sourceReadingLoad.pF2<=0">
+                      0
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">P.F 3</div>
+                    <div class="col-7" *ngIf="machine.sourceReadingLoad.pF3>0">
+                      {{ machine.sourceReadingLoad.pF3 }}
+                    </div>
+                    <div class="col-7" *ngIf="machine.sourceReadingLoad.pF3<=0">
+                      0
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <hr /> -->
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

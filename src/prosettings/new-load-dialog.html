@@ -1,0 +1,241 @@
+<div *ngIf="!data">
+  <form (ngSubmit)="onSubmit()" [formGroup]="loadForm" class="example-form">
+    <mat-form-field class="example-full-width col-12">
+      <input matInput formControlName="name" placeholder="Name" />
+    </mat-form-field>
+    <div class="row">
+      <mat-form-field class="example-full-width col-6">
+        <input matInput formControlName="code" placeholder="Code" />
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          type="number"
+          placeholder="Source ID"
+          formControlName="sourceId"
+        />
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-full-width col-6" appearance="fill">
+        <mat-label>Factory ID</mat-label>
+        <mat-select formControlName="factoryId">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let fact of factories" [value]="fact.id"
+            >{{fact.name}}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6" appearance="fill">
+        <mat-label>Function ID</mat-label>
+        <mat-select formControlName="functionId">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let fact of functions" [value]="fact.id"
+            >{{fact.name}}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          type="number"
+          formControlName="typeId"
+          placeholder="Type ID"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          type="number"
+          formControlName="currentRating"
+          placeholder="Rating Current"
+        />
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          type="number"
+          formControlName="voltageRating"
+          placeholder="Rating Voltage"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6">
+        <input
+          type="number"
+          matInput
+          formControlName="rpmRating"
+          placeholder="Rating RPM"
+        />
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          type="number"
+          formControlName="powerRating"
+          placeholder="Rating Power"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          formControlName="description"
+          placeholder="Description"
+        />
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary">Add Load</button>
+  </form>
+</div>
+
+<div *ngIf="data">
+  <form (ngSubmit)="onSubmit2()" name="loadForm" class="example-form">
+    <div class="row">
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          [(value)]="data.name"
+          name="name"
+          [(ngModel)]="data.name"
+          placeholder="Name"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6" appearance="fill">
+        <mat-label>Area ID</mat-label>
+        <mat-select
+          [(value)]="data.areaId"
+          name="functionId"
+          [(ngModel)]="data.areaId"
+        >
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let fact of areas" [value]="fact.id"
+            >{{fact.name}}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          [(value)]="data.code"
+          name="code"
+          [(ngModel)]="data.code"
+          placeholder="Code"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          type="number"
+          placeholder="Source ID"
+          [(value)]="data.sourceId"
+          name="sourceId"
+          [(ngModel)]="data.sourceId"
+        />
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-full-width col-6" appearance="fill">
+        <mat-label>Factory ID</mat-label>
+        <mat-select
+          [(value)]="data.factoryId"
+          name="factoryId"
+          [(ngModel)]="data.factoryId"
+        >
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let fact of factories" [value]="fact.id"
+            >{{fact.name}}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6" appearance="fill">
+        <mat-label>Function ID</mat-label>
+        <mat-select
+          [(value)]="data.functionId"
+          name="functionId"
+          [(ngModel)]="data.functionId"
+        >
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let fact of functions" [value]="fact.id"
+            >{{fact.name}}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          type="number"
+          [(value)]="data.typeId"
+          name="typeId"
+          [(ngModel)]="data.typeId"
+          placeholder="Type ID"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          type="number"
+          [(value)]="data.currentRating"
+          name="currentRating"
+          [(ngModel)]="data.currentRating"
+          placeholder="Rating Current"
+        />
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          type="number"
+          [(value)]="data.voltageRating"
+          name="voltageRating"
+          [(ngModel)]="data.voltageRating"
+          placeholder="Rating Voltage"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6">
+        <input
+          type="number"
+          matInput
+          [(value)]="data.rpmRating"
+          name="rpmRating"
+          [(ngModel)]="data.rpmRating"
+          placeholder="Rating RPM"
+        />
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          type="number"
+          [(value)]="data.powerRating"
+          name="powerRating"
+          [(ngModel)]="data.powerRating"
+          placeholder="Rating Power"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width col-6">
+        <input
+          matInput
+          [(value)]="data.description"
+          name="description"
+          [(ngModel)]="data.description"
+          placeholder="Description"
+        />
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary">Edit Load</button>
+  </form>
+</div>

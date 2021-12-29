@@ -1,0 +1,305 @@
+<div class="row justify-content-md-center">
+  <img src="../../assets/imgs/unnamed.png" style="width: 150px;" alt="">
+</div>
+<br>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2" style="background: #FFFFFF 0% 0% no-repeat padding-box;
+box-shadow: 1px 3px 6px #00000029;
+opacity: 1;">
+<div class="row justify-content-center rowdiv">
+  <div class="col-3">
+    <img class="img" src="../../assets/imgs/factory.svg"/>
+  </div>
+  <div class="col">
+    <select  class="form-select factories" aria-label="Default select example">
+      <option selected>Select A Factory</option>
+      <option selected value="1">All Factories</option>
+      <option value="2">EGFood</option>
+
+    </select>
+
+
+  </div>
+</div>
+<br>
+<!-- <div class="row">
+<div class="col-3">
+
+</div>
+<div class="col">
+  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+    <label class="btn btn-outline-warning" style="color: white;" for="btnradio1">Area</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+    <label class="btn btn-outline-warning" style="color: grey;" for="btnradio2">Function</label>
+  </div>
+</div>
+</div> -->
+<br>
+<div class="row">
+<div class="col">
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <!-- This is the tree node template for leaf nodes -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding class="node-st">
+      <!-- use a disabled button to provide padding for tree leaf -->
+      <button mat-icon-button (click)="loadCode = node.code" ><img [src]='"../../assets/imgs/"+node.img'/></button>
+
+      {{node.name}}
+    </mat-tree-node>
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding class="node-st">
+      <button mat-icon-button matTreeNodeToggle
+      class="me-3"
+              [attr.aria-label]="'Toggle ' + node.name">
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+        </mat-icon>
+        <img [src]='"../../assets/imgs/"+node.img'/>
+      </button>
+      {{node.name}}
+    </mat-tree-node>
+  </mat-tree>
+</div>
+</div>
+</div>
+    <div class="col-10">
+      <div class="row justify-content-between mb-2">
+        <div class="col-3 mt-4" id="btnToggle">
+
+        </div>
+        <div class="col">
+          <div class="row  mt-3">
+
+            <div class=" row">
+              <div class="col">
+                <mat-form-field style="width: 230px">
+                  <input
+                    (dateChange)="fromDate($event)"
+                    matInput
+                    [ngxMatDatetimePicker]="picker"
+                    placeholder="Start Date"
+                    [formControl]="dateControl"
+                  />
+                  <mat-datepicker-toggle
+                    (click)="From = dateControl.value"
+                    matSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
+                  <ngx-mat-datetime-picker #picker showSeconds="true"> </ngx-mat-datetime-picker>
+                </mat-form-field>
+              </div>
+             <div class="col">
+              <mat-form-field style="width: 230px">
+                <input
+                  (dateChange)="toDate($event)"
+                  matInput
+                  [ngxMatDatetimePicker]="picker2"
+                  placeholder="End Date"
+                  [formControl]="dateControl2"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker2"
+                ></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #picker2 showSeconds="true"> </ngx-mat-datetime-picker>
+              </mat-form-field>
+             </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid">
+          <div class="row">
+            <div class="col-4">
+
+            </div>
+            <div class="col-12">
+              <div class="row" *ngIf="data">
+                <div *ngFor="let machine of data" class="col-md-8 col-lg-6 col-sm-12">
+                  <mat-card
+                    class="example-card shadow p-3 mb-5 bg-white rounded"
+                    style="min-width: 300px"
+                  >
+                    <mat-card-header>
+                      <mat-card-subtitle class="text-muted" style="width: 100%">
+                        {{ machine.name }}
+                        <span
+                          class="mt-2"
+                          style="
+                            font-size: 50px;
+                            color: darkorange;
+                            position: relative;
+                            left: 2vw;
+                            top: 13px;
+                          "
+                          >&#8226;<span
+                            style="font-size: 15px; position: relative; top: -13px"
+                          >
+                            {{ machine.machineId }}
+                          </span></span
+                        >
+                      </mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content class="matcontent">
+                      <hr />
+                      <div class="d-flex row overflow-auto">
+                        <div class="col-6">
+                          <rg-gauge-chart
+                    [canvasWidth]="canvasWidth"
+                    [needleValue]="machine.totalEnergy"
+                    [centralLabel]="centralLabel"
+                    [options]="options"
+                    [name]="name"
+                    [bottomLabel]="
+                      'Energy Consumption ' +
+                      machine.totalEnergy.toFixed(2) +
+                      ' KW'
+                    "
+                  ></rg-gauge-chart>
+                        </div>
+                        <div class="col-3">
+                          <div class="mt-1">Voltage 1</div>
+                          <div class="mt-1">Voltage 2</div>
+                          <div class="mt-1">Voltage 3</div>
+                          <div class="mt-1">Current 1</div>
+                          <div class="mt-1">Current 2</div>
+                          <div class="mt-1">Current 2</div>
+                        </div>
+                        <div class="col-3">
+                          <div class="mt-1">
+                            {{ machine.sourceReadingLoad.v1.toFixed(2) }} volt
+                          </div>
+                          <div class="mt-1">
+                            {{ machine.sourceReadingLoad.v2.toFixed(2) }} volt
+                          </div>
+                          <div class="mt-1">
+                            {{ machine.sourceReadingLoad.v3.toFixed(2) }} volt
+                          </div>
+                          <div class="mt-1">
+                            {{ machine.sourceReadingLoad.i1.toFixed(2) }} I
+                          </div>
+                          <div class="mt-1">
+                            {{ machine.sourceReadingLoad.i2.toFixed(2) }} I
+                          </div>
+                          <div class="mt-1">
+                            {{ machine.sourceReadingLoad.i3.toFixed(2) }} I
+                          </div>
+                        </div>
+                      </div>
+                      <hr />
+                      <div class="d-flex row overflow-auto">
+                        <div class="justify-content-center col-5 ml-1">
+                          <h3 class="d-flex justify-content-center">Active Power</h3>
+                          <div class="row">
+                            <div class="col-5">A.P 1</div>
+                            <div class="col-7">
+                              {{ machine.sourceReadingLoad.pact1 }} KW
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-5">A.P 2</div>
+                            <div class="col-7">
+                              {{ machine.sourceReadingLoad.pact2 }} KW
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-5">A.P 3</div>
+                            <div class="col-7">
+                              {{ machine.sourceReadingLoad.pact3 }} KW
+                            </div>
+                          </div>
+                        </div>
+                        <div class="justify-content-center col-6 ml-2">
+                          <h3 class="d-flex justify-content-center">Reactive Power</h3>
+                          <div class="row">
+                            <div class="col-6">R.P 1</div>
+
+                            <div class="col-6">
+                              {{ machine.sourceReadingLoad.preact1 }} KVAR
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-6">R.P 2</div>
+                            <div class="col-6">
+                              {{ machine.sourceReadingLoad.preact2 }} KVAR
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-6">R.P 3</div>
+                            <div class="col-6">
+                              {{ machine.sourceReadingLoad.preact3 }} KVAR
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr />
+                      <div class="d-flex row overflow-auto">
+                        <div class="justify-content-center col-5 ml-1">
+                          <h3 class="d-flex justify-content-center">Power Factor</h3>
+                          <div class="row">
+                            <div class="col-5">P.F 1</div>
+                            <div class="col-7" *ngIf="machine.sourceReadingLoad.pF1>0">
+                              {{ machine.sourceReadingLoad.pF1 }}
+                            </div>
+                            <div class="col-7" *ngIf="machine.sourceReadingLoad.pF1<=0">
+                              1
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-5">P.F 2</div>
+                            <div class="col-7" *ngIf="machine.sourceReadingLoad.pF2>0">
+                              {{ machine.sourceReadingLoad.pF2 }}
+                            </div>
+                            <div class="col-7" *ngIf="machine.sourceReadingLoad.pF2<=0">
+                              1
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-5">P.F 3</div>
+                            <div class="col-7" *ngIf="machine.sourceReadingLoad.pF3>0">
+                              {{ machine.sourceReadingLoad.pF3 }}
+                            </div>
+                            <div class="col-7" *ngIf="machine.sourceReadingLoad.pF3<=0">
+                              1
+                            </div>
+                          </div>
+                        </div>
+                        <div class="justify-content-center col-6 ml-2">
+                          <h3 class="d-flex justify-content-center">Apparent Power</h3>
+                          <div class="row">
+                            <div class="col-6">F 1</div>
+
+                            <div class="col-6">
+                              {{ machine.sourceReadingLoad.papp1 }} KVA
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-6">F 2</div>
+                            <div class="col-6">
+                              {{ machine.sourceReadingLoad.papp2 }} KVA
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-6">F 3</div>
+                            <div class="col-6">
+                              {{ machine.sourceReadingLoad.papp3 }} KVA
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr />
+
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+    </div>
+  </div>
+
